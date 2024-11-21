@@ -48,3 +48,36 @@
     padding-bottom: 15px;
     border-radius: 10px;
 }
+.container .btn{
+    margin: 40px 0 70px 0;
+    background: #222;
+    padding: 15px 40px;
+    border-radius: 5px;
+}
+
+.container .btn:hover{
+    background: #252525;
+}
+
+.container .btn a{
+    color: #fff;
+    font-size: 1.2em;
+    text-decoration: none;
+    font-weight: bolder;
+    letter-spacing: 3px;
+}
+
+.container .btn a:hover{
+    font-size: 1.3em;
+}
+
+@media only screen and (max-width: 643px){
+    .container .box{
+        flex-direction: column;
+    }
+
+    .container.box .dream{
+        width: 100%;
+    }
+}
+
