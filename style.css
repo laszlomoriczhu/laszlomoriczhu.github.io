@@ -23,12 +23,25 @@
     font-size: 3em;
     font-weight: bolder;
     padding-bottom: 10px;
+    /*
     border-bottom: 3px solid #222;
+    */
 }
 
 .container .heading h3 span{
     font-weight: 100;
     /*border-bottom: 3px solid #222;*/
+}
+
+.container .heading h4{
+    font-size: 1em;
+    font-weight: bolder;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #222;
+}
+
+.container .heading h4 span{
+    font-weight: 100;
 }
 
 .container .box{
