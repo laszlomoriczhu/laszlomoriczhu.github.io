@@ -16,7 +16,7 @@
 
 .container .heading{
     width: 50%;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
 }
 
 .container .heading h3{
@@ -36,7 +36,7 @@
 .container .heading h4{
     font-size: 1em;
     font-weight: bolder;
-    padding-bottom: 10px;
+    padding-bottom: 0px;
     border-bottom: 3px solid #222;
 }
 
@@ -57,14 +57,16 @@
 }
 
 .container .box .dream img{
-    width: 100%;
+    width: 99%;
     padding-bottom: 15px;
     border-radius: 10px;
 }
+
 .container .btn{
-    margin: 40px 0 70px 0;
+    margin: 10px 1px 10px 1px;
     background: #222;
-    padding: 15px 40px;
+    /*padding: 15px 40px;*/
+    padding: 30px 10px 30px 10px;
     border-radius: 5px;
 }
 
@@ -74,36 +76,19 @@
 
 .container .btn a{
     color: #fff;
-    font-size: 1.2em;
+    font-size: 1.4em;
     text-decoration: none;
     font-weight: bolder;
     letter-spacing: 3px;
 }
 
 .container .btn a:hover{
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
-
-/*
-@media only screen and (max-width: 1024px){
-    
-    .container .heading h3{
-        font-size: 2em;
-    }
-    
-    .container .box{
-        flex-direction: column;
-    }
-
-    .container .box .dream{
-        width: 100%;
-    }
-}
-*/
 
 @media (orientation: portrait) {
     .container .heading h3{
-        font-size: 2em;
+        font-size: 1.8em;
     }
     
     .container .box{
