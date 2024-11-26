@@ -56,21 +56,15 @@
 
 .container .box .dream img{
     width: 99%;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid black;
-}
-
-.container .box .dream img:hover{
-    width: 99%;
-    border-radius: 5px;
-    border: none;
 }
 
 .container .btn{
     margin: 10px 1px 10px 1px;
     background: #222;
     padding: 30px 10px 30px 10px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .container .btn:hover{
