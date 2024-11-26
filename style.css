@@ -23,14 +23,11 @@
     font-size: 3em;
     font-weight: bolder;
     padding-bottom: 10px;
-    /*
-    border-bottom: 3px solid #222;
-    */
 }
 
 .container .heading h3 span{
     font-weight: 100;
-    /*border-bottom: 3px solid #222;*/
+   
 }
 
 .container .heading h4{
@@ -54,18 +51,24 @@
     display: flex;
     flex-direction: column;
     width: 32.5%;
+    padding-bottom: 15px;
 }
 
 .container .box .dream img{
     width: 99%;
-    padding-bottom: 15px;
-    border-radius: 10px;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+
+.container .box .dream img:hover{
+    width: 99%;
+    border-radius: 5px;
+    border: none;
 }
 
 .container .btn{
     margin: 10px 1px 10px 1px;
     background: #222;
-    /*padding: 15px 40px;*/
     padding: 30px 10px 30px 10px;
     border-radius: 5px;
 }
