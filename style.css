@@ -60,6 +60,12 @@
     border: 2px solid black;
 }
 
+.container .box .dream video{
+    width: 99%;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
 .container .btn{
     margin: 10px 1px 10px 1px;
     background: #222;
@@ -73,14 +79,14 @@
 
 .container .btn a{
     color: #fff;
-    font-size: 1.4em;
+    font-size: 1.6em;
     text-decoration: none;
     font-weight: bolder;
     letter-spacing: 3px;
 }
 
 .container .btn a:hover{
-    font-size: 1.5em;
+    font-size: 1.7em;
 }
 
 @media (orientation: portrait) {
