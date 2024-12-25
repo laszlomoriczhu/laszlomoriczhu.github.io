@@ -111,8 +111,18 @@
     </section>
 
     <section id="section4">
-        <h2>Milye Generatív Pre-trained Transformer (GPT) verziók vannak?</h2>
+        <h2>Milyen Generatív Pre-trained Transformer (GPT) verziók vannak?</h2>
         <p>A Generative Pre-trained Transformer (GPT) modellek különböző verziókban jelentek meg, mindegyik jelentős fejlesztéseket hozva az előzőhöz képest. A GPT-1 2018-ban jelent meg, és alapvető szövegelemzési képességekkel rendelkezett. A GPT-2 2019-ben került kiadásra, amely már jelentős előrelépés volt a nyelvi modellezésben. A GPT-3 2020-ban debütált, amely hatalmas paraméterszámával forradalmasította az AI-alapú szöveggenerálást. A GPT-3.5 2022-ben érkezett, míg a GPT-4-et 2023-ban mutatták be, amely tovább növelte a pontosságot és a hatékonyságot. Ezek mellett léteznek kisebb, optimalizált "Mini Turbo" verziók is, amelyek gyorsabbak és kevésbé erőforrás-igényesek.</p>
+        <div class="content-box">
+            <ul>
+                <li><strong>GPT-2:</strong> 2019. február 14. - A GPT-2 volt az első igazán sikeres modell az OpenAI-tól, amely képes volt koherens szövegek generálására. Az előző verziókhoz képest jelentős javulást hozott. <strong>Eltelt idő:</strong> 2 év a GPT-1 megjelenése után.</li>
+                <li><strong>GPT-3:</strong> 2020. június 11. - A GPT-3 megjelenése hatalmas mérföldkő volt, hiszen 175 milliárd paramétert tartalmazott, így sokkal pontosabb és kifinomultabb válaszokat adott. <strong>Eltelt idő:</strong> 1 év a GPT-2 megjelenése után.</li>
+                <li><strong>GPT-3.5:</strong> 2022. március 1. - A GPT-3 finomhangolt változata, amely gyorsabb válaszokat és jobb koherenciát biztosított. <strong>Eltelt idő:</strong> 1 év 9 hónap a GPT-3 megjelenése után.</li>
+                <li><strong>GPT-4:</strong> 2023. március 14. - A GPT-4 jelentős fejlődést hozott a szövegértés és a komplex problémák megoldása terén. Ez az egyik legfejlettebb generatív AI modell, amely jobb teljesítményt és többnyelvű támogatást kínál. <strong>Eltelt idő:</strong> 1 év a GPT-3.5 megjelenése után.</li>
+                <li><strong>GPT-4 Mini:</strong> 2023. szeptember - A GPT-4 kisebb, gyorsabb és optimalizált verziója, amely csökkentett memóriahasználattal, de a GPT-4 képességeivel működik. <strong>Eltelt idő:</strong> 6 hónap a GPT-4 megjelenése után.</li>
+                <li><strong>GPT-4 Turbo:</strong> 2024. április - A GPT-4 továbbfejlesztett és gyorsabb változata, amely kisebb költséggel kínál válaszokat. <strong>Eltelt idő:</strong> 7 hónap a GPT-4 Mini megjelenése után.</li>
+            </ul>
+        </div>
         <p>Megjelenési időpontok és diagram:</p>
         <div>
             <canvas id="gptTimeline" width="600" height="400"></canvas>
@@ -158,20 +168,39 @@
         <p>&copy; 2024 AI Leírás</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctx = document.getElementById('gptTimeline').getContext('2d');
         const chart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['GPT-1', 'GPT-2', 'GPT-3', 'GPT-3.5', 'GPT-4'],
+                labels: ['GPT-1', 'GPT-2', 'GPT-3', 'GPT-3.5', 'GPT-4', 'GPT-4 Mini', 'GPT-4 Turbo'],
                 datasets: [{
-                    label: 'Évek a megjelenés óta',
-                    data: [2018, 2019, 2020, 2022, 2023],
+                    label: 'Megjelenési idő különbségek (hónap)',
+                    data: [0, 24, 12, 21, 12, 6, 7],
                     backgroundColor: 'rgba(76, 175, 80, 0.6)',
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1
                 }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Hónapok'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'GPT Verziók'
+                        }
+                    }
+                }
             }
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
