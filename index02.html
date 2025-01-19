@@ -106,11 +106,16 @@
             background-color: #005BB5;
         }
 
-        /* Dark mode kapcsoló */
-        .dark-mode-toggle {
+        /* Dark mode kapcsoló és Felirat Top gomb */
+        .top-buttons {
             position: fixed;
             top: 20px;
             right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .top-buttons button {
             background-color: #007AFF;
             color: white;
             border: none;
@@ -120,7 +125,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        .dark-mode-toggle:hover {
+        .top-buttons button:hover {
             background-color: #005BB5;
         }
 
@@ -156,8 +161,11 @@
     </style>
 </head>
 <body>
-    <!-- Dark mode kapcsoló -->
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <!-- Dark mode kapcsoló és Felirat Top gomb -->
+    <div class="top-buttons">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
+        <button onclick="scrollToTop()">Felirat Top</button>
+    </div>
 
     <!-- Oldal cím -->
     <div class="page-title" id="pageTitle">2024 Autumn</div>
@@ -271,6 +279,14 @@
         // Dark mode kapcsoló
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
+        }
+
+        // Felirat Top gomb funkciója
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Sima görgetés
+            });
         }
 
         // Alapértelmezett betöltés
