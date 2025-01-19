@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Little Garden</title>
+    <link rel="icon" href="favicon.webp" type="image/webp">
+    <style>
+        /* style.css tartalma */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin: 40px 20px 0 20px;
+        }
+        .container .heading {
+            width: 50%;
+            padding-bottom: 20px;
+        }
+        .container .heading h3 {
+            font-size: 3em;
+            font-weight: bolder;
+            padding-bottom: 10px;
+        }
+        .container .heading h3 span {
+            font-weight: 100;
+        }
+        .container .heading h4 {
+            font-size: 1em;
+            font-weight: bolder;
+            padding-bottom: 0px;
+            border-bottom: 3px solid #222;
+        }
+        .container .heading h4 span {
+            font-weight: 100;
+        }
+        .container .box {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .container .box .dream {
+            display: flex;
+            flex-direction: column;
+            width: 32.5%;
+            padding-bottom: 15px;
+        }
+        .container .box .dream img {
+            width: 99%;
+            border-radius: 10px;
+            border: 2px solid black;
+        }
+        .container .box .dream video {
+            width: 99%;
+            border-radius: 10px;
+            border: 2px solid black;
+        }
+        .container .btn {
+            margin: 10px 1px 10px 1px;
+            background: #222;
+            padding: 30px 10px 30px 10px;
+            border-radius: 10px;
+        }
+        .container .btn:hover {
+            background: #252525;
+        }
+        .container .btn a {
+            color: #fff;
+            font-size: 1.6em;
+            text-decoration: none;
+            font-weight: bolder;
+            letter-spacing: 3px;
+        }
+        .container .btn a:hover {
+            font-size: 1.7em;
+        }
+        @media (orientation: portrait) {
+            .container .heading h3 {
+                font-size: 1.8em;
+            }
+            .container .box {
+                flex-direction: column;
+            }
+            .container .box .dream {
+                width: 100%;
+            }
+        }
+        @media (orientation: landscape) {
+            body .container .heading h3 {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">
+            <h3>Our&nbsp;<span>little&nbsp;</span>Garden</h3>
+            <h4><span>&nbsp;by&nbsp;</span>Horváth&nbsp;Csilla<span>&nbsp;&&nbsp;</span>Móricz&nbsp;László</h4>
+        </div>
+
+        <!-- Navigációs gombok -->
+        <div class="navigation">
+            <button onclick="loadSeason('2024autumn')">2024 Autumn</button>
+            <button onclick="loadSeason('2024summer')">2024 Summer</button>
+            <button onclick="loadSeason('2024spring')">2024 Spring</button>
+            <button onclick="loadSeason('20232024winter')">2023-24 Winter</button>
+            <button onclick="loadSeason('2023autumn')">2023 Autumn</button>
+            <button onclick="loadSeason('2023summer')">2023 Summer</button>
+            <button onclick="loadSeason('2023spring')">2023 Spring</button>
+            <button onclick="loadSeason('20222023winter')">2022-23 Winter</button>
+            <button onclick="loadSeason('2022')">2022</button>
+            <button onclick="loadSeason('theBegins')">The Begins</button>
+            <button onclick="loadSeason('residents')">Residents</button>
+        </div>
+
+        <!-- Tartalom betöltése ide -->
+        <div id="content">
+            <!-- Ide kerülnek a képek vagy videók -->
+        </div>
+    </div>
+
+    <script>
+        // Dinamikus képbetöltés függvény
+        async function loadImages(season) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = ''; // Töröljük a korábbi tartalmat
+
+            let i = 1;
+            while (true) {
+                const imgNum = String(i).padStart(3, '0'); // "001", "002" formátum
+                const imgSrc = `pics/${season}/image${imgNum}.jpg`;
+
+                try {
+                    const response = await fetch(imgSrc);
+                    if (!response.ok) break; // Ha nem létezik, kilépünk a ciklusból
+
+                    // Ha létezik, hozzáadjuk a képet
+                    if ((i - 1) % 3 === 0) {
+                        const boxDiv = document.createElement('div');
+                        boxDiv.className = 'box';
+                        contentDiv.appendChild(boxDiv);
+                    }
+
+                    const dreamDiv = document.createElement('div');
+                    dreamDiv.className = 'dream';
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imgSrc;
+                    dreamDiv.appendChild(imgElement);
+
+                    const lastBox = contentDiv.lastChild;
+                    lastBox.appendChild(dreamDiv);
+
+                    i++;
+                } catch (error) {
+                    break; // Ha hiba történik, kilépünk a ciklusból
+                }
+            }
+        }
+
+        // Videók betöltése a "Residents" oldalhoz
+        function loadVideos() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = ''; // Töröljük a korábbi tartalmat
+
+            const videos = [
+                'videos/residents/001.mp4',
+                'videos/residents/002.mp4',
+                'videos/residents/003.mp4'
+            ];
+
+            const boxDiv = document.createElement('div');
+            boxDiv.className = 'box';
+            contentDiv.appendChild(boxDiv);
+
+            videos.forEach(videoSrc => {
+                const dreamDiv = document.createElement('div');
+                dreamDiv.className = 'dream';
+                const videoElement = document.createElement('video');
+                videoElement.controls = true;
+                const sourceElement = document.createElement('source');
+                sourceElement.src = videoSrc;
+                sourceElement.type = 'video/mp4';
+                videoElement.appendChild(sourceElement);
+                dreamDiv.appendChild(videoElement);
+                boxDiv.appendChild(dreamDiv);
+            });
+        }
+
+        // Szezon betöltése
+        function loadSeason(season) {
+            if (season === 'residents') {
+                loadVideos();
+            } else {
+                loadImages(season);
+            }
+        }
+
+        // Alapértelmezett betöltés
+        loadSeason('2024autumn'); // Például az 2024 ősz betöltése alapértelmezettként
+    </script>
+</body>
+</html>
