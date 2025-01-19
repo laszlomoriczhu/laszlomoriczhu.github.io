@@ -268,8 +268,8 @@
         function loadSeason(season) {
             const pageTitle = document.getElementById('pageTitle');
             // Az oldal címét a gombokon lévő felirat alapján állítjuk be
-            pageTitle.textContent = season.replace(/([A-Z])/g, ' $1').trim(); // Formázás: "2024Autumn" -> "2024 Autumn"
-
+            const buttonText = document.querySelector(`button[onclick="loadSeason('${season}')"]`).textContent;
+            pageTitle.textContent = buttonText; // A gomb szövegét másoljuk át
             if (season === 'residents') {
                 loadVideos();
             } else {
