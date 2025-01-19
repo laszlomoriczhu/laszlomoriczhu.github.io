@@ -106,7 +106,7 @@
             background-color: #005BB5;
         }
 
-        /* Dark mode kapcsoló és Felirat Top gomb */
+        /* Dark mode kapcsoló és Top gomb */
         .top-buttons {
             position: fixed;
             top: 20px;
@@ -161,10 +161,10 @@
     </style>
 </head>
 <body>
-    <!-- Dark mode kapcsoló és Felirat Top gomb -->
+    <!-- Dark mode kapcsoló és Top gomb -->
     <div class="top-buttons">
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
-        <button onclick="scrollToTop()">Felirat Top</button>
+        <button onclick="scrollToTop()">Top</button>
     </div>
 
     <!-- Oldal cím -->
@@ -267,6 +267,7 @@
         // Szezon betöltése
         function loadSeason(season) {
             const pageTitle = document.getElementById('pageTitle');
+            // Az oldal címét a gombokon lévő felirat alapján állítjuk be
             pageTitle.textContent = season.replace(/([A-Z])/g, ' $1').trim(); // Formázás: "2024Autumn" -> "2024 Autumn"
 
             if (season === 'residents') {
@@ -281,7 +282,7 @@
             document.body.classList.toggle('dark-mode');
         }
 
-        // Felirat Top gomb funkciója
+        // Top gomb funkciója
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
