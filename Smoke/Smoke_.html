@@ -105,11 +105,6 @@
         }
         /* --- ÚJ TÉMÁK VÉGE --- */
 
-        /* Alapvető reszponzív beállítások */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Roboto', sans-serif;
             display: flex;
@@ -121,7 +116,6 @@
             color: var(--text-color); /* Globális szövegszín, ha nincs felülírva */
             transition: background-color 0.3s ease, color 0.3s ease;
             flex-direction: column;
-            padding: 20px; /* Alap padding a body-n */
         }
 
         .container {
@@ -133,8 +127,6 @@
             border: 1px solid var(--border-color);
             color: var(--text-color);
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-            width: 90%; /* Reszponzív szélesség */
-            max-width: 600px; /* Maximális szélesség */
         }
 
         #szam {
@@ -144,16 +136,14 @@
             letter-spacing: -1px;
             color: var(--text-color);
             transition: color 0.3s ease;
-            word-break: break-word; /* Hosszú számok törése */
         }
 
-        #elteltIdo, #megsporoltIdo {
+        #elteltIdo {
             font-size: 1.5em;
             font-weight: 400;
             margin-top: 10px;
             color: var(--text-color);
             transition: color 0.3s ease;
-            line-height: 1.4; /* Olvashatóság javítása */
         }
 
         .theme-selector-container {
@@ -162,8 +152,6 @@
             right: 20px;
             display: flex;
             align-items: center;
-            flex-wrap: wrap; /* Törés mobil nézetben */
-            justify-content: flex-end;
         }
 
         .theme-selector-container label {
@@ -171,7 +159,6 @@
             font-size: 1.1em;
             font-weight: 300;
             color: var(--text-color);
-            margin-bottom: 5px; /* Hely az elemen alul */
         }
 
         .theme-selector-container select {
@@ -184,50 +171,10 @@
             cursor: pointer;
             outline: none;
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            max-width: 180px; /* Limitált szélesség */
-            width: 100%; /* Mobil szélesség */
         }
 
         .theme-selector-container select:hover {
             border-color: var(--text-color);
-        }
-
-        /* Média lekérdezések mobil eszközökhöz */
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px; /* Kisebb padding mobilra */
-                width: 95%; /* Még több hely a széleken */
-            }
-
-            #szam {
-                font-size: 3.5em; /* Kisebb betűméret */
-            }
-
-            #elteltIdo, #megsporoltIdo {
-                font-size: 1.2em; /* Kisebb betűméret */
-            }
-
-            .theme-selector-container {
-                position: static; /* Statikus pozíció mobil nézetben */
-                margin-top: 20px;
-                flex-direction: column; /* Felülről lefelé rendezés */
-                align-items: center;
-            }
-
-            .theme-selector-container label,
-            .theme-selector-container select {
-                margin: 5px 0; /* Egyenletes margó */
-            }
-        }
-
-        @media (max-width: 480px) {
-            #szam {
-                font-size: 2.8em; /* Még kisebb betűméret */
-            }
-
-            #elteltIdo, #megsporoltIdo {
-                font-size: 1em; /* Még kisebb betűméret */
-            }
         }
     </style>
 </head>
@@ -253,12 +200,11 @@
     <div class="container">
         <div id="szam"></div>
         <div id="elteltIdo"></div>
-        <div id="megsporoltIdo"></div> </div>
+    </div>
 
     <script>
         const kezdido = new Date('2025-05-10T00:00:00');
         const napiLeosztas = 2390;
-        const minutesSavedPerDay = 100; // 24 óránként 100 perc megspórolt idő
 
         function frissitSzam() {
             const most = new Date();
@@ -279,17 +225,6 @@
             const days = Math.floor(totalHours / 24);
 
             document.getElementById('elteltIdo').innerText = `Eltelt idő: ${days} nap, ${hours} óra, ${minutes} perc, ${seconds} másodperc`;
-
-            // Calculate and display "Megspórolt idő"
-            const totalDaysElapsedForSavedTime = elteltIdoMs / (1000 * 60 * 60 * 24);
-            const totalMinutesSaved = totalDaysElapsedForSavedTime * minutesSavedPerDay;
-
-            const savedDays = Math.floor(totalMinutesSaved / (60 * 24));
-            const remainingMinutesAfterDays = totalMinutesSaved % (60 * 24);
-            const savedHours = Math.floor(remainingMinutesAfterDays / 60);
-            const savedMinutes = Math.floor(remainingMinutesAfterDays % 60);
-
-            document.getElementById('megsporoltIdo').innerText = `Megspórolt idő: ${savedDays} nap, ${savedHours} óra, ${savedMinutes} perc`;
         }
 
         // Kezdeti frissítés
