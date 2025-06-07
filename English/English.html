@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szótanuló Alkalmazás</title>
+    <style>
+        /* General Styles & Dark Mode Setup */
+        /* CSS változók a témához. Ezeket felülírjuk sötét módban. */
+        :root {
+            --background-color: #f4f4f4;
+            --text-color: #333;
+            --primary-color: #007bff; /* Kék */
+            --primary-dark-color: #0056b3; /* Sötétebb kék */
+            --secondary-bg-color: #fff; /* Fehér konténer háttér */
+            --border-color: #ddd; /* Határvonalak színe */
+            --tab-bg-color: #e2e6ea; /* Tab gomb inaktív háttér */
+            --tab-active-bg-color: #fff; /* Tab gomb aktív háttér */
+            --tab-border-color: #ccc; /* Tab alatti vonal */
+            --button-text-color: white;
+            --disabled-button-bg: #cccccc;
+        }
+
+        /* Sötét mód stílusa: felülírja a változókat */
+        body[data-theme='dark'] {
+            --background-color: #2c2c2c;
+            --text-color: #e0e0e0;
+            --primary-color: #6aabff; /* Világosabb kék sötét módban */
+            --primary-dark-color: #3a80df;
+            --secondary-bg-color: #3a3a3a;
+            --border-color: #555;
+            --tab-bg-color: #4a4a4a;
+            --tab-active-bg-color: #2c2c2c;
+            --tab-border-color: #666;
+            --button-text-color: #e0e0e0; /* Gomb szöveg sötét módban */
+            --disabled-button-bg: #555555;
+        }
+
+        /* Alapértelmezett body stílusok */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, olvasható betűtípus */
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s; /* Animáció téma váltáskor */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Teljes magasság kitöltése */
+        }
+
+        /* Fő konténer */
+        .container {
+            max-width: 800px; /* Max szélesség asztali nézetben */
+            margin: 20px auto; /* Középre igazítás, mobilon kisebb margin */
+            padding: 20px;
+            background-color: var(--secondary-bg-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Enyhe árnyék */
+            flex-grow: 1; /* Kitölti a maradék helyet */
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Dark Mode Toggle Gomb */
+        .theme-toggle {
+            display: flex;
+            justify-content: flex-end; /* Jobbra igazítás */
+            margin-bottom: 20px;
+        }
+        .theme-toggle button {
+            background-color: var(--primary-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        .theme-toggle button:hover {
+            background-color: var(--primary-dark-color);
+        }
+
+        /* Tab Navigáció */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--tab-border-color); /* Aláhúzás a tabok alatt */
+        }
+        .tab-button {
+            background-color: var(--tab-bg-color);
+            color: var(--text-color);
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 1.1em;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+            flex-grow: 1; /* Kitölti a rendelkezésre álló helyet */
+        }
+        .tab-button:hover {
+            background-color: var(--tab-border-color);
+        }
+        .tab-button.active {
+            background-color: var(--tab-active-bg-color);
+            border-bottom: 3px solid var(--primary-color); /* Aktív tab jelölése */
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none; /* Alapértelmezetten rejtett */
+            padding: 20px 0;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block; /* Aktív tab megjelenítése */
+        }
+
+        /* Beállítási űrlap elemek */
+        .settings-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--secondary-bg-color);
+        }
+        .settings-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-dark-color);
+        }
+        .settings-group select,
+        .settings-group input[type="number"] {
+            width: calc(100% - 20px); /* Szélesség paddinggel együtt */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .settings-group .radio-group label {
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: normal;
+        }
+        .settings-group button {
+            background-color: var(--primary-color);
+            color: var(--button-text-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.2s;
+            width: 100%; /* Teljes szélesség */
+            box-sizing: border-box; /* Padding is beleszámít a szélességbe */
+        }
+        .settings-group button:hover {
+            background-color: var(--primary-dark-color);
+        }
+        .settings-group button:disabled {
+            background-color: var(--disabled-button-bg);
+            cursor: not-allowed;
+        }
+
+        /* Gyakorlás megjelenítési terület */
+        #practice-display {
+            text-align: center;
+            min-height: 150px; /* Helyfoglalás, még üresen is */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed var(--primary-color); /* Szaggatott keret */
+            border-radius: 8px;
+            background-color: var(--secondary-bg-color);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        #current-hungarian-word {
+            font-size: 2.2em; /* Nagyobb betűméret */
+            font-weight: bold;
+            color: var(--primary-dark-color);
+            margin-bottom: 10px;
+        }
+        #current-english-word {
+            font-size: 1.8em;
+            font-style: italic;
+            color: var(--text-color);
+        }
+        #practice-message {
+            font-size: 1.2em;
+            color: var(--text-color);
+        }
+
+        /* Betöltés és hibaüzenetek */
+        #loading-message, #error-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--primary-dark-color);
+            margin-top: 20px;
+        }
+        #error-message {
+            color: #dc3545; /* Piros hibaüzenet */
+        }
+
+        /* Lábléc */
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Mobil nézetre optimalizálás */
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px; /* Kisebb margin mobilra */
+                padding: 15px;
+            }
+            .tab-button {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+            #current-hungarian-word {
+                font-size: 1.8em;
+            }
+            #current-english-word {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <div class="container">
+        <div class="theme-toggle">
+            <button id="theme-toggle-button">Sötét mód</button>
+        </div>
+
+        <h1>Szótanuló Alkalmazás</h1>
+
+        <div class="tabs">
+            <button class="tab-button active" data-tab="practice">Gyakorlás</button>
+            <button class="tab-button" data-tab="quiz">Kikérdezés/Számonkérés</button>
+        </div>
+
+        <div id="loading-message">Szavak betöltése...</div>
+        <div id="error-message" style="display: none;"></div>
+
+        <div id="practice-tab" class="tab-content active">
+            <div class="settings-group">
+                <label for="topic-select">Melyik témát akarod gyakorolni?</label>
+                <select id="topic-select">
+                    <option value="all">MINDEGYIK</option>
+                    </select>
+
+                <label for="word-count">Hány szót akarsz gyakorolni?</label>
+                <input type="number" id="word-count" value="10" min="1">
+
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="practice-mode" value="infinite" checked> Végtelen gyakorlás
+                    </label>
+                    <label>
+                        <input type="radio" name="practice-mode" value="once"> Egyszeri
+                    </label>
+                </div>
+
+                <button id="start-practice-button">Gyakorlás indítása</button>
+            </div>
+
+            <div id="practice-display">
+                <div id="practice-message">A gyakorlás elindításához állítsd be a fenti opciókat, majd kattints a "Gyakorlás indítása" gombra.</div>
+                <div id="current-hungarian-word" style="display: none;"></div>
+                <div id="current-english-word" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div id="quiz-tab" class="tab-content">
+            <p style="text-align: center; font-size: 1.2em; color: var(--primary-color);">Kikérdezés/Számonkérés funkció hamarosan...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Szótanuló Alkalmazás. Minden jog fenntartva.</p>
+    </footer>
+
+    <script>
+        const csvFilePath = 'English.csv';
+        let dictionaryData = []; // Ebbe töltjük be a CSV tartalmát (objektumok tömbje)
+        let availableTopics = new Set(); // Egyedi témák tárolására, hogy ne ismétlődjenek
+
+        // DOM elemek lekérése, amikkel dolgozni fogunk
+        const themeToggleButton = document.getElementById('theme-toggle-button');
+        const body = document.body;
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const loadingMessage = document.getElementById('loading-message');
+        const errorMessage = document.getElementById('error-message');
+
+        // Gyakorlás fül specifikus elemei
+        const topicSelect = document.getElementById('topic-select');
+        const wordCountInput = document.getElementById('word-count');
+        const practiceModeRadios = document.querySelectorAll('input[name="practice-mode"]');
+        const startPracticeButton = document.getElementById('start-practice-button');
+        const practiceDisplay = document.getElementById('practice-display');
+        const practiceMessage = document.getElementById('practice-message');
+        const currentHungarianWordDiv = document.getElementById('current-hungarian-word');
+        const currentEnglishWordDiv = document.getElementById('current-english-word');
+
+        // Gyakorlás állapot változók
+        let practiceWords = []; // Az aktuális gyakorláshoz kiválasztott és rendezett szavak
+        let currentPracticeIndex = 0; // A practiceWords tömb aktuális indexe
+        let practiceTimer = null; // Az időzítő (setTimeout) referenciája a törléshez
+        let wordsPracticed = 0; // Megszámlálja az aktuálisan gyakorolt szavakat egyszeri módban
+
+        // --- Kezdő betöltés és eseménykezelők beállítása ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTheme(); // Betöltjük a felhasználó által utoljára választott témát
+            setupEventListeners(); // Beállítjuk az összes eseménykezelőt
+            loadDictionaryData(); // Betöltjük a szótár adatokat a CSV-ből
+
+            // Ellenőrizzük, hogy a böngésző támogatja-e a SpeechSynthesis API-t
+            if (!('speechSynthesis' in window)) {
+                errorMessage.textContent = 'A böngészője nem támogatja a szövegfelolvasást. Kérjük, frissítse böngészőjét, vagy használjon másikat.';
+                errorMessage.style.display = 'block';
+                startPracticeButton.disabled = true; // Letiltjuk a gyakorlás indítása gombot
+            }
+        });
+
+        function setupEventListeners() {
+            // Téma váltó gomb eseménykezelője
+            themeToggleButton.addEventListener('click', toggleTheme);
+
+            // Tab gombok eseménykezelői
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab; // Lekérdezzük a data-tab attribútumot
+
+                    // Elrejtjük az összes tab tartalmát és inaktiváljuk az összes tab gombot
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Aktiváljuk a kattintott gombot és a hozzá tartozó tab tartalmát
+                    button.classList.add('active');
+                    document.getElementById(`${targetTab}-tab`).classList.add('active');
+                    
+                    // Ha a gyakorlás fülről váltunk, állítsuk le a gyakorlást
+                    if (practiceTimer) {
+                        stopPractice();
+                        practiceMessage.textContent = 'Gyakorlás leállítva a fülváltás miatt.';
+                    }
+                });
+            });
+
+            // Gyakorlás indítása gomb eseménykezelője
+            startPracticeButton.addEventListener('click', startPractice);
+        }
+
+        // --- Téma (Dark/Light Mode) kezelés ---
+        function toggleTheme() {
+            // Váltás a témák között és mentés a localStorage-ba
+            if (body.dataset.theme === 'dark') {
+                body.dataset.theme = 'light';
+                localStorage.setItem('theme', 'light');
+                themeToggleButton.textContent = 'Sötét mód';
+            } else {
+                body.dataset.theme = 'dark';
+                localStorage.setItem('theme', 'dark');
+                themeToggleButton.textContent = 'Világos mód';
+            }
+        }
+
+        function loadTheme() {
+            // Téma betöltése a localStorage-ból, vagy alapértelmezett "light"
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            body.dataset.theme = savedTheme;
+            themeToggleButton.textContent = savedTheme === 'dark' ? 'Világos mód' : 'Sötét mód';
+        }
+
+        // --- Szótár adatok betöltése és feldolgozása a CSV-ből ---
+        async function loadDictionaryData() {
+            try {
+                const response = await fetch(csvFilePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP hiba! Státusz: ${response.status}. Ellenőrizze, hogy az ${csvFilePath} fájl létezik-e és elérhető-e a webszerveren.`);
+                }
+                const data = await response.text();
+                parseCSV(data); // CSV tartalmának feldolgozása
+                populateTopicSelect(); // Témák feltöltése a lenyíló listába
+                loadingMessage.style.display = 'none'; // Elrejtjük a betöltési üzenetet, ha sikeres volt
+            } catch (error) {
+                console.error('Hiba a CSV betöltésekor vagy feldolgozásakor:', error);
+                errorMessage.textContent = `Hiba a szótár betöltésekor: ${error.message}. Kérjük, ellenőrizze a konzolt a részletekért.`;
+                errorMessage.style.display = 'block'; // Megjelenítjük a hibaüzenetet
+                startPracticeButton.disabled = true; // Letiltjuk a gyakorlás gombot hibánál
+            }
+        }
+
+        function parseCSV(data) {
+            const lines = data.trim().split('\n'); // Sorokra bontás
+            dictionaryData = lines.map(line => {
+                const parts = line.split('|'); // Oszlopokra bontás a "|" szeparátorral
+                if (parts.length === 3) {
+                    const topic = parts[0].trim();
+                    const hungarian = parts[1].trim();
+                    const english = parts[2].trim();
+                    availableTopics.add(topic); // Hozzáadjuk a témát a Set-hez (automatikusan kezeli az egyediséget)
+                    return { topic, hungarian, english };
+                }
+                return null; // Hibás sort kihagyjuk
+            }).filter(entry => entry !== null); // Szűrjük a null értékeket (azaz a hibás sorokat)
+        }
+
+        function populateTopicSelect() {
+            // Először töröljük az összes opciót az "MINDEGYIK" kivételével
+            topicSelect.innerHTML = '<option value="all">MINDEGYIK</option>';
+            
+            // Témák rendezése (ábécé sorrendben) és hozzáadása a select elemhez
+            const sortedTopics = Array.from(availableTopics).sort();
+            sortedTopics.forEach(topic => {
+                const option = document.createElement('option');
+                option.value = topic;
+                option.textContent = topic;
+                topicSelect.appendChild(option);
+            });
+        }
+
+        // --- Gyakorlás logika ---
+        function startPractice() {
+            // Először leállítjuk az esetlegesen futó gyakorlást
+            stopPractice();
+            wordsPracticed = 0; // Visszaállítjuk a gyakorolt szavak számát
+            currentPracticeIndex = 0; // Visszaállítjuk az indexet
+            practiceWords = []; // Kiürítjük az előző gyakorlás szavait
+            
+            // Beállítások olvasása az űrlapról
+            const selectedTopic = topicSelect.value;
+            const wordCount = parseInt(wordCountInput.value, 10);
+            const isInfinite = document.querySelector('input[name="practice-mode"]:checked').value === 'infinite';
+
+            // Szavak szűrése a kiválasztott téma alapján
+            let filteredWords = [];
+            if (selectedTopic === 'all') {
+                filteredWords = [...dictionaryData]; // Ha "MINDEGYIK", akkor az összes szó
+            } else {
+                filteredWords = dictionaryData.filter(word => word.topic === selectedTopic);
+            }
+
+            // Szavak keverése a véletlenszerűség érdekében
+            shuffleArray(filteredWords);
+
+            // A gyakorlandó szavak listájának beállítása a mód és szószám alapján
+            if (isInfinite) {
+                practiceWords = filteredWords; // Végtelen módban az összes szót ciklikusan használjuk
+            } else {
+                // Egyszeri módban csak a megadott számú szót vesszük, de max annyit, amennyi van
+                practiceWords = filteredWords.slice(0, Math.min(wordCount, filteredWords.length));
+            }
+
+            // Hibakezelés, ha nincs szó a kiválasztott beállításokkal
+            if (practiceWords.length === 0) {
+                practiceMessage.textContent = 'Nincs szó a gyakorláshoz a kiválasztott beállításokkal. Válasszon másik témát vagy növelje a szószámot.';
+                practiceMessage.style.display = 'block';
+                currentHungarianWordDiv.style.display = 'none';
+                currentEnglishWordDiv.style.display = 'none';
+                startPracticeButton.textContent = 'Gyakorlás indítása'; // Visszaállítjuk a gomb feliratát
+                return;
+            }
+
+            // Elrejtjük az üdvözlő/üres üzenetet és megjelenítjük a szó div-eket
+            practiceMessage.style.display = 'none';
+            currentHungarianWordDiv.style.display = 'block';
+            currentEnglishWordDiv.style.display = 'block';
+            startPracticeButton.textContent = 'Gyakorlás leállítása'; // Gomb szövegének módosítása
+
+            nextWordInPractice(); // Indítjuk az első szóval a gyakorlást
+        }
+
+        function nextWordInPractice() {
+            const isInfinite = document.querySelector('input[name="practice-mode"]:checked').value === 'infinite';
+
+            // Gyakorlás befejezése "Egyszeri" módban, ha elfogytak a szavak
+            if (!isInfinite && wordsPracticed >= practiceWords.length) {
+                stopPractice();
+                practiceMessage.textContent = `Gyakorlás befejezve! ${wordsPracticed} szót gyakoroltál.`;
+                practiceMessage.style.display = 'block';
+                return;
+            }
+
+            const currentWord = practiceWords[currentPracticeIndex];
+
+            // 1. lépés: Magyar szó megjelenítése és kimondása
+            currentHungarianWordDiv.textContent = currentWord.hungarian;
+            currentEnglishWordDiv.textContent = ''; // Töröljük az angol szót az előző körből
+            speakText(currentWord.hungarian, 'hu-HU');
+
+            wordsPracticed++; // Növeljük a gyakorolt szavak számát
+
+            // 2. lépés: Angol szó megjelenítése és kimondása 5 másodperc múlva
+            practiceTimer = setTimeout(() => {
+                currentEnglishWordDiv.textContent = currentWord.english;
+                speakText(currentWord.english, 'en-US'); // Angol felolvasás (US, GB vagy más is lehet)
+                
+                // 3. lépés: Újabb 5 másodperc múlva törlés és következő szó
+                practiceTimer = setTimeout(() => {
+                    clearPracticeDisplay(); // Tisztítjuk a kijelzőt
+                    // A következő szó indexének beállítása (körbeér, ha végtelen)
+                    currentPracticeIndex = (currentPracticeIndex + 1) % practiceWords.length;
+                    nextWordInPractice(); // Rekurzív hívás a következő szóhoz
+                }, 5000); // 5 másodperc várakozás
+            }, 5000); // 5 másodperc várakozás
+        }
+
+        function clearPracticeDisplay() {
+            currentHungarianWordDiv.textContent = '';
+            currentEnglishWordDiv.textContent = '';
+        }
+
+        function stopPractice() {
+            // Leállítjuk az időzítőt, ha fut
+            if (practiceTimer) {
+                clearTimeout(practiceTimer);
+                practiceTimer = null;
+            }
+            clearPracticeDisplay(); // Tisztítjuk a kijelzőt
+            practiceMessage.style.display = 'block'; // Visszaállítjuk az üzenetet
+            practiceMessage.textContent = 'Gyakorlás leállítva.'; // Alap üzenet
+            currentHungarianWordDiv.style.display = 'none'; // Rejtjük a szó div-eket
+            currentEnglishWordDiv.style.display = 'none';
+            startPracticeButton.textContent = 'Gyakorlás indítása'; // Visszaállítjuk a gomb feliratát
+        }
+
+        // --- Szöveg kimondása (TTS) funkció ---
+        function speakText(text, lang) {
+            if (!('speechSynthesis' in window)) {
+                console.warn('SpeechSynthesis API not supported in this browser.');
+                return;
+            }
+            // Mégse az esetlegesen futó előző felolvasást
+            speechSynthesis.cancel(); 
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang; // Beállítjuk a nyelvet (pl. 'hu-HU', 'en-US')
+
+            // Megpróbálunk specifikus hangot találni a nyelven belül
+            const voices = speechSynthesis.getVoices();
+            let selectedVoice = null;
+
+            if (lang.startsWith('hu')) {
+                selectedVoice = voices.find(voice => voice.lang === 'hu-HU');
+            } else if (lang.startsWith('en')) {
+                selectedVoice = voices.find(voice => voice.lang === 'en-US') ||
+                                voices.find(voice => voice.lang === 'en-GB') ||
+                                voices.find(voice => voice.lang.startsWith('en')); // Bármilyen angol
+            }
+
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            } else {
+                console.warn(`Nem található specifikus hang a nyelvhez: ${lang}. Alapértelmezett hang használata.`);
+            }
+
+            speechSynthesis.speak(utterance);
+        }
+        
+        // --- Segéd függvény: Tömb elemeinek véletlenszerű keverése (Fisher-Yates algoritmus) ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Destructuring assignment a cseréhez
+            }
+        }
+    </script>
+</body>
+</html>
