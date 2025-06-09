@@ -18,8 +18,6 @@
             --tab-border-color: #ccc; /* Tab alatti vonal */
             --button-text-color: white;
             --disabled-button-bg: #cccccc;
-            --success-color: #28a745; /* Zöld */
-            --danger-color: #dc3545; /* Piros */
         }
 
         body[data-theme='dark'] {
@@ -34,8 +32,6 @@
             --tab-border-color: #666;
             --button-text-color: #e0e0e0; /* Gomb szöveg sötét módban */
             --disabled-button-bg: #555555;
-            --success-color: #4CAF50; /* Sötét mód zöld */
-            --danger-color: #F44336; /* Sötét mód piros */
         }
 
         body {
@@ -174,8 +170,8 @@
             cursor: not-allowed;
         }
 
-        /* Gyakorlás és Kikérdezés megjelenítési terület */
-        #practice-display, #quiz-display {
+        /* Gyakorlás megjelenítési terület */
+        #practice-display {
             text-align: center;
             min-height: 150px; /* Helyfoglalás, még üresen is */
             display: flex;
@@ -192,71 +188,29 @@
             word-wrap: break-word; 
             overflow-wrap: break-word;
         }
-
-        #practice-progress, #quiz-progress {
+        #practice-progress {
             font-size: 1.1em;
             color: #666;
             margin-bottom: 15px;
             min-height: 1.5em; /* Helyfoglalás, hogy ne ugráljon az elrendezés */
         }
-        body[data-theme='dark'] #practice-progress, body[data-theme='dark'] #quiz-progress {
+        body[data-theme='dark'] #practice-progress {
             color: #ccc;
         }
-        #current-hungarian-word, #quiz-question-word {
+        #current-hungarian-word {
             font-size: 2.2em; /* Nagyobb betűméret */
             font-weight: bold;
             color: var(--primary-dark-color);
             margin-bottom: 10px;
-            cursor: pointer; /* Jelezzük, hogy kattintható */
         }
-        #current-english-word, #quiz-answer-word {
+        #current-english-word {
             font-size: 1.8em;
             font-style: italic;
             color: var(--text-color);
         }
-        #practice-message, #quiz-message {
+        #practice-message {
             font-size: 1.2em;
             color: var(--text-color);
-        }
-
-        /* Kikérdezés specifikus gombok */
-        .quiz-feedback-buttons {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .quiz-feedback-buttons button {
-            width: 80px; /* Fix méret */
-            height: 80px; /* Fix méret */
-            border-radius: 50%; /* Kör alak */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--button-text-color);
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            padding: 0; /* Padding eltávolítása, hogy az SVG kitöltse */
-        }
-        .quiz-feedback-buttons button:hover {
-            transform: scale(1.05); /* Kicsi animáció hoverre */
-        }
-        .quiz-feedback-buttons button svg { /* SVG ikonok stílusa */
-            width: 60%; /* Az SVG ikon mérete a gombhoz képest */
-            height: 60%;
-            fill: currentColor; /* Az SVG színe a gomb szövegének színe lesz */
-        }
-        #quiz-correct-button {
-            background-color: var(--success-color);
-        }
-        #quiz-correct-button:hover {
-            background-color: #218838; /* Sötétebb zöld */
-        }
-        #quiz-incorrect-button {
-            background-color: var(--danger-color);
-        }
-        #quiz-incorrect-button:hover {
-            background-color: #c82333; /* Sötétebb piros */
         }
 
         /* Betöltés és hibaüzenetek */
@@ -291,15 +245,11 @@
                 font-size: 1em;
                 padding: 10px 15px;
             }
-            #current-hungarian-word, #quiz-question-word {
+            #current-hungarian-word {
                 font-size: 1.8em;
             }
-            #current-english-word, #quiz-answer-word {
+            #current-english-word {
                 font-size: 1.5em;
-            }
-            .quiz-feedback-buttons button {
-                width: 60px;
-                height: 60px;
             }
         }
     </style>
@@ -343,55 +293,17 @@
                 </div>
 
                 <button id="start-practice-button">Gyakorlás indítása</button>
-                <button id="reset-button">Reset</button>
-            </div>
+                <button id="reset-button">Reset</button> </div>
 
             <div id="practice-display">
-                <div id="practice-progress"></div>
-                <div id="practice-message">A gyakorlás elindításához állítsd be a fenti opciókat, majd kattints a "Gyakorlás indítása" gombra.</div>
+                <div id="practice-progress"></div> <div id="practice-message">A gyakorlás elindításához állítsd be a fenti opciókat, majd kattints a "Gyakorlás indítása" gombra.</div>
                 <div id="current-hungarian-word" style="display: none;"></div>
                 <div id="current-english-word" style="display: none;"></div>
             </div>
         </div>
 
         <div id="quiz-tab" class="tab-content">
-            <div class="settings-group">
-                <label for="quiz-topic-select">Melyik témából kérdezzen?</label>
-                <select id="quiz-topic-select">
-                    <option value="all">MINDEGYIK</option>
-                    </select>
-
-                <label for="quiz-word-count">Hány szót kérdezzen?</label>
-                <input type="number" id="quiz-word-count" value="10" min="1">
-
-                <div class="radio-group">
-                    <label>
-                        <input type="radio" name="quiz-direction" value="hu-to-en" checked> Magyarról angolra
-                    </label>
-                    <label>
-                        <input type="radio" name="quiz-direction" value="en-to-hu"> Angolról magyarra
-                    </label>
-                </div>
-
-                <button id="start-quiz-button">Kikérdezés indítása</button>
-                <button id="quiz-reset-button">Reset</button> </div>
-
-            <div id="quiz-display">
-                <div id="quiz-progress"></div>
-                <div id="quiz-message">A kikérdezés elindításához állítsd be a fenti opciókat, majd kattints a "Kikérdezés indítása" gombra.</div>
-                
-                <div id="quiz-question-word" style="display: none;"></div>
-                <div id="quiz-answer-word" style="display: none;"></div>
-                
-                <div class="quiz-feedback-buttons" style="display: none;">
-                    <button id="quiz-correct-button" title="Tudtam">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                    </button>
-                    <button id="quiz-incorrect-button" title="Nem tudtam">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                    </button>
-                </div>
-            </div>
+            <p style="text-align: center; font-size: 1.2em; color: var(--primary-color);">Kikérdezés/Számonkérés funkció hamarosan...</p>
         </div>
     </div>
 
@@ -403,7 +315,6 @@
         const csvFilePath = 'English.csv';
         let dictionaryData = []; 
         let availableTopics = new Set(); 
-        let topicWordCounts = {}; 
 
         // DOM elemek lekérése
         const themeToggleButton = document.getElementById('theme-toggle-button');
@@ -419,27 +330,12 @@
         const englishDelayInput = document.getElementById('english-delay');
         const practiceModeRadios = document.querySelectorAll('input[name="practice-mode"]');
         const startPracticeButton = document.getElementById('start-practice-button');
-        const resetButton = document.getElementById('reset-button');
+        const resetButton = document.getElementById('reset-button'); // ÚJ: Reset gomb
         const practiceDisplay = document.getElementById('practice-display');
         const practiceProgressDiv = document.getElementById('practice-progress');
         const practiceMessage = document.getElementById('practice-message');
         const currentHungarianWordDiv = document.getElementById('current-hungarian-word');
         const currentEnglishWordDiv = document.getElementById('current-english-word');
-
-        // Kikérdezés fül specifikus elemei
-        const quizTopicSelect = document.getElementById('quiz-topic-select');
-        const quizWordCountInput = document.getElementById('quiz-word-count');
-        const quizDirectionRadios = document.querySelectorAll('input[name="quiz-direction"]');
-        const startQuizButton = document.getElementById('start-quiz-button');
-        const quizResetButton = document.getElementById('quiz-reset-button'); // ÚJ: Quiz Reset gomb
-        const quizDisplay = document.getElementById('quiz-display');
-        const quizProgressDiv = document.getElementById('quiz-progress');
-        const quizMessage = document.getElementById('quiz-message');
-        const quizQuestionWordDiv = document.getElementById('quiz-question-word');
-        const quizAnswerWordDiv = document.getElementById('quiz-answer-word');
-        const quizFeedbackButtons = document.querySelector('.quiz-feedback-buttons');
-        const quizCorrectButton = document.getElementById('quiz-correct-button');
-        const quizIncorrectButton = document.getElementById('quiz-incorrect-button');
 
         // Gyakorlás állapot változók
         let practiceWords = []; 
@@ -447,15 +343,6 @@
         let practiceTimer = null; 
         let wordsPracticedCount = 0; 
         let isPracticeRunning = false; 
-
-        // Kikérdezés állapot változók
-        let quizWords = [];
-        let currentQuizIndex = 0;
-        let correctAnswersCount = 0;
-        let incorrectAnswersCount = 0;
-        let isQuizRunning = false;
-        let quizDirection = 'hu-to-en';
-        let quizAnswerRevealed = false;
 
         // --- Kezdő betöltés és eseménykezelők beállítása ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -467,7 +354,6 @@
                 errorMessage.textContent = 'A böngészője nem támogatja a szövegfelolvasást. Kérjük, frissítse böngészőjét, vagy használjon másikat.';
                 errorMessage.style.display = 'block';
                 startPracticeButton.disabled = true;
-                startQuizButton.disabled = true;
             }
         });
 
@@ -488,9 +374,6 @@
                         stopPractice();
                         practiceMessage.textContent = 'Gyakorlás leállítva a fülváltás miatt.';
                     }
-                    if (isQuizRunning) {
-                        endQuiz('A kikérdezés leállítva a fülváltás miatt.');
-                    }
                 });
             });
 
@@ -502,24 +385,8 @@
                 }
             });
 
+            // ÚJ: Reset gomb eseménykezelője
             resetButton.addEventListener('click', resetApplicationState);
-
-            // Kikérdezés fül eseménykezelői
-            startQuizButton.addEventListener('click', () => {
-                if (isQuizRunning) {
-                    endQuiz('A kikérdezés leállítva.');
-                } else {
-                    startQuiz();
-                }
-            });
-
-            // ÚJ: Quiz Reset gomb eseménykezelője
-            quizResetButton.addEventListener('click', resetQuizStateAndSettings);
-
-            quizQuestionWordDiv.addEventListener('click', revealQuizAnswer);
-            
-            quizCorrectButton.addEventListener('click', () => handleQuizFeedback(true));
-            quizIncorrectButton.addEventListener('click', () => handleQuizFeedback(false));
         }
 
         // --- Téma (Dark/Light Mode) kezelés ---
@@ -550,62 +417,40 @@
                 }
                 const data = await response.text();
                 parseCSV(data);
-                populateTopicSelects();
+                populateTopicSelect();
                 loadingMessage.style.display = 'none';
             } catch (error) {
                 console.error('Hiba a CSV betöltésekor vagy feldolgozásakor:', error);
                 errorMessage.textContent = `Hiba a szótár betöltésekor: ${error.message}. Kérjük, ellenőrizze a konzolt a részletekért.`;
                 errorMessage.style.display = 'block';
                 startPracticeButton.disabled = true;
-                startQuizButton.disabled = true;
             }
         }
 
         function parseCSV(data) {
             const lines = data.trim().split('\n');
-            dictionaryData = []; 
-            availableTopics = new Set(); 
-            topicWordCounts = {}; 
-
-            lines.forEach(line => {
+            dictionaryData = lines.map(line => {
                 const parts = line.split('|');
                 if (parts.length === 3) {
                     const topic = parts[0].trim();
                     const hungarian = parts[1].trim();
                     const english = parts[2].trim();
-                    
-                    dictionaryData.push({ topic, hungarian, english });
                     availableTopics.add(topic);
-                    
-                    topicWordCounts[topic] = (topicWordCounts[topic] || 0) + 1;
+                    return { topic, hungarian, english };
                 }
-            });
+                return null;
+            }).filter(entry => entry !== null);
         }
 
-        function populateTopicSelects() {
-            topicSelect.innerHTML = ''; 
-            let allOptionPractice = document.createElement('option');
-            allOptionPractice.value = 'all';
-            allOptionPractice.textContent = `MINDEGYIK (${dictionaryData.length})`;
-            topicSelect.appendChild(allOptionPractice);
-
-            quizTopicSelect.innerHTML = ''; 
-            let allOptionQuiz = document.createElement('option');
-            allOptionQuiz.value = 'all';
-            allOptionQuiz.textContent = `MINDEGYIK (${dictionaryData.length})`;
-            quizTopicSelect.appendChild(allOptionQuiz);
-
+        function populateTopicSelect() {
+            topicSelect.innerHTML = '<option value="all">MINDEGYIK</option>';
+            
             const sortedTopics = Array.from(availableTopics).sort();
             sortedTopics.forEach(topic => {
-                const optionPractice = document.createElement('option');
-                optionPractice.value = topic;
-                optionPractice.textContent = `${topic} (${topicWordCounts[topic] || 0})`; 
-                topicSelect.appendChild(optionPractice);
-
-                const optionQuiz = document.createElement('option');
-                optionQuiz.value = topic;
-                optionQuiz.textContent = `${topic} (${topicWordCounts[topic] || 0})`; 
-                quizTopicSelect.appendChild(optionQuiz);
+                const option = document.createElement('option');
+                option.value = topic;
+                option.textContent = topic;
+                topicSelect.appendChild(option);
             });
         }
 
@@ -723,187 +568,30 @@
             practiceProgressDiv.style.display = 'none';
             startPracticeButton.textContent = 'Gyakorlás indítása'; 
             isPracticeRunning = false; 
-            speechSynthesis.cancel();
+            speechSynthesis.cancel(); // Hozzáadva: biztosítja, hogy a TTS is leálljon
         }
 
-        // --- Kikérdezés logika ---
-        function startQuiz() {
-            correctAnswersCount = 0;
-            incorrectAnswersCount = 0;
-            currentQuizIndex = 0;
-            
-            const selectedTopic = quizTopicSelect.value;
-            const wordCount = parseInt(quizWordCountInput.value, 10);
-            quizDirection = document.querySelector('input[name="quiz-direction"]:checked').value;
-
-            let filteredWords = [];
-            if (selectedTopic === 'all') {
-                filteredWords = [...dictionaryData];
-            } else {
-                filteredWords = dictionaryData.filter(word => word.topic === selectedTopic);
-            }
-
-            if (filteredWords.length === 0) {
-                quizMessage.textContent = 'Nincs szó a kiválasztott témában. Válasszon másik témát.';
-                quizMessage.style.display = 'block';
-                quizQuestionWordDiv.style.display = 'none';
-                quizAnswerWordDiv.style.display = 'none';
-                quizProgressDiv.style.display = 'none';
-                quizFeedbackButtons.style.display = 'none';
-                return;
-            }
-
-            shuffleArray(filteredWords);
-            quizWords = filteredWords.slice(0, Math.min(wordCount, filteredWords.length));
-
-            if (quizWords.length === 0) {
-                quizMessage.textContent = 'Nincs elegendő szó a kikérdezéshez a kiválasztott beállításokkal.';
-                quizMessage.style.display = 'block';
-                quizQuestionWordDiv.style.display = 'none';
-                quizAnswerWordDiv.style.display = 'none';
-                quizProgressDiv.style.display = 'none';
-                quizFeedbackButtons.style.display = 'none';
-                return;
-            }
-
-            isQuizRunning = true;
-            startQuizButton.textContent = 'Kikérdezés leállítása';
-
-            quizMessage.style.display = 'none';
-            quizQuestionWordDiv.style.display = 'block';
-            quizProgressDiv.style.display = 'block';
-            quizAnswerWordDiv.style.display = 'none';
-            quizFeedbackButtons.style.display = 'none';
-
-            displayNextQuizWord();
-        }
-
-        function displayNextQuizWord() {
-            speechSynthesis.cancel(); 
-
-            if (!isQuizRunning) {
-                return;
-            }
-
-            if (currentQuizIndex >= quizWords.length) {
-                endQuiz(); 
-                return;
-            }
-
-            const currentWord = quizWords[currentQuizIndex];
-            let questionText = '';
-            let questionLang = '';
-
-            if (quizDirection === 'hu-to-en') {
-                questionText = currentWord.hungarian;
-                questionLang = 'hu-HU';
-            } else { // en-to-hu
-                questionText = currentWord.english;
-                questionLang = 'en-US';
-            }
-
-            quizQuestionWordDiv.textContent = questionText;
-            quizQuestionWordDiv.style.display = 'block';
-            quizAnswerWordDiv.textContent = ''; 
-            quizAnswerWordDiv.style.display = 'none';
-            quizFeedbackButtons.style.display = 'none';
-            quizAnswerRevealed = false; 
-
-            updateQuizProgress();
-            speakText(questionText, questionLang);
-        }
-
-        function revealQuizAnswer() {
-            if (!isQuizRunning || quizAnswerRevealed) {
-                return;
-            }
-
-            const currentWord = quizWords[currentQuizIndex];
-            let answerText = '';
-            let answerLang = '';
-
-            if (quizDirection === 'hu-to-en') {
-                answerText = currentWord.english;
-                answerLang = 'en-US';
-            } else { // en-to-hu
-                answerText = currentWord.hungarian;
-                answerLang = 'hu-HU';
-            }
-
-            quizAnswerWordDiv.textContent = answerText;
-            quizAnswerWordDiv.style.display = 'block';
-            quizFeedbackButtons.style.display = 'flex';
-            quizAnswerRevealed = true; 
-
-            speakText(answerText, answerLang); 
-        }
-
-        function handleQuizFeedback(isCorrect) {
-            if (!isQuizRunning || !quizAnswerRevealed) {
-                return;
-            }
-
-            if (isCorrect) {
-                correctAnswersCount++;
-            } else {
-                incorrectAnswersCount++;
-            }
-
-            currentQuizIndex++;
-            displayNextQuizWord();
-        }
-
-        function updateQuizProgress() {
-            quizProgressDiv.textContent = `Összesen: ${currentQuizIndex} / ${quizWords.length} | Tudtam: ${correctAnswersCount} | Nem tudtam: ${incorrectAnswersCount}`;
-        }
-
-        function endQuiz(message = null) {
-            isQuizRunning = false;
-            speechSynthesis.cancel(); 
-
-            quizQuestionWordDiv.textContent = '';
-            quizQuestionWordDiv.style.display = 'none';
-            quizAnswerWordDiv.textContent = '';
-            quizAnswerWordDiv.style.display = 'none';
-            quizFeedbackButtons.style.display = 'none';
-            quizProgressDiv.textContent = '';
-            
-            quizMessage.style.display = 'block';
-            if (message) {
-                quizMessage.textContent = message;
-            } else {
-                quizMessage.textContent = `Kikérdezés befejezve! ${quizWords.length} szóból: Eltaláltad: ${correctAnswersCount}, Nem találtad el: ${incorrectAnswersCount}.`;
-            }
-            startQuizButton.textContent = 'Kikérdezés indítása';
-        }
-
-        // ÚJ: Kikérdezés beállítások alaphelyzetbe állítása
-        function resetQuizStateAndSettings() {
-            endQuiz('Kikérdezés alaphelyzetbe állítva.'); // Leállítja a kikérdezést
-            
-            // Kikérdezés beállítások alaphelyzetbe állítása
-            quizTopicSelect.value = 'all';
-            quizWordCountInput.value = '10';
-            document.querySelector('input[name="quiz-direction"][value="hu-to-en"]').checked = true;
-        }
-
-        // --- Általános reset és TTS függvények ---
+        // ÚJ: Alaphelyzetbe állító függvény
         function resetApplicationState() {
-            stopPractice();
-            endQuiz('Alkalmazás alaphelyzetbe állítva.');
+            stopPractice(); // Először leállítjuk a futó gyakorlást, ha van
             
-            // Gyakorlás beállítások alaphelyzetbe állítása
+            // Beállítások alaphelyzetbe állítása
             topicSelect.value = 'all';
             wordCountInput.value = '10';
             englishDelayInput.value = '5';
             document.querySelector('input[name="practice-mode"][value="infinite"]').checked = true;
 
-            // Kikérdezés beállítások alaphelyzetbe állítása
-            quizTopicSelect.value = 'all';
-            quizWordCountInput.value = '10';
-            document.querySelector('input[name="quiz-direction"][value="hu-to-en"]').checked = true;
+            // UI üzenet visszaállítása
+            practiceMessage.textContent = 'A gyakorlás elindításához állítsd be a fenti opciókat, majd kattints a "Gyakorlás indítása" gombra.';
+            practiceMessage.style.display = 'block';
+            currentHungarianWordDiv.style.display = 'none';
+            currentEnglishWordDiv.style.display = 'none';
+            practiceProgressDiv.style.display = 'none';
+            startPracticeButton.textContent = 'Gyakorlás indítása';
+            isPracticeRunning = false;
         }
 
+        // --- Szöveg kimondása (TTS) funkció ---
         function speakText(text, lang) {
             if (!('speechSynthesis' in window)) {
                 console.warn('SpeechSynthesis API not supported in this browser.');
@@ -934,6 +622,7 @@
             speechSynthesis.speak(utterance);
         }
         
+        // --- Segéd függvény: Tömb elemeinek véletlenszerű keverése (Fisher-Yates algoritmus) ---
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
