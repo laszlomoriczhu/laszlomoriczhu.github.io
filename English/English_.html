@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Szótanuló Alkalmazás</title>
+    <title>English</title>
     <style>
         /* General Styles & Dark Mode Setup */
         /* CSS változók a témához. Ezeket felülírjuk sötét módban. */
@@ -247,11 +247,11 @@
             <button id="theme-toggle-button">Sötét mód</button>
         </div>
 
-        <h1>Szótanuló Alkalmazás</h1>
+        <h1>English</h1>
 
         <div class="tabs">
             <button class="tab-button active" data-tab="practice">Gyakorlás</button>
-            <button class="tab-button" data-tab="quiz">Kikérdezés/Számonkérés</button>
+            <button class="tab-button" data-tab="quiz">Teszt</button>
         </div>
 
         <div id="loading-message">Szavak betöltése...</div>
@@ -259,10 +259,10 @@
 
         <div id="practice-tab" class="tab-content active">
             <div class="settings-group">
-                <label for="topic-select">Melyik témát akarod gyakorolni?</label>
+                <label for="topic-select">Válassz témát!</label>
                 <select id="topic-select">
                     <option value="all">MINDEGYIK</option>
-                    </select>
+                </select>
 
                 <label for="word-count">Hány szót akarsz gyakorolni?</label>
                 <input type="number" id="word-count" value="10" min="1">
