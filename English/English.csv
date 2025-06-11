@@ -1487,11 +1487,44 @@ BCBBR01|Oké, lehet, hogy van benne valami.|OK, maybe you’ve got a point there
 BCBBR01|Azt hiszem, igazad van.|I think you’re right.
 BCBBR01|Igen, mindenképpen.|Yes, definitely.
 BCBBR01|Egyetértek.|I agree.
-BCA1_0BR01|Tessék?|I’m sorry?
-BCA1_0BR01|Nem hallak túl jól.|I can’t hear you very well.
-BCA1_0BR01|Meg tudná ismételni, kérem?|Could you say that again, please?
-BCA1_0BR01|Nem értem.|I don’t understand.
-BCA1_0BR01|Meg tudná ismételni lassabban, kérem?|Can you repeat that more slowly, please?
-BCA1_0BR01|A ... gondolsz?|Do you mean the ...?
-BCA1_0BR01|Ez az?|Is this it?
-BCA1_0BR01|Igen, pontosan!Yes, that’s right!
+BCA1_01|Tessék?|I’m sorry?
+BCA1_01|Nem hallak túl jól.|I can’t hear you very well.
+BCA1_01|Meg tudná ismételni, kérem?|Could you say that again, please?
+BCA1_01|Nem értem.|I don’t understand.
+BCA1_01|Meg tudná ismételni lassabban, kérem?|Can you repeat that more slowly, please?
+BCA1_01|A ... gondolsz?|Do you mean the ...?
+BCA1_01|Ez az?|Is this it?
+BCA1_01|Igen, pontosan!|Yes, that’s right!
+BCA1_02|Összpontosítsunk!/Figyeljünk oda|Let’s focus.
+BCA1_02|Mi lenne ha azzal kezdenénk|How about starting with ...?
+BCA1_02|Persze|Yeah, sure.
+BCA1_02|Jól jönne némi plusz segítség.|We’ll need some extra help.
+BCA1_02|Egyetértek. Jó ötlet.|Agreed. Good idea.
+BCA1_02|Miért nem kérdezed meg...?|Why don’t you ask ...?
+BCA1_02|Rendben, nem gond.|OK, no problem.
+BCA1_02|Tegyük közzé a meetingen?|Shall we present it at the meeting?
+BCA1_02|Jó terv|Good plan.
+BCA1_03|Szia, XY vagyok.|Hi, I’m XY .
+BCA1_03|Te biztos XY vagy. / Te lehetsz XY.|You must be Vanya.
+BCA1_03|Örülök, hogy megismerhetlek. / Örvendek.|Nice to meet you.
+BCA1_03|Én is./Neked is.|You too.
+BCA1_03|Ő XY./Ez XY.|This is XY.
+BCA1_03|Na, milyen volt az utad?|So how was your journey?
+BCA1_03|Nagyszerű itt lenni! / Jó itt lenni!|It’s great to be here!
+BCA1_03|Üdv a csapatban!|Welcome to the team!
+BCA1_04|A digitális csapattal dolgozol?|Do you work with the digital team?
+BCA1_04|Ismered XY-t?|Do you know XY? 
+BCA1_04|Nagyon jó abban, amit csinál./Nagyon érti a munkáját.|She’s very good at her job.
+BCA1_04|Kiváló üzletember.|She’s an excellent businessperson.
+BCA1_04|Nagyon aranyos, ugye?|She’s lovely, isn’t she?
+BCA1_05|Hová valósi vagy?|Where are you from?
+BCA1_05|Milyen (olyan)?/Milyen hely?|What’s it like?
+WH_Kérdések|Ki?|Who?
+WH_Kérdések|Mi?|What?
+WH_Kérdések|Hol?|Where?
+WH_Kérdések|Mikor?|When?
+WH_Kérdések|Miért?|Why?
+WH_Kérdések|Melyik?|Which?
+WH_Kérdések|Kié?|Whose?
+WH_Kérdések|Kit?|Whom?
+WH_Kérdések|Hogyan?|How?
