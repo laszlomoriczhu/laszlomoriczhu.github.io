@@ -1505,12 +1505,12 @@ BCA1_02|Rendben, nem gond.|OK, no problem.
 BCA1_02|Tegyük közzé a meetingen?|Shall we present it at the meeting?
 BCA1_02|Jó terv|Good plan.
 BCA1_03|Szia, XY vagyok.|Hi, I’m XY .
-BCA1_03|Te biztos XY vagy. / Te lehetsz XY.|You must be Vanya.
+BCA1_03|Te biztos XY vagy./Te lehetsz XY.|You must be Vanya.
 BCA1_03|Örülök, hogy megismerhetlek. / Örvendek.|Nice to meet you.
 BCA1_03|Én is./Neked is.|You too.
 BCA1_03|Ő XY./Ez XY.|This is XY.
 BCA1_03|Na, milyen volt az utad?|So how was your journey?
-BCA1_03|Nagyszerű itt lenni! / Jó itt lenni!|It’s great to be here!
+BCA1_03|Nagyszerű itt lenni!/Jó itt lenni!|It’s great to be here!
 BCA1_03|Üdv a csapatban!|Welcome to the team!
 BCA1_04|A digitális csapattal dolgozol?|Do you work with the digital team?
 BCA1_04|Ismered XY-t?|Do you know XY? 
@@ -1537,3 +1537,8 @@ Accepting an apology|Őszintén, minden rendben van./Tényleg, semmi baj.|Honest
 Accepting an apology|Rendben van./Semmi baj.|That's OK.
 Accepting an apology|Rendben van./Semmi gond.|That's all right.
 Accepting an apology|Semmi gond|No problem.
+BCA2_01|Értem.|I see.
+BCA2_01|Így?/Így van?|Like this?
+BCA2_01|Van még valami?/Van még valami más?|Is there anything else?
+BCA2_02|Sajnálom./Jaj, szegénykém.|Poor you.
+BCA2_02|Bárcsak azt tenném|I wish I was.
