@@ -495,7 +495,7 @@ BR01|vizsgálat|inquiry
 BR01|vonzani/bevonzani|to attract
 BR02|-|dash
 BR02|_|underscore
-BR02|'A'' mint alma|A as in apple / ''A'' for apple
+BR02|'A'' mint alma|A as in apple/''A'' for apple
 BR02|'A'' nem ''E''|'A'' not ''E''
 BR02|akarom|I want to
 BR02|alig várom|to look forward to + ing
@@ -503,10 +503,10 @@ BR02|beleegyezik|agree to
 BR02|ebben a pillanatban|right now
 BR02|Eddig jól megy|so far so good
 BR02|egyedül|on my own
-BR02|elhatározni/dönteni|to decide to / I decided to study.
+BR02|elhatározni/dönteni|to decide to/I decided to study.
 BR02|előbbre van|to be ahead
 BR02|éppen itt|right here
-BR02|érdeklődni|to be interested in + ing / to enquire
+BR02|érdeklődni|to be interested in + ing/to enquire
 BR02|éves|annual
 BR02|éves szabadság|annual leave
 BR02|Ez igen kedvező körülmény.|There are favorable circumstances.
@@ -597,7 +597,7 @@ BR03|napra készre hoz|to update
 BR03|nézőpont|point of view
 BR03|pékárú|bakery
 BR03|rövidtávú|short-term
-BR03|Sínen van / Újra sínen van|to be on track / to be back on track
+BR03|Sínen van/Újra sínen van|to be on track/to be back on track
 BR03|stratégia|strategy
 BR03|Szégyenlem magam|Shame on me.
 BR03|szint, fokozat, stádium|stage
@@ -711,7 +711,7 @@ BR04|összeségében (mondat elején)|overall
 BR04|összeveszni|to fall out
 BR04|palacsinta|pancake
 BR04|panaszkodni|to complain
-BR04|példakép|Role mode / idol
+BR04|példakép|Role mode/idol
 BR04|pincérnő|waitress
 BR04|pletykálni/traccsolni|to gossip
 BR04|pontos/precíz|accurate
@@ -751,7 +751,7 @@ BR05|angol óra|English class/English lesson
 BR05|anyagáramlás-szabályozás|material flow control
 BR05|apropó/mellesleg|by the way
 BR05|az éjszaka közepén|in the middle of the night
-BR05|beleértve|including / Something included
+BR05|beleértve|including/Something included
 BR05|Beszélnünk kell valamiről!|We need to talk about something!
 BR05|cikk (valmiről)|article (about)
 BR05|Csak rajta|Go ahead
@@ -806,7 +806,7 @@ BR05|minden egyes nap|every single day
 BR05|Mit szólsz …|What about …
 BR05|Ne aggódj! Aggodalomra semmi ok!|Not to worry!
 BR05|néhány évente|every few years
-BR05|Nem bírom…/ Ki nem állhatom…|I can't stand (that music) / I can't tolerate…
+BR05|Nem bírom…/ Ki nem állhatom…|I can't stand (that music)/I can't tolerate…
 BR05|Nem érdekel!|I don't care
 BR05|Nem megfelelő számomra|I can't make it.
 BR05|Nem törödöm vele!|I don't care about him.
@@ -1506,7 +1506,7 @@ BCA1_02|Tegyük közzé a meetingen?|Shall we present it at the meeting?
 BCA1_02|Jó terv|Good plan.
 BCA1_03|Szia, XY vagyok.|Hi, I’m XY .
 BCA1_03|Te biztos XY vagy./Te lehetsz XY.|You must be Vanya.
-BCA1_03|Örülök, hogy megismerhetlek. / Örvendek.|Nice to meet you.
+BCA1_03|Örülök, hogy megismerhetlek./Örvendek.|Nice to meet you.
 BCA1_03|Én is./Neked is.|You too.
 BCA1_03|Ő XY./Ez XY.|This is XY.
 BCA1_03|Na, milyen volt az utad?|So how was your journey?
@@ -1542,7 +1542,7 @@ BCA2_02|Így?/Így van?|Like this?
 BCA2_02|Van még valami?/Van még valami más?|Is there anything else?
 BCA2_03|Sajnálom./Jaj, szegénykém.|Poor you.
 BCA2_03|Bárcsak azt tenném|I wish I was.
-BCA2_04|Mit csinálsz, amikor nem dolgozol? / Mit csinálsz szabadidődben?|What do you do when you’re not working?
+BCA2_04|Mit csinálsz, amikor nem dolgozol?/Mit csinálsz szabadidődben?|What do you do when you’re not working?
 BCA2_04|Nem is tudtam, hogy meditálsz.|I didn’t know you did meditation.
 BCA2_04|Én is!/Én is azt teszem!|I do too!
 BCA2_04|Milyen gyakran gyakorolsz?|How often do you practise?
@@ -1561,3 +1561,176 @@ BCA2_05|Szereted a munkádat?|Do you like your job?
 BCA2_05|Igen, imádom!|Yes, I love it!
 BCA2_05|Mi a legjobb része a munkádnak?|What's the best part of your job?
 BCA2_05|Szereted a munkatársaidat?|Do you like the people you work with?
+Irregular Nouns|férfi|man/men
+Irregular Nouns|fog|tooth/teeth
+Irregular Nouns|lábfej|foot/feet
+Irregular Nouns|liba|goose/geese
+Irregular Nouns|egér|mouse/mice
+Irregular Nouns|gyerek|child/children
+Irregular Nouns|nő|woman/women
+Irregular Nouns|ember/személy|person/people
+Irregular Nouns|dobókocka|die/dice
+Irregular Nouns|törpe|dwarf/dwarves
+Irregular Nouns|farkas|wolf/wolves
+Irregular Nouns|fél|half/halves
+Irregular Nouns|tolvaj|thief/thieves
+Irregular Nouns|feleség|wife/wives
+Irregular Nouns|élet|life/lives
+Irregular Nouns|falevél|leaf/leaves
+Irregular Nouns|tetű|louse/lice
+Irregular Nouns|ökör|ox/oxen
+Irregular Nouns|sál|scarf/scarves
+Irregular Nouns|polc|shelf/shelves
+Irregular Nouns|kés|knife/knives
+Irregular Nouns|szarvas|deer/deer
+Irregular Nouns|hal|fish/fish
+Irregular Nouns|birka|sheep/sheep
+Irregular Nouns|jávorantilop|moose/moose
+Irregular Nouns|kaktusz|cactus/cacti
+Irregular Nouns|gomba|fungus/fungi
+Irregular Nouns|alap|basis/bases
+Irregular Nouns|válság|crisis/crises
+Irregular Nouns|jelenség|phenomenon/phenomena
+Irregular Nouns|adat|datum/data
+Irregular Nouns|tonhal|tune/tune
+Human Parts|fej|head
+Human Parts|haj|hair
+Human Parts|arc|face
+Human Parts|szem|eye
+Human Parts|orr|nose
+Human Parts|száj|mouth
+Human Parts|fül|ear
+Human Parts|nyak|neck
+Human Parts|váll|shoulder
+Human Parts|kar|arm
+Human Parts|könyök|elbow
+Human Parts|kéz|hand
+Human Parts|ujj (kéz)|finger
+Human Parts|hüvelykujj|thumb
+Human Parts|mellkas|chest
+Human Parts|has|stomach
+Human Parts|hát|back
+Human Parts|derék|waist
+Human Parts|láb|leg
+Human Parts|térd|knee
+Human Parts|lábfej|foot/feet
+Human Parts|lábujj|toe
+Human Parts|boka|ankle
+Human Parts|csukló|wrist
+Human Parts|comb|thigh
+Human Parts|vádli|calf/calves
+Human Parts|sarok|heel
+Internal Organs|agy|brain
+Internal Organs|szív|heart
+Internal Organs|tüdő|lung
+Internal Organs|máj|liver
+Internal Organs|gyomor|stomach
+Internal Organs|vese|kidney
+Internal Organs|hasnyálmirigy|pancreas
+Internal Organs|lép|spleen
+Internal Organs|vékonybél|small intestine
+Internal Organs|vastagbél|large intestine
+Internal Organs|húgyhólyag|bladder
+Internal Organs|epehólyag|gallbladder
+Internal Organs|vakbél|appendix
+Internal Organs|nyelőcső|esophagus
+Internal Organs|garat|pharynx
+Internal Organs|gége|larynx
+Internal Organs|pajzsmirigy|thyroid
+Internal Organs|mellékvese|adrenal gland
+Internal Organs|csecsemőmirigy|thymus
+Internal Organs|petefészek|ovary
+Internal Organs|here|testis/testes
+European Countries|Albánia|Albania
+European Countries|Andorra|Andorra
+European Countries|Ausztria|Austria
+European Countries|Belgium|Belgium
+European Countries|Fehéroroszország|Belarus
+European Countries|Bosznia és Hercegovina|Bosnia and Herzegovina
+European Countries|Bulgária|Bulgaria
+European Countries|Horvátország|Croatia
+European Countries|Ciprus|Cyprus
+European Countries|Csehország|Czech Republic
+European Countries|Dánia|Denmark
+European Countries|Észtország|Estonia
+European Countries|Finnország|Finland
+European Countries|Franciaország|France
+European Countries|Németország|Germany
+European Countries|Görögország|Greece
+European Countries|Magyarország|Hungary
+European Countries|Izland|Iceland
+European Countries|Írország|Ireland
+European Countries|Olaszország|Italy
+European Countries|Koszovó|Kosovo
+European Countries|Lettország|Latvia
+European Countries|Liechtenstein|Liechtenstein
+European Countries|Litvánia|Lithuania
+European Countries|Luxemburg|Luxembourg
+European Countries|Málta|Malta
+European Countries|Moldova|Moldova
+European Countries|Monaco|Monaco
+European Countries|Montenegró|Montenegro
+European Countries|Hollandia|Netherlands
+European Countries|Észak-Macedónia|North Macedonia
+European Countries|Norvégia|Norway
+European Countries|Lengyelország|Poland
+European Countries|Portugália|Portugal
+European Countries|Románia|Romania
+European Countries|Oroszország|Russia
+European Countries|San Marino|San Marino
+European Countries|Szerbia|Serbia
+European Countries|Szlovákia|Slovakia
+European Countries|Szlovénia|Slovenia
+European Countries|Spanyolország|Spain
+European Countries|Svédország|Sweden
+European Countries|Svájc|Switzerland
+European Countries|Törökország|Turkey
+European Countries|Ukrajna|Ukraine
+European Countries|Egyesült Királyság|United Kingdom
+European Countries|Vatikán|Vatican City
+European Nationalities|magyar|Hungarian
+European Nationalities|albán|Albanian
+European Nationalities|andorrai|Andorran
+European Nationalities|osztrák|Austrian
+European Nationalities|belga|Belgian
+European Nationalities|fehérorosz|Belarusian
+European Nationalities|bosnyák|Bosnian
+European Nationalities|horvát|Croatian
+European Nationalities|ciprusi|Cypriot
+European Nationalities|cseh|Czech
+European Nationalities|dán|Danish
+European Nationalities|észt|Estonian
+European Nationalities|finn|Finnish
+European Nationalities|francia|French
+European Nationalities|német|German
+European Nationalities|görög|Greek
+European Nationalities|izlandi|Icelandic
+European Nationalities|ír|Irish
+European Nationalities|olasz|Italian
+European Nationalities|koszovói|Kosovan
+European Nationalities|lett|Latvian
+European Nationalities|liechtensteini|Liechtensteiner
+European Nationalities|litván|Lithuanian
+European Nationalities|luxemburgi|Luxembourgish
+European Nationalities|máltai|Maltese
+European Nationalities|moldáv|Moldovan
+European Nationalities|monacói|Monegasque
+European Nationalities|montenegrói|Montenegrin
+European Nationalities|holland|Dutch
+European Nationalities|észak-macedón|North Macedonian
+European Nationalities|norvég|Norwegian
+European Nationalities|lengyel|Polish
+European Nationalities|portugál|Portuguese
+European Nationalities|román|Romanian
+European Nationalities|orosz|Russian
+European Nationalities|san marinói|San Marinese
+European Nationalities|szerb|Serbian
+European Nationalities|szlovák|Slovak
+European Nationalities|szlovén|Slovenian
+European Nationalities|spanyol|Spanish
+European Nationalities|svéd|Swedish
+European Nationalities|svájci|Swiss
+European Nationalities|török|Turkish
+European Nationalities|ukrán|Ukrainian
+European Nationalities|brit|British
+European Nationalities|vatikáni|Vatican
