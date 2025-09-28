@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Számoló</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Alap / Normál téma */
+        :root {
+            --body-bg-color: #f0f0f0;          /* Világos szürke háttér */
+            --container-bg-color: #ffffff;     /* Fehér konténer */
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+
+        /* Dark mode téma */
+        body.dark-mode {
+            --body-bg-color: #222222;          /* Nagyon sötét szürke háttér */
+            --container-bg-color: #333333;     /* Sötétebb szürke konténer */
+            --text-color: #f0f0f0;
+            --border-color: #555;
+        }
+
+        /* Old Money 1 (Klasszikus Bézs/Barna) */
+        body.old-money-1 {
+            --body-bg-color: #e8e4d9;          /* Világos bézs háttér */
+            --container-bg-color: #bfa88c;     /* Közepes barna konténer */
+            --text-color: #3a3a3a;             /* Sötét faszén szöveg */
+            --border-color: #a0907d;
+        }
+
+        /* Old Money 2 (Mélyzöld/Arany) */
+        body.old-money-2 {
+            --body-bg-color: #3a473a;          /* Mély erdőzöld háttér */
+            --container-bg-color: #d4b46c;     /* Muted arany konténer */
+            --text-color: #333333;             /* Sötét faszén szöveg */
+            --border-color: #b09550;
+        }
+
+        /* Old Money 3 (Sötétkék/Krém) */
+        body.old-money-3 {
+            --body-bg-color: #1e2b3a;          /* Sötét tengerészkék háttér */
+            --container-bg-color: #fcfcf0;     /* Majdnem fehér krém konténer */
+            --text-color: #1e2b3a;             /* Tengerészkék szöveg */
+            --border-color: #a0a0a0;
+        }
+
+        /* Old Money 4 (Bordó/Taupe) */
+        body.old-money-4 {
+            --body-bg-color: #5a2a2a;          /* Mély bordó háttér */
+            --container-bg-color: #e0d0c0;     /* Világos taupe konténer */
+            --text-color: #4a2020;             /* Sötét bordó-barna szöveg */
+            --border-color: #c0b0a0;
+        }
+
+        /* Old Money 5 (Szürke/Antracit Elegancia) */
+        body.old-money-5 {
+            --body-bg-color: #404040;          /* Közepes szürke háttér */
+            --container-bg-color: #2c2c2c;     /* Sötét faszén konténer */
+            --text-color: #e8e8e8;             /* Világos szürke szöveg */
+            --border-color: #555555;
+        }
+
+        /* Old Money 6 (Melegbarna/Elefántcsont) */
+        body.old-money-6 {
+            --body-bg-color: #6a4f41;          /* Meleg barna háttér */
+            --container-bg-color: #f8f0e8;     /* Világos elefántcsont konténer */
+            --text-color: #4a3020;             /* Sötétbarna szöveg */
+            --border-color: #d0c0b0;
+        }
+
+        /* --- ÚJ TÉMÁK --- */
+
+        /* Old Money 7 (Halvány Rózsa/Krém) */
+        body.old-money-7 {
+            --body-bg-color: #d9c9c0;          /* Halvány rózsaszín háttér */
+            --container-bg-color: #fcfbf8;     /* Krémfehér konténer */
+            --text-color: #4a403a;             /* Sötét szürke/barna szöveg */
+            --border-color: #c0b0a8;
+        }
+
+        /* Old Money 8 (Antracit Szürke/Erdőzöld Akcentus) */
+        body.old-money-8 {
+            --body-bg-color: #333c3c;          /* Sötét antracit szürke háttér */
+            --container-bg-color: #4a5a5a;     /* Tompa erdőzöld/szürke konténer */
+            --text-color: #e0e8e8;             /* Világos szürke szöveg */
+            --border-color: #5a6a6a;
+        }
+
+        /* Old Money 9 (Lágy Arany/Mély Pávakék) */
+        body.old-money-9 {
+            --body-bg-color: #d4b46c;          /* Lágy arany háttér */
+            --container-bg-color: #2a5c5c;     /* Mély pávakék konténer */
+            --text-color: #f8f8f0;             /* Világos krém szöveg */
+            --border-color: #3a6c6c;
+        }
+
+        /* Old Money 10 (Levendula Szürke/Törtfehér) */
+        body.old-money-10 {
+            --body-bg-color: #c9cdd4;          /* Halvány levendula szürke háttér */
+            --container-bg-color: #fdfcf8;     /* Törtfehér konténer */
+            --text-color: #5a4a5a;             /* Sötét szilva/szürke szöveg */
+            --border-color: #b0b5be;
+        }
+        /* --- ÚJ TÉMÁK VÉGE --- */
+
+        /* Alapvető reszponzív beállítások */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--body-bg-color); /* Az oldal háttérszíne */
+            color: var(--text-color); /* Globális szövegszín, ha nincs felülírva */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            flex-direction: column;
+            padding: 20px; /* Alap padding a body-n */
+        }
+
+        .container {
+            text-align: center;
+            background: var(--container-bg-color); /* A konténer háttérszíne */
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+            width: 90%; /* Reszponzív szélesség */
+            max-width: 600px; /* Maximális szélesség */
+        }
+
+        #szam {
+            font-size: 4.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+            word-break: break-word; /* Hosszú számok törése */
+        }
+
+        #elteltIdo, #megsporoltIdo {
+            font-size: 1.5em;
+            font-weight: 400;
+            margin-top: 10px;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+            line-height: 1.4; /* Olvashatóság javítása */
+        }
+
+        .theme-selector-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap; /* Törés mobil nézetben */
+            justify-content: flex-end;
+        }
+
+        .theme-selector-container label {
+            margin-right: 10px;
+            font-size: 1.1em;
+            font-weight: 300;
+            color: var(--text-color);
+            margin-bottom: 5px; /* Hely az elemen alul */
+        }
+
+        .theme-selector-container select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background-color: var(--container-bg-color); /* A select háttérszíne is a konténerrel együtt változzon */
+            color: var(--text-color);
+            font-size: 1em;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            max-width: 180px; /* Limitált szélesség */
+            width: 100%; /* Mobil szélesség */
+        }
+
+        .theme-selector-container select:hover {
+            border-color: var(--text-color);
+        }
+
+        /* Média lekérdezések mobil eszközökhöz */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px; /* Kisebb padding mobilra */
+                width: 95%; /* Még több hely a széleken */
+            }
+
+            #szam {
+                font-size: 3.5em; /* Kisebb betűméret */
+            }
+
+            #elteltIdo, #megsporoltIdo {
+                font-size: 1.2em; /* Kisebb betűméret */
+            }
+
+            .theme-selector-container {
+                position: static; /* Statikus pozíció mobil nézetben */
+                margin-top: 20px;
+                flex-direction: column; /* Felülről lefelé rendezés */
+                align-items: center;
+            }
+
+            .theme-selector-container label,
+            .theme-selector-container select {
+                margin: 5px 0; /* Egyenletes margó */
+            }
+        }
+
+        @media (max-width: 480px) {
+            #szam {
+                font-size: 2.8em; /* Még kisebb betűméret */
+            }
+
+            #elteltIdo, #megsporoltIdo {
+                font-size: 1em; /* Még kisebb betűméret */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-selector-container">
+        <label for="themeSelector">Téma:</label>
+        <select id="themeSelector">
+            <option value="normal">Normál</option>
+            <option value="dark-mode">Dark mode</option>
+            <option value="old-money-1">Old Money 1</option>
+            <option value="old-money-2">Old Money 2</option>
+            <option value="old-money-3">Old Money 3</option>
+            <option value="old-money-4">Old Money 4</option>
+            <option value="old-money-5">Old Money 5</option>
+            <option value="old-money-6">Old Money 6</option>
+            <option value="old-money-7">Old Money 7</option>
+            <option value="old-money-8">Old Money 8</option>
+            <option value="old-money-9">Old Money 9</option>
+            <option value="old-money-10">Old Money 10</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <div id="szam"></div>
+        <div id="elteltIdo"></div>
+        <div id="megsporoltIdo"></div> </div>
+
+    <script>
+        const kezdido = new Date('2025-05-10T00:00:00');
+        const napiLeosztas = 2390;
+        const minutesSavedPerDay = 80; // 24 óránként 100 perc megspórolt idő
+
+        function frissitSzam() {
+            const most = new Date();
+            const elteltIdoMs = most.getTime() - kezdido.getTime();
+
+            // Calculate the main number
+            const elteltNapok = elteltIdoMs / (1000 * 60 * 60 * 24);
+            const jelenlegiSzam = elteltNapok * napiLeosztas;
+            document.getElementById('szam').innerText = jelenlegiSzam.toLocaleString('hu-HU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Calculate and display elapsed time
+            const totalSeconds = Math.floor(elteltIdoMs / 1000);
+            const seconds = totalSeconds % 60;
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const minutes = totalMinutes % 60;
+            const totalHours = Math.floor(totalMinutes / 60);
+            const hours = totalHours % 24;
+            const days = Math.floor(totalHours / 24);
+
+            document.getElementById('elteltIdo').innerText = `Eltelt idő: ${days} nap, ${hours} óra, ${minutes} perc, ${seconds} másodperc`;
+
+            // Calculate and display "Megspórolt idő"
+            const totalDaysElapsedForSavedTime = elteltIdoMs / (1000 * 60 * 60 * 24);
+            const totalMinutesSaved = totalDaysElapsedForSavedTime * minutesSavedPerDay;
+
+            const savedDays = Math.floor(totalMinutesSaved / (60 * 24));
+            const remainingMinutesAfterDays = totalMinutesSaved % (60 * 24);
+            const savedHours = Math.floor(remainingMinutesAfterDays / 60);
+            const savedMinutes = Math.floor(remainingMinutesAfterDays % 60);
+
+            document.getElementById('megsporoltIdo').innerText = `Megspórolt idő: ${savedDays} nap, ${savedHours} óra, ${savedMinutes} perc`;
+        }
+
+        // Kezdeti frissítés
+        frissitSzam();
+
+        // Frissítés 5 másodpercenként
+        setInterval(frissitSzam, 5000);
+
+        // Téma váltó
+        const themeSelector = document.getElementById('themeSelector');
+
+        const applyTheme = (theme) => {
+            // Fontos: Itt minden témaosztályt fel kell sorolni, amit eltávolítani szeretnénk
+            document.body.classList.remove(
+                'dark-mode', 'old-money-1', 'old-money-2', 'old-money-3',
+                'old-money-4', 'old-money-5', 'old-money-6',
+                'old-money-7', 'old-money-8', 'old-money-9', 'old-money-10' /* Új témák hozzáadva */
+            );
+            if (theme !== 'normal') {
+                document.body.classList.add(theme);
+            }
+            localStorage.setItem('selectedTheme', theme);
+        };
+
+        themeSelector.addEventListener('change', (event) => {
+            applyTheme(event.target.value);
+        });
+
+        // Betöltéskor ellenőrizze az utolsó állapotot
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+            themeSelector.value = savedTheme;
+        } else {
+            applyTheme('normal');
+            themeSelector.value = 'normal';
+        }
+    </script>
+</body>
+</html>
