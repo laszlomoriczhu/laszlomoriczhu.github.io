@@ -230,7 +230,7 @@
     <script>
         const priceUpdates = [
             { date: new Date('2025-05-10T00:00:00'), price: 2390 },
-            { date: new Date('2025-09-01T00:00:00'), price: 2440 }
+            { date: new Date('2025-07-17T00:00:00'), price: 2440 }
         ];
 
         const minutesSavedPerDay = 80;
@@ -283,15 +283,36 @@
             document.getElementById('megsporoltIdo').innerText = `Megspórolt idő: ${savedDays} nap, ${savedHours} óra, ${savedMinutes} perc`;
         }
 
-        // Új funkció az árfolyam frissítéséhez
+        // ÚJ DINAMIKUS ÁRFOLYAM FRISSÍTŐ FUNKCIÓ
         async function frissitArfolyam() {
+            const url = 'https://api.frankfurter.app/latest?from=EUR&to=HUF';
+            const currencyRateElement = document.getElementById('currencyRate');
+            
+            // Előzetes érték, amíg betölt
+            currencyRateElement.innerText = `EUR/HUF árfolyam: Betöltés...`; 
+
             try {
-                // Az árfolyamot a Google keresési eredményeiből kapjuk
-                const arfolyam = 390.85; // Ez a legutóbb lekérdezett érték
-                document.getElementById('currencyRate').innerText = `EUR/HUF: ${arfolyam.toFixed(2)} HUF`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP hiba: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Ellenőrizzük, hogy a válasz tartalmazza-e a "HUF" árfolyamot
+                if (data.rates && data.rates.HUF) {
+                    const arfolyam = data.rates.HUF;
+                    currencyRateElement.innerText = `EUR/HUF: ${arfolyam.toFixed(2)} HUF`;
+                } else {
+                    throw new Error("Érvénytelen válasz az API-tól.");
+                }
+                
             } catch (error) {
                 console.error("Hiba az árfolyam lekérdezése közben:", error);
-                document.getElementById('currencyRate').innerText = `EUR/HUF árfolyam: hiba`;
+                // Visszatérés a statikus értékhez hiba esetén
+                const statikusArfolyam = 390.85; 
+                currencyRateElement.innerText = `EUR/HUF: ${statikusArfolyam.toFixed(2)} HUF (Hiba esetén)`;
             }
         }
 
