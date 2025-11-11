@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="hu" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accu - Vércukor Elemző</title>
+    <!-- Tailwind CSS betöltése -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js és a date-fns adapter betöltése -->
+    <script src="https://npmcdn.com/chart.js@4.4.3/dist/chart.umd.js"></script>
+    <script src="https://npmcdn.com/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.js"></script>
+    <script src="https://npmcdn.com/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+
+    <script>
+        // Tailwind sötét mód konfiguráció
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Alap stílusok a sötét módhoz */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Sötétszürke háttér */
+            color: #d1d5db; /* Világosszürke szöveg */
+        }
+        .chart-container {
+            position: relative;
+            height: 60vh;
+            width: 100%;
+        }
+        /* Egyedi scrollbar (opcionális, de jól néz ki) */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Cím és Fejléc -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">Accu Vércukor Elemző</h1>
+            <p class="text-lg text-gray-400">Vércukorszint adatok vizualizációja a feltöltött .dia fájlból.</p>
+        </header>
+
+        <!-- Statisztikai Kártyák -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-sm font-medium text-gray-400 uppercase">Mérések száma</h3>
+                <p id="stat-count" class="text-3xl font-bold text-white">-</p>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-sm font-medium text-gray-400 uppercase">Átlagos érték</h3>
+                <p id="stat-avg" class="text-3xl font-bold text-white">-</p>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-sm font-medium text-red-400 uppercase">Maximum érték</h3>
+                <p id="stat-max" class="text-3xl font-bold text-red-300">-</p>
+            </div>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-sm font-medium text-blue-400 uppercase">Minimum érték</h3>
+                <p id="stat-min" class="text-3xl font-bold text-blue-300">-</p>
+            </div>
+        </div>
+
+        <!-- Diagram Konténer -->
+        <main class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold text-white mb-6">Vércukor Szint (mmol/L) - Idővonal</h2>
+            <div id="loading-spinner" class="flex justify-center items-center h-64">
+                <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="text-lg text-gray-300">Adatok betöltése és feldolgozása...</span>
+            </div>
+            
+            <div id="error-message" class="hidden p-4 bg-red-900 text-red-200 rounded-lg">
+                <h3 class="font-bold">Hiba történt</h3>
+                <p id="error-text"></p>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="bgChart"></canvas>
+            </div>
+        </main>
+        
+        <!-- Lábléc -->
+        <footer class="text-center text-gray-500 mt-8">
+            <p>Accu Project - Modern Webalkalmazás</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileName = "{b41a95fe-1686-419e-b04b-2b0a87b145d4}.dia";
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const errorMessage = document.getElementById('error-message');
+            const errorText = document.getElementById('error-text');
+            let bgChartInstance = null; // A diagram tárolására
+
+            async function loadAndProcessData() {
+                try {
+                    // 1. Adatok betöltése
+                    const response = await fetch(fileName);
+                    if (!response.ok) {
+                        throw new Error(`Hálózati hiba: ${response.status} ${response.statusText}. Nem található a fájl: ${fileName}`);
+                    }
+                    const xmlText = await response.text();
+
+                    // 2. XML feldolgozása
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+                    
+                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+                        throw new Error("Az XML fájl feldolgozása sikertelen. Lehet, hogy sérült.");
+                    }
+
+                    const bgNodes = xmlDoc.getElementsByTagName("BG");
+                    const settingsNode = xmlDoc.getElementsByTagName("status")[0];
+
+                    const data = [];
+                    let sum = 0;
+                    let min = Infinity;
+                    let max = -Infinity;
+
+                    // Célértékek kiolvasása
+                    const targetRangeFrom = parseFloat(settingsNode.getAttribute("TgRngFrom") || 3.9);
+                    const targetRangeTo = parseFloat(settingsNode.getAttribute("TgRngTo") || 8.9);
+                    const hypoLimit = parseFloat(settingsNode.getAttribute("HypoLmt") || 3.9);
+
+                    // 3. Adatkinyerés
+                    for (let node of bgNodes) {
+                        const date = node.getAttribute("Dt");
+                        const time = node.getAttribute("Tm");
+                        const glucose = parseFloat(node.getAttribute("Gl"));
+
+                        if (date && time && !isNaN(glucose)) {
+                            const timestamp = new Date(`${date}T${time}`);
+                            data.push({ x: timestamp, y: glucose });
+
+                            // Statisztika számítása
+                            sum += glucose;
+                            if (glucose < min) min = glucose;
+                            if (glucose > max) max = glucose;
+                        }
+                    }
+
+                    if (data.length === 0) {
+                        throw new Error("Nem található érvényes vércukor (BG) adat a fájlban.");
+                    }
+
+                    // Adatok rendezése idő szerint (bár általában már rendezve vannak)
+                    data.sort((a, b) => a.x - b.x);
+
+                    // 4. Statisztika megjelenítése
+                    document.getElementById('stat-count').textContent = data.length;
+                    document.getElementById('stat-avg').textContent = (sum / data.length).toFixed(1);
+                    document.getElementById('stat-max').textContent = max.toFixed(1);
+                    document.getElementById('stat-min').textContent = min.toFixed(1);
+
+                    // 5. Diagram kirajzolása
+                    renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit);
+
+                } catch (error) {
+                    console.error("Hiba az adatok feldolgozása során:", error);
+                    errorText.textContent = error.message;
+                    errorMessage.classList.remove('hidden');
+                } finally {
+                    loadingSpinner.classList.add('hidden');
+                }
+            }
+
+            function renderChart(data, targetFrom, targetTo, hypo) {
+                const ctx = document.getElementById('bgChart').getContext('2d');
+                
+                if (bgChartInstance) {
+                    bgChartInstance.destroy(); // Korábbi diagram törlése, ha van
+                }
+
+                bgChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Vércukor (mmol/L)',
+                            data: data,
+                            borderColor: 'rgb(59, 130, 246)', // Kék vonal
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: (context) => {
+                                // Pontok színezése érték alapján
+                                const value = context.raw.y;
+                                if (value > targetTo) return 'rgb(239, 68, 68)'; // Magas (piros)
+                                if (value < hypo) return 'rgb(249, 115, 22)'; // Alacsony (narancs)
+                                return 'rgb(59, 130, 246)'; // Normál (kék)
+                            },
+                            pointRadius: 3,
+                            pointHoverRadius: 6,
+                            fill: true, // Terület kitöltése
+                            tension: 0.1 // Enyhe görbület
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day',
+                                    tooltipFormat: 'yyyy. MM. dd. HH:mm',
+                                    displayFormats: {
+                                        day: 'MM. dd.'
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Dátum és Idő',
+                                    color: '#d1d5db'
+                                },
+                                ticks: {
+                                    color: '#9ca3af',
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Vércukor (mmol/L)',
+                                    color: '#d1d5db'
+                                },
+                                ticks: {
+                                    color: '#9ca3af',
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false // Nincs szükségünk legendára, ha csak egy adatsor van
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                backgroundColor: '#1f2937',
+                                titleColor: '#fff',
+                                bodyColor: '#fff',
+                            },
+                            // Annotációk (cél tartomány és hypo)
+                            annotation: {
+                                annotations: {
+                                    targetRange: {
+                                        type: 'box',
+                                        yMin: targetFrom,
+                                        yMax: targetTo,
+                                        backgroundColor: 'rgba(74, 222, 128, 0.1)', // Zöldes sáv
+                                        borderColor: 'rgba(74, 222, 128, 0.3)',
+                                        borderWidth: 1,
+                                        label: {
+                                            content: 'Cél tartomány',
+                                            display: true,
+                                            position: 'start',
+                                            color: 'rgba(74, 222, 128, 0.7)',
+                                            font: {
+                                                size: 10
+                                            }
+                                        }
+                                    },
+                                    hypoLine: {
+                                        type: 'line',
+                                        yMin: hypo,
+                                        yMax: hypo,
+                                        borderColor: 'rgb(249, 115, 22)', // Narancs
+                                        borderWidth: 2,
+                                        borderDash: [6, 6], // Szaggatott vonal
+                                        label: {
+                                            content: `Hypo (${hypo.toFixed(1)})`,
+                                            display: true,
+                                            position: 'start',
+                                            color: 'rgb(249, 115, 22)',
+                                            backgroundColor: 'rgba(17, 24, 39, 0.6)',
+                                            font: {
+                                                size: 10,
+                                                weight: 'bold'
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        interaction: {
+                            mode: 'nearest',
+                            axis: 'x',
+                            intersect: false
+                        }
+                    }
+                });
+            }
+
+            // Adatok betöltése az oldal betöltődésekor
+            loadAndProcessData();
+        });
+    </script>
+</body>
+</html>

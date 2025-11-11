@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DIARY>
+    <DIARYINFO Ver="3.30" Dt="2025-11-11" Tm="14:56:27.702" EnBgUnit="1" EnCarbUnit="0" HasPump="0" InsulinHeader1="1" InsulinHeader2="2" InsulinHeader3="3"/>
+    <APPINFO>
+        <CREATE Dt="2025-11-11" Name="Accu-Chek Smart Pix Software" Tm="14:56" Ver="3.2.5.22144"/>
+        <CHANGE Dt="2025-11-11" Name="Accu-Chek Smart Pix Software" Tm="15:02" Ver="3.2.5.22144"/>
+    </APPINFO>
+    <PATIENT Pid1="AwKKPnh5HngwFVXf" Pid2="AwKKg66uyb30wo2+tA==" Pid3="AwKK+EY7pkRGJzT8aBSE" ID3isDate="1" Diabetes="2" Therapy="4"/>
+    <METERINFO Cnt="1">
+        <METER Name="Active" SN="034288543" Dt="2025-11-11" Tm="14:53" ModelType="2102">
+            <BGSETTINGS>
+                <ST3DAY_CONFIG Active="0" Configured="0" StartDt="1999-12-31" BreakfastTm="00:00" LunchTm="00:00" DinnerTm="00:00" BedTm="00:00"/>
+            </BGSETTINGS>
+        </METER>
+    </METERINFO>
+    <VISITS Cnt="1">
+        <ONEVISIT Dt="2025-11-11" Tm="14:56:27.702">
+            <ACSPIX Type="2107" SN="CM030204010713020002" Ver="3.02.04"/>
+            <DEVICEUPLOAD Dt="2025-11-11" Tm="14:53" Di="0" type="1" OutOfChronOrder="0">
+                <BGSETTINGS>
+                    <ST3DAY_CONFIG Active="0" Configured="0" StartDt="1999-12-31" BreakfastTm="00:00" LunchTm="00:00" DinnerTm="00:00" BedTm="00:00"/>
+                </BGSETTINGS>
+            </DEVICEUPLOAD>
+        </ONEVISIT>
+    </VISITS>
+    <DIARYDATA Cnt="102">
+        <BG Dt="2025-10-25" Tm="13:43" Gl="18.4" Vs="3" Di="0"/>
+        <BG Dt="2025-10-25" Tm="15:52" Gl="6.8" Vs="3" Di="0"/>
+        <BG Dt="2025-10-25" Tm="21:17" Gl="7.3" Vs="3" Di="0"/>
+        <BG Dt="2025-10-26" Tm="07:39" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-10-26" Tm="14:51" Gl="16.0" Vs="3" Di="0"/>
+        <BG Dt="2025-10-26" Tm="17:09" Gl="8.7" Fl="2048" Vs="131" Di="0"/>
+        <BG Dt="2025-10-26" Tm="18:08" Gl="8.4" Vs="3" Di="0"/>
+        <BG Dt="2025-10-26" Tm="20:32" Gl="7.6" Vs="3" Di="0"/>
+        <BG Dt="2025-10-27" Tm="20:10" Gl="9.1" Vs="3" Di="0"/>
+        <BG Dt="2025-10-28" Tm="12:08" Gl="12.5" Vs="3" Di="0"/>
+        <BG Dt="2025-10-28" Tm="15:22" Gl="7.8" Vs="3" Di="0"/>
+        <BG Dt="2025-10-28" Tm="16:46" Gl="5.5" Vs="3" Di="0"/>
+        <BG Dt="2025-10-28" Tm="19:17" Gl="8.5" Vs="3" Di="0"/>
+        <BG Dt="2025-10-29" Tm="15:25" Gl="6.8" Vs="3" Di="0"/>
+        <BG Dt="2025-10-29" Tm="16:08" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-10-29" Tm="16:59" Gl="6.0" Vs="3" Di="0"/>
+        <BG Dt="2025-10-29" Tm="19:13" Gl="5.6" Vs="3" Di="0"/>
+        <BG Dt="2025-10-29" Tm="23:00" Gl="5.5" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="08:09" Gl="6.7" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="11:46" Gl="7.8" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="13:56" Gl="4.8" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="16:36" Gl="5.2" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="17:12" Gl="5.2" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="19:25" Gl="6.7" Vs="3" Di="0"/>
+        <BG Dt="2025-10-30" Tm="22:19" Gl="5.6" Vs="3" Di="0"/>
+        <BG Dt="2025-10-31" Tm="11:57" Gl="4.5" Vs="3" Di="0"/>
+        <BG Dt="2025-10-31" Tm="12:47" Gl="4.9" Vs="3" Di="0"/>
+        <BG Dt="2025-10-31" Tm="14:25" Gl="4.9" Vs="3" Di="0"/>
+        <BG Dt="2025-10-31" Tm="16:00" Gl="6.5" Vs="3" Di="0"/>
+        <BG Dt="2025-10-31" Tm="19:37" Gl="7.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="11:08" Gl="5.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="13:37" Gl="4.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="14:16" Gl="5.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="17:08" Gl="7.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="19:28" Gl="7.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="20:37" Gl="6.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-01" Tm="23:17" Gl="7.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="06:45" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="07:50" Gl="6.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="10:05" Gl="7.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="11:52" Gl="4.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="14:13" Gl="8.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="16:21" Gl="8.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-02" Tm="19:27" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="07:21" Gl="6.1" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="10:04" Gl="8.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="10:53" Gl="10.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="12:13" Gl="8.6" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="13:32" Gl="8.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="15:07" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="17:06" Gl="6.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="18:54" Gl="8.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-03" Tm="20:59" Gl="5.7" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="06:53" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="12:13" Gl="6.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="13:58" Gl="5.7" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="15:45" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="16:24" Gl="6.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="18:04" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-04" Tm="20:18" Gl="7.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="05:32" Gl="7.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="08:23" Gl="6.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="09:42" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="09:46" Gl="5.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="13:04" Gl="7.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="13:06" Gl="6.6" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="15:55" Gl="7.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-05" Tm="19:30" Gl="6.7" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="06:45" Gl="6.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="09:12" Gl="7.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="11:51" Gl="6.1" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="13:53" Gl="7.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="17:00" Gl="6.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="19:04" Gl="5.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-06" Tm="20:32" Gl="5.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-07" Tm="08:33" Gl="6.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-07" Tm="10:13" Gl="7.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-07" Tm="14:12" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-07" Tm="17:24" Gl="7.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-07" Tm="19:14" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-07" Tm="22:30" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-08" Tm="06:49" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-08" Tm="10:05" Gl="6.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-08" Tm="15:01" Gl="7.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-08" Tm="19:58" Gl="8.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="06:19" Gl="6.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="09:12" Gl="6.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="11:59" Gl="5.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="12:33" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="13:51" Gl="6.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="17:47" Gl="5.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-09" Tm="19:17" Gl="6.2" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="04:33" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="08:54" Gl="7.7" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="10:30" Gl="7.0" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="15:03" Gl="7.4" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="16:32" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="19:18" Gl="6.5" Vs="3" Di="0"/>
+        <BG Dt="2025-11-10" Tm="19:19" Gl="5.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-11" Tm="10:56" Gl="8.8" Vs="3" Di="0"/>
+        <BG Dt="2025-11-11" Tm="12:02" Gl="8.3" Vs="3" Di="0"/>
+        <BG Dt="2025-11-11" Tm="13:32" Gl="8.9" Vs="3" Di="0"/>
+    </DIARYDATA>
+    <SETTINGS EnBgUnit="1">
+        <timerange PeriodType="0" ScrollTypeExt="7"/>
+        <styles BasalRangeLimit="5.00" SuppressedElements="0"/>
+        <status HypoUseLbgi="1" HypoUseWeeksLimit="0" HypoWeeksLimit="2" MeanHiRd="13.9" TgRngTo="8.9" TgRngFrom="3.9" HypoLmt="3.9" VarRelHi="50" VarRelLo="33" VarAbsHi="4.2" VarAbsLo="2.8" VarRel="1" HypoCgmHi="4" HypoCgmLo="0.8" VarCgmHi="4.2" VarCgmLo="2.8" TestsPerDay="1"/>
+        <timeblock B0="05:30:00" B1="08:00:00" B2="11:00:00" B3="12:30:00" B4="17:00:00" B5="18:30:00" B6="21:30:00" B7="00:00:00"/>
+    </SETTINGS>
+    <CHECK Key="AwKT3vT/Mrvx2ch6qbNU2L7Pjz29o07Cr4ieJL2XUba9"/>
+</DIARY>
