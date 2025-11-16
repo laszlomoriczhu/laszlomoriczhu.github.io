@@ -50,6 +50,10 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #6b7280;
         }
+        /* Dátumválasztó ikonjának stílusozása sötét módban */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -60,6 +64,31 @@
             <h1 class="text-4xl font-bold text-white mb-2">Accu Vércukor Elemző</h1>
             <p class="text-lg text-gray-400">Vércukorszint adatok vizualizációja a feltöltött .dia fájlból.</p>
         </header>
+
+        <!-- Dátumszűrő szekció -->
+        <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg mb-8">
+            <h3 class="text-xl font-semibold text-white mb-4">Időszak kiválasztása</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                <div class="col-span-1">
+                    <label for="filter-start-date" class="block text-sm font-medium text-gray-300 mb-1">Kezdő dátum</label>
+                    <input type="date" id="filter-start-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="col-span-1">
+                    <label for="filter-end-date" class="block text-sm font-medium text-gray-300 mb-1">Vég dátum</label>
+                    <input type="date" id="filter-end-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="col-span-1">
+                    <button id="filter-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                        Szűrés
+                    </button>
+                </div>
+                <div class="col-span-1">
+                    <button id="reset-button" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                        Visszaállítás
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Statisztikai Kártyák -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -106,7 +135,6 @@
         <footer class="text-center text-gray-500 mt-8">
             <p>Accu Project - Modern Webalkalmazás</p>
         </footer>
-
     </div>
 
     <script>
@@ -115,7 +143,21 @@
             const loadingSpinner = document.getElementById('loading-spinner');
             const errorMessage = document.getElementById('error-message');
             const errorText = document.getElementById('error-text');
+            const filterStartDateInput = document.getElementById('filter-start-date');
+            const filterEndDateInput = document.getElementById('filter-end-date');
+            const filterButton = document.getElementById('filter-button');
+            const resetButton = document.getElementById('reset-button');
+
             let bgChartInstance = null; // A diagram tárolására
+            let allChartData = []; // Az összes beolvasott adat tárolása
+            let targetRangeFrom = 3.9;
+            let targetRangeTo = 8.9;
+            let hypoLimit = 3.9;
+
+            // Dátum formázása YYYY-MM-DD stringgé
+            function formatDateToInput(date) {
+                return date.toISOString().split('T')[0];
+            }
 
             async function loadAndProcessData() {
                 try {
@@ -138,14 +180,13 @@
                     const settingsNode = xmlDoc.getElementsByTagName("status")[0];
 
                     const data = [];
-                    let sum = 0;
-                    let min = Infinity;
-                    let max = -Infinity;
+                    let minDate = new Date('9999-12-31');
+                    let maxDate = new Date('1000-01-01');
 
-                    // Célértékek kiolvasása
-                    const targetRangeFrom = parseFloat(settingsNode.getAttribute("TgRngFrom") || 3.9);
-                    const targetRangeTo = parseFloat(settingsNode.getAttribute("TgRngTo") || 8.9);
-                    const hypoLimit = parseFloat(settingsNode.getAttribute("HypoLmt") || 3.9);
+                    // Célértékek kiolvasása és tárolása
+                    targetRangeFrom = parseFloat(settingsNode.getAttribute("TgRngFrom") || 3.9);
+                    targetRangeTo = parseFloat(settingsNode.getAttribute("TgRngTo") || 8.9);
+                    hypoLimit = parseFloat(settingsNode.getAttribute("HypoLmt") || 3.9);
 
                     // 3. Adatkinyerés
                     for (let node of bgNodes) {
@@ -157,10 +198,9 @@
                             const timestamp = new Date(`${date}T${time}`);
                             data.push({ x: timestamp, y: glucose });
 
-                            // Statisztika számítása
-                            sum += glucose;
-                            if (glucose < min) min = glucose;
-                            if (glucose > max) max = glucose;
+                            // Min/Max dátum keresése
+                            if (timestamp < minDate) minDate = timestamp;
+                            if (timestamp > maxDate) maxDate = timestamp;
                         }
                     }
 
@@ -168,17 +208,21 @@
                         throw new Error("Nem található érvényes vércukor (BG) adat a fájlban.");
                     }
 
-                    // Adatok rendezése idő szerint (bár általában már rendezve vannak)
+                    // Adatok rendezése idő szerint
                     data.sort((a, b) => a.x - b.x);
+                    
+                    allChartData = data; // Összes adat mentése
 
-                    // 4. Statisztika megjelenítése
-                    document.getElementById('stat-count').textContent = data.length;
-                    document.getElementById('stat-avg').textContent = (sum / data.length).toFixed(1);
-                    document.getElementById('stat-max').textContent = max.toFixed(1);
-                    document.getElementById('stat-min').textContent = min.toFixed(1);
+                    // 4. Dátumválasztók beállítása a min/max dátumra
+                    filterStartDateInput.value = formatDateToInput(minDate);
+                    filterEndDateInput.value = formatDateToInput(maxDate);
 
-                    // 5. Diagram kirajzolása
-                    renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit);
+                    // 5. Műszerfal frissítése a teljes adatsorral
+                    updateDashboard(allChartData);
+
+                    // 6. Eseménykezelők hozzáadása a gombokhoz
+                    filterButton.addEventListener('click', handleFilter);
+                    resetButton.addEventListener('click', handleReset);
 
                 } catch (error) {
                     console.error("Hiba az adatok feldolgozása során:", error);
@@ -186,6 +230,61 @@
                     errorMessage.classList.remove('hidden');
                 } finally {
                     loadingSpinner.classList.add('hidden');
+                }
+            }
+
+            // Új funkció a statisztika és a diagram frissítésére
+            function updateDashboard(data) {
+                let sum = 0;
+                let min = Infinity;
+                let max = -Infinity;
+
+                if (data.length === 0) {
+                    min = 0;
+                    max = 0;
+                } else {
+                    for (const item of data) {
+                        sum += item.y;
+                        if (item.y < min) min = item.y;
+                        if (item.y > max) max = item.y;
+                    }
+                }
+
+                // Statisztika megjelenítése
+                document.getElementById('stat-count').textContent = data.length;
+                document.getElementById('stat-avg').textContent = data.length > 0 ? (sum / data.length).toFixed(1) : '-';
+                document.getElementById('stat-max').textContent = data.length > 0 ? max.toFixed(1) : '-';
+                document.getElementById('stat-min').textContent = data.length > 0 ? min.toFixed(1) : '-';
+
+                // Diagram kirajzolása
+                renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit);
+            }
+
+            // Szűrő eseménykezelője
+            function handleFilter() {
+                // A T00:00:00 és T23:59:59 biztosítja, hogy a teljes nap benne legyen
+                const startDate = new Date(`${filterStartDateInput.value}T00:00:00`);
+                const endDate = new Date(`${filterEndDateInput.value}T23:59:59`);
+                
+                if (startDate > endDate) {
+                    alert("A kezdő dátum nem lehet későbbi, mint a vég dátum.");
+                    return;
+                }
+
+                const filteredData = allChartData.filter(item => {
+                    return item.x >= startDate && item.x <= endDate;
+                });
+
+                updateDashboard(filteredData);
+            }
+
+            // Visszaállítás eseménykezelője
+            function handleReset() {
+                updateDashboard(allChartData);
+                // Opcionálisan visszaállíthatjuk a dátumválasztókat is
+                if (allChartData.length > 0) {
+                    filterStartDateInput.value = formatDateToInput(allChartData[0].x);
+                    filterEndDateInput.value = formatDateToInput(allChartData[allChartData.length - 1].x);
                 }
             }
 
