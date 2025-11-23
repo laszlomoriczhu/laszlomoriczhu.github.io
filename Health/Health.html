@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Wellness Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Modern, Letisztult, Mobil-First CSS Stílusok */
+        :root {
+            --color-primary: #00BFA5; /* Deep Teal/Aqua */
+            --color-secondary: #FF7043; /* Soft Coral */
+            --color-text: #212121;
+            --color-bg: #F9F9F9;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            background-color: #FFFFFF;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 25px; /* Távolság a linkek között */
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-weight: 600;
+            padding: 5px 0;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            position: relative;
+        }
+
+        /* Hover effekt modern stílusban */
+        nav a:hover {
+            color: var(--color-primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, #3dccb5 100%);
+            color: #FFFFFF;
+            margin-bottom: 40px;
+            border-radius: 10px; /* Lekerekített sarkok */
+        }
+
+        .hero h1 {
+            font-size: clamp(1.5em, 5vw, 2.5em); /* Reszponzív betűméret */
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        /* MAIN CONTENT - FEATURED LINKS */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background-color: #FFFFFF;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px); /* Enyhe felemelkedés (animáció) */
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card h3 {
+            color: var(--color-primary);
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+
+        .feature-card .link-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background-color: var(--color-secondary);
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+
+        .feature-card .link-button:hover {
+            background-color: #FF5722; /* Sötétebb korall */
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            border-top: 1px solid #ECECEC;
+            color: #757575;
+            font-size: 0.9em;
+        }
+
+        /* Reszponzív kiegészítés (mobil nézetben a menü függőleges) */
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 10px;
+            }
+            .logo {
+                text-align: center;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="#" class="logo">Health Portal</a>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#links">Key Metrics</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Your Daily Health & Wellness Hub</h1>
+        </section>
+
+        <h2 id="links" style="text-align: center; margin-bottom: 30px; font-weight: 800; color: var(--color-text);">Quick Access to Key Metrics</h2>
+        
+        <div class="features-grid">
+            
+            <div class="feature-card">
+                <h3>Blood Pressure</h3>
+                <p>Track your systolic and diastolic readings and monitor your cardiovascular health.</p>
+                <a href="../BP/BP.html" class="link-button" target="_self">Check Readings</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>Blood Sugar Level</h3>
+                <p>Log your glucose measurements to maintain stable and healthy blood sugar levels.</p>
+                <a href="../Accu/Accu.html" class="link-button" target="_self">Log Sugar</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>Medication Management</h3>
+                <p>Organize your prescriptions, set reminders, and manage your daily pill intake.</p>
+                <a href="../Pills/Pills.html" class="link-button" target="_self">Manage Meds</a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Health Portal. All rights reserved. | Modern Design & Data Integrity.</p>
+    </footer>
+
+</body>
+</html> 
