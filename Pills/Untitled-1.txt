@@ -1,0 +1,7 @@
+Name                            |Boxes  |Value  |StartDate      |Daily|
+ASA Protect Pharmavit (100mg)   |1      |30     |2025.11.05     |1|
+PANTOPRAZOL 1 A Pharma 20mg     |1      |28     |2025.11.05     |1|
+Rosuvastation Sandoz 20mg       |1      |30     |2025.11.05     |1|
+Letrox 50mcg                    |1      |100    |2025.11.05     |1| 
+Coverex-AS 5mg                  |2      |30     |2025.11.04     |2|
+Meforal 1000mg                  |1      |60     |2025.11.04     |2|

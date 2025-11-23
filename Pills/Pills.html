@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Supply Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS is unchanged */
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --success-color: #28a745;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px;
+            color: #343a40;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .medication-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .medication-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .medication-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .medication-card h2 {
+            margin-top: 0;
+            color: #495057;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .label {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .value {
+            font-weight: 400;
+        }
+
+        .expiration-info {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ced4da;
+            text-align: center;
+        }
+
+        .expiration-date {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .days-remaining {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        /* Color Coding for Days Remaining */
+        .status-danger {
+            color: var(--danger-color); /* < 7 days */
+        }
+        .status-warning {
+            color: var(--warning-color); /* 7 - 30 days */
+        }
+        .status-safe {
+            color: var(--success-color); /* > 30 days */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💊 Your Medication Supply Tracker</h1>
+
+        <div class="medication-list" id="medicationList">
+            </div>
+    </div>
+
+    <script>
+        // Data structure (internal date format: YYYY-MM-DD)
+        const medications = [
+            {
+                name: "ASA Protect Pharmavit (100mg)",
+                boxes: 1,
+                value: 30,
+                daily: 1,
+                startDate: "2025-11-05", // Internal: YYYY-MM-DD
+                expiresOn: "2025-12-04" 
+            },
+            {
+                name: "PANTOPRAZOL 1 A Pharma 20mg",
+                boxes: 1,
+                value: 28,
+                daily: 1,
+                startDate: "2025-11-05",
+                expiresOn: "2025-12-02" 
+            },
+            {
+                name: "Rosuvastation Sandoz 20mg",
+                boxes: 1,
+                value: 30,
+                daily: 1,
+                startDate: "2025-11-05",
+                expiresOn: "2025-12-04" 
+            },
+            {
+                name: "Letrox 50mcg",
+                boxes: 1,
+                value: 100,
+                daily: 1,
+                startDate: "2025-11-05",
+                expiresOn: "2026-02-12" 
+            },
+            {
+                name: "Coverex-AS 5mg",
+                boxes: 2,
+                value: 30,
+                daily: 2,
+                startDate: "2025-11-04",
+                expiresOn: "2025-12-03" 
+            },
+            {
+                name: "Meforal 1000mg",
+                boxes: 1,
+                value: 60,
+                daily: 2,
+                startDate: "2025-11-04",
+                expiresOn: "2025-12-03" 
+            }
+        ];
+
+        // Function to calculate the number of days between two dates
+        function calculateDaysRemaining(expirationDateString) {
+            const today = new Date();
+            const expirationDate = new Date(expirationDateString); 
+            
+            today.setHours(12, 0, 0, 0);
+            expirationDate.setHours(12, 0, 0, 0);
+
+            const diffTime = expirationDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            
+            return diffDays > 0 ? diffDays : 0;
+        }
+
+        // Function to determine the status color class
+        function getStatusClass(days) {
+            if (days < 7) {
+                return 'status-danger';
+            } else if (days <= 30) {
+                return 'status-warning';
+            } else {
+                return 'status-safe';
+            }
+        }
+        
+        // Helper function to format date from 'YYYY-MM-DD' to 'YYYY.MM.DD'
+        function formatStartDate(dateString) {
+            // dateString is in 'YYYY-MM-DD' format
+            return dateString.replace(/-/g, '.');
+        }
+
+        // Function to render the medication cards
+        function renderMedications() {
+            const listContainer = document.getElementById('medicationList');
+            
+            // 1. Calculate Days Remaining for each item
+            const medicationsWithDays = medications.map(med => ({
+                ...med,
+                daysRemaining: calculateDaysRemaining(med.expiresOn)
+            }));
+
+            // 2. SORT the list by 'daysRemaining' in ASCENDING (növekvő) order
+            medicationsWithDays.sort((a, b) => a.daysRemaining - b.daysRemaining);
+
+            let htmlContent = '';
+
+            medicationsWithDays.forEach(med => {
+                const totalPills = med.boxes * med.value;
+                const daysRemaining = med.daysRemaining; 
+                const statusClass = getStatusClass(daysRemaining);
+                
+                // Formázza az induló dátumot: YYYY.MM.DD
+                const formattedStartDate = formatStartDate(med.startDate);
+                
+                // Formázza a kifogyás dátumát (Long format English)
+                const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+
+                htmlContent += `
+                    <div class="medication-card">
+                        <h2>${med.name}</h2>
+                        <div class="detail-row">
+                            <span class="label">Packs:</span>
+                            <span class="value">${med.boxes}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Pills per Pack:</span>
+                            <span class="value">${med.value}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Total Pills:</span>
+                            <span class="value">${totalPills}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Daily Dosage:</span>
+                            <span class="value">${med.daily} pill(s)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Start Date:</span>
+                            <span class="value">${formattedStartDate}</span>
+                        </div>
+                        
+                        <div class="expiration-info">
+                            <div class="expiration-date">Expires On: ${expiresDateFormatted}</div>
+                            <div class="days-remaining ${statusClass}">${daysRemaining}</div>
+                            <div class="label">Days Remaining</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = htmlContent;
+        }
+
+        // Run the rendering function when the page loads
+        document.addEventListener('DOMContentLoaded', renderMedications);
+
+    </script>
+</body>
+</html>
