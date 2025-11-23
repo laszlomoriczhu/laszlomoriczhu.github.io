@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="hu" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accu - Blood Glucose Analyzer</title>
+    <title>Accu - Vércukor Elemző</title>
+    <!-- Tailwind CSS betöltése -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js és a date-fns adapter betöltése -->
     <script src="https://npmcdn.com/chart.js@4.4.3/dist/chart.umd.js"></script>
     <script src="https://npmcdn.com/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.js"></script>
     <script src="https://npmcdn.com/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 
     <script>
-        // Tailwind dark mode configuration
+        // Tailwind sötét mód konfiguráció
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -23,18 +25,18 @@
         }
     </script>
     <style>
-        /* Base styles for dark mode */
+        /* Alap stílusok a sötét módhoz */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Dark gray background */
-            color: #d1d5db; /* Light gray text */
+            background-color: #111827; /* Sötétszürke háttér */
+            color: #d1d5db; /* Világosszürke szöveg */
         }
         .chart-container {
             position: relative;
             height: 60vh;
             width: 100%;
         }
-        /* Custom scrollbar (optional, but looks good) */
+        /* Egyedi scrollbar (opcionális, de jól néz ki) */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -48,7 +50,7 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #6b7280;
         }
-        /* Styling the date picker icon in dark mode */
+        /* Dátumválasztó ikonjának stílusozása sötét módban */
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
@@ -57,66 +59,70 @@
 <body class="antialiased">
     <div class="container mx-auto p-4 md:p-8">
         
+        <!-- Cím és Fejléc -->
         <header class="mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">Accu Blood Glucose Analyzer</h1>
-            <p class="text-lg text-gray-400">Blood glucose level data visualization from the uploaded .dia file.</p>
+            <h1 class="text-4xl font-bold text-white mb-2">Accu Vércukor Elemző</h1>
+            <p class="text-lg text-gray-400">Vércukorszint adatok vizualizációja a feltöltött .dia fájlból.</p>
         </header>
 
+        <!-- Dátumszűrő szekció -->
         <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg mb-8">
-            <h3 class="text-xl font-semibold text-white mb-4">Select Period</h3>
+            <h3 class="text-xl font-semibold text-white mb-4">Időszak kiválasztása</h3>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                 <div class="col-span-1">
-                    <label for="filter-start-date" class="block text-sm font-medium text-gray-300 mb-1">Start Date</label>
+                    <label for="filter-start-date" class="block text-sm font-medium text-gray-300 mb-1">Kezdő dátum</label>
                     <input type="date" id="filter-start-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="col-span-1">
-                    <label for="filter-end-date" class="block text-sm font-medium text-gray-300 mb-1">End Date</label>
+                    <label for="filter-end-date" class="block text-sm font-medium text-gray-300 mb-1">Vég dátum</label>
                     <input type="date" id="filter-end-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="col-span-1">
                     <button id="filter-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                        Filter
+                        Szűrés
                     </button>
                 </div>
                 <div class="col-span-1">
                     <button id="reset-button" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
-                        Reset
+                        Visszaállítás
                     </button>
                 </div>
             </div>
         </div>
 
+        <!-- Statisztikai Kártyák -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 class="text-sm font-medium text-gray-400 uppercase">Number of Measurements</h3>
+                <h3 class="text-sm font-medium text-gray-400 uppercase">Mérések száma</h3>
                 <p id="stat-count" class="text-3xl font-bold text-white">-</p>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 class="text-sm font-medium text-gray-400 uppercase">Average Value</h3>
+                <h3 class="text-sm font-medium text-gray-400 uppercase">Átlagos érték</h3>
                 <p id="stat-avg" class="text-3xl font-bold text-white">-</p>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 class="text-sm font-medium text-red-400 uppercase">Maximum Value</h3>
+                <h3 class="text-sm font-medium text-red-400 uppercase">Maximum érték</h3>
                 <p id="stat-max" class="text-3xl font-bold text-red-300">-</p>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 class="text-sm font-medium text-blue-400 uppercase">Minimum Value</h3>
+                <h3 class="text-sm font-medium text-blue-400 uppercase">Minimum érték</h3>
                 <p id="stat-min" class="text-3xl font-bold text-blue-300">-</p>
             </div>
         </div>
 
+        <!-- Diagram Konténer -->
         <main class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
-            <h2 class="text-2xl font-semibold text-white mb-6">Blood Glucose Level (mmol/L) - Timeline</h2>
+            <h2 class="text-2xl font-semibold text-white mb-6">Vércukor Szint (mmol/L) - Idővonal</h2>
             <div id="loading-spinner" class="flex justify-center items-center h-64">
                 <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span class="text-lg text-gray-300">Loading and processing data...</span>
+                <span class="text-lg text-gray-300">Adatok betöltése és feldolgozása...</span>
             </div>
             
             <div id="error-message" class="hidden p-4 bg-red-900 text-red-200 rounded-lg">
-                <h3 class="font-bold">Error Occurred</h3>
+                <h3 class="font-bold">Hiba történt</h3>
                 <p id="error-text"></p>
             </div>
 
@@ -125,8 +131,9 @@
             </div>
         </main>
         
+        <!-- Lábléc -->
         <footer class="text-center text-gray-500 mt-8">
-            <p>Accu Project - Modern Web Application</p>
+            <p>Accu Project - Modern Webalkalmazás</p>
         </footer>
     </div>
 
@@ -141,32 +148,32 @@
             const filterButton = document.getElementById('filter-button');
             const resetButton = document.getElementById('reset-button');
 
-            let bgChartInstance = null; // To store the chart instance
-            let allChartData = []; // To store all read data
+            let bgChartInstance = null; // A diagram tárolására
+            let allChartData = []; // Az összes beolvasott adat tárolása
             let targetRangeFrom = 3.9;
             let targetRangeTo = 8.9;
             let hypoLimit = 3.9;
 
-            // Format date to YYYY-MM-DD string
+            // Dátum formázása YYYY-MM-DD stringgé
             function formatDateToInput(date) {
                 return date.toISOString().split('T')[0];
             }
 
             async function loadAndProcessData() {
                 try {
-                    // 1. Load data
+                    // 1. Adatok betöltése
                     const response = await fetch(fileName);
                     if (!response.ok) {
-                        throw new Error(`Network error: ${response.status} ${response.statusText}. File not found: ${fileName}`);
+                        throw new Error(`Hálózati hiba: ${response.status} ${response.statusText}. Nem található a fájl: ${fileName}`);
                     }
                     const xmlText = await response.text();
 
-                    // 2. Process XML
+                    // 2. XML feldolgozása
                     const parser = new DOMParser();
                     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
                     
                     if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
-                        throw new Error("XML file processing failed. It might be corrupted.");
+                        throw new Error("Az XML fájl feldolgozása sikertelen. Lehet, hogy sérült.");
                     }
 
                     const bgNodes = xmlDoc.getElementsByTagName("BG");
@@ -176,12 +183,12 @@
                     let minDate = new Date('9999-12-31');
                     let maxDate = new Date('1000-01-01');
 
-                    // Read and store target values
+                    // Célértékek kiolvasása és tárolása
                     targetRangeFrom = parseFloat(settingsNode.getAttribute("TgRngFrom") || 3.9);
                     targetRangeTo = parseFloat(settingsNode.getAttribute("TgRngTo") || 8.9);
                     hypoLimit = parseFloat(settingsNode.getAttribute("HypoLmt") || 3.9);
 
-                    // 3. Data extraction
+                    // 3. Adatkinyerés
                     for (let node of bgNodes) {
                         const date = node.getAttribute("Dt");
                         const time = node.getAttribute("Tm");
@@ -191,34 +198,34 @@
                             const timestamp = new Date(`${date}T${time}`);
                             data.push({ x: timestamp, y: glucose });
 
-                            // Find Min/Max date
+                            // Min/Max dátum keresése
                             if (timestamp < minDate) minDate = timestamp;
                             if (timestamp > maxDate) maxDate = timestamp;
                         }
                     }
 
                     if (data.length === 0) {
-                        throw new Error("No valid blood glucose (BG) data found in the file.");
+                        throw new Error("Nem található érvényes vércukor (BG) adat a fájlban.");
                     }
 
-                    // Sort data by time
+                    // Adatok rendezése idő szerint
                     data.sort((a, b) => a.x - b.x);
                     
-                    allChartData = data; // Save all data
+                    allChartData = data; // Összes adat mentése
 
-                    // 4. Set date pickers to min/max date
+                    // 4. Dátumválasztók beállítása a min/max dátumra
                     filterStartDateInput.value = formatDateToInput(minDate);
                     filterEndDateInput.value = formatDateToInput(maxDate);
 
-                    // 5. Update dashboard with the full dataset
+                    // 5. Műszerfal frissítése a teljes adatsorral
                     updateDashboard(allChartData);
 
-                    // 6. Add event handlers to buttons
+                    // 6. Eseménykezelők hozzáadása a gombokhoz
                     filterButton.addEventListener('click', handleFilter);
                     resetButton.addEventListener('click', handleReset);
 
                 } catch (error) {
-                    console.error("Error during data processing:", error);
+                    console.error("Hiba az adatok feldolgozása során:", error);
                     errorText.textContent = error.message;
                     errorMessage.classList.remove('hidden');
                 } finally {
@@ -226,7 +233,7 @@
                 }
             }
 
-            // New function to update statistics and chart
+            // Új funkció a statisztika és a diagram frissítésére
             function updateDashboard(data) {
                 let sum = 0;
                 let min = Infinity;
@@ -243,24 +250,24 @@
                     }
                 }
 
-                // Display statistics
+                // Statisztika megjelenítése
                 document.getElementById('stat-count').textContent = data.length;
                 document.getElementById('stat-avg').textContent = data.length > 0 ? (sum / data.length).toFixed(1) : '-';
                 document.getElementById('stat-max').textContent = data.length > 0 ? max.toFixed(1) : '-';
                 document.getElementById('stat-min').textContent = data.length > 0 ? min.toFixed(1) : '-';
 
-                // Render chart
+                // Diagram kirajzolása
                 renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit);
             }
 
-            // Filter event handler
+            // Szűrő eseménykezelője
             function handleFilter() {
-                // T00:00:00 and T23:59:59 ensures the full day is included
+                // A T00:00:00 és T23:59:59 biztosítja, hogy a teljes nap benne legyen
                 const startDate = new Date(`${filterStartDateInput.value}T00:00:00`);
                 const endDate = new Date(`${filterEndDateInput.value}T23:59:59`);
                 
                 if (startDate > endDate) {
-                    alert("Start date cannot be later than the end date.");
+                    alert("A kezdő dátum nem lehet későbbi, mint a vég dátum.");
                     return;
                 }
 
@@ -271,10 +278,10 @@
                 updateDashboard(filteredData);
             }
 
-            // Reset event handler
+            // Visszaállítás eseménykezelője
             function handleReset() {
                 updateDashboard(allChartData);
-                // Optionally reset the date pickers
+                // Opcionálisan visszaállíthatjuk a dátumválasztókat is
                 if (allChartData.length > 0) {
                     filterStartDateInput.value = formatDateToInput(allChartData[0].x);
                     filterEndDateInput.value = formatDateToInput(allChartData[allChartData.length - 1].x);
@@ -285,29 +292,29 @@
                 const ctx = document.getElementById('bgChart').getContext('2d');
                 
                 if (bgChartInstance) {
-                    bgChartInstance.destroy(); // Destroy previous chart if exists
+                    bgChartInstance.destroy(); // Korábbi diagram törlése, ha van
                 }
 
                 bgChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
                         datasets: [{
-                            label: 'Blood Glucose (mmol/L)',
+                            label: 'Vércukor (mmol/L)',
                             data: data,
-                            borderColor: 'rgb(59, 130, 246)', // Blue line
+                            borderColor: 'rgb(59, 130, 246)', // Kék vonal
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             borderWidth: 2,
                             pointBackgroundColor: (context) => {
-                                // Color points based on value
+                                // Pontok színezése érték alapján
                                 const value = context.raw.y;
-                                if (value > targetTo) return 'rgb(239, 68, 68)'; // High (red)
-                                if (value < hypo) return 'rgb(249, 115, 22)'; // Low (orange)
-                                return 'rgb(59, 130, 246)'; // Normal (blue)
+                                if (value > targetTo) return 'rgb(239, 68, 68)'; // Magas (piros)
+                                if (value < hypo) return 'rgb(249, 115, 22)'; // Alacsony (narancs)
+                                return 'rgb(59, 130, 246)'; // Normál (kék)
                             },
                             pointRadius: 3,
                             pointHoverRadius: 6,
-                            fill: true, // Fill area
-                            tension: 0.1 // Slight curve
+                            fill: true, // Terület kitöltése
+                            tension: 0.1 // Enyhe görbület
                         }]
                     },
                     options: {
@@ -325,7 +332,7 @@
                                 },
                                 title: {
                                     display: true,
-                                    text: 'Date and Time',
+                                    text: 'Dátum és Idő',
                                     color: '#d1d5db'
                                 },
                                 ticks: {
@@ -335,7 +342,7 @@
                             y: {
                                 title: {
                                     display: true,
-                                    text: 'Blood Glucose (mmol/L)',
+                                    text: 'Vércukor (mmol/L)',
                                     color: '#d1d5db'
                                 },
                                 ticks: {
@@ -345,7 +352,7 @@
                         },
                         plugins: {
                             legend: {
-                                display: false // No need for a legend with only one dataset
+                                display: false // Nincs szükségünk legendára, ha csak egy adatsor van
                             },
                             tooltip: {
                                 mode: 'index',
@@ -354,18 +361,18 @@
                                 titleColor: '#fff',
                                 bodyColor: '#fff',
                             },
-                            // Annotations (target range and hypo)
+                            // Annotációk (cél tartomány és hypo)
                             annotation: {
                                 annotations: {
                                     targetRange: {
                                         type: 'box',
                                         yMin: targetFrom,
                                         yMax: targetTo,
-                                        backgroundColor: 'rgba(74, 222, 128, 0.1)', // Greenish band
+                                        backgroundColor: 'rgba(74, 222, 128, 0.1)', // Zöldes sáv
                                         borderColor: 'rgba(74, 222, 128, 0.3)',
                                         borderWidth: 1,
                                         label: {
-                                            content: 'Target Range',
+                                            content: 'Cél tartomány',
                                             display: true,
                                             position: 'start',
                                             color: 'rgba(74, 222, 128, 0.7)',
@@ -378,9 +385,9 @@
                                         type: 'line',
                                         yMin: hypo,
                                         yMax: hypo,
-                                        borderColor: 'rgb(249, 115, 22)', // Orange
+                                        borderColor: 'rgb(249, 115, 22)', // Narancs
                                         borderWidth: 2,
-                                        borderDash: [6, 6], // Dashed line
+                                        borderDash: [6, 6], // Szaggatott vonal
                                         label: {
                                             content: `Hypo (${hypo.toFixed(1)})`,
                                             display: true,
@@ -405,7 +412,7 @@
                 });
             }
 
-            // Load data when the page loads
+            // Adatok betöltése az oldal betöltődésekor
             loadAndProcessData();
         });
     </script>
