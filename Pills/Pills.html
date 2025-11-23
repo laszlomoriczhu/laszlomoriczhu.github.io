@@ -6,7 +6,7 @@
     <title>Medication Supply Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS is unchanged */
+        /* CSS is unchanged from previous versions, only added button styling */
         :root {
             --primary-color: #007BFF;
             --secondary-color: #6c757d;
@@ -52,6 +52,8 @@
             padding: 20px;
             border-left: 5px solid var(--primary-color);
             transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .medication-card:hover {
@@ -90,6 +92,7 @@
             padding-top: 15px;
             border-top: 1px dashed #ced4da;
             text-align: center;
+            flex-grow: 1; /* Ensures this section pushes the button to the bottom */
         }
 
         .expiration-date {
@@ -106,13 +109,34 @@
 
         /* Color Coding for Days Remaining */
         .status-danger {
-            color: var(--danger-color); /* < 7 days */
+            color: var(--danger-color); 
         }
         .status-warning {
-            color: var(--warning-color); /* 7 - 30 days */
+            color: var(--warning-color); 
         }
         .status-safe {
-            color: var(--success-color); /* > 30 days */
+            color: var(--success-color); 
+        }
+        
+        /* Details Button Style */
+        .details-button {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            margin-top: 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 700;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .details-button:hover {
+            background-color: #5a6268;
         }
 
     </style>
@@ -126,15 +150,16 @@
     </div>
 
     <script>
-        // Data structure (internal date format: YYYY-MM-DD)
+        // Data structure (added 'link' property)
         const medications = [
             {
                 name: "ASA Protect Pharmavit (100mg)",
                 boxes: 1,
                 value: 30,
                 daily: 1,
-                startDate: "2025-11-05", // Internal: YYYY-MM-DD
-                expiresOn: "2025-12-04" 
+                startDate: "2025-11-05", 
+                expiresOn: "2025-12-04",
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/asa_protect_pharmavit_100_mg_gyomornedv_ellenallo_filmtabletta/56808" 
             },
             {
                 name: "PANTOPRAZOL 1 A Pharma 20mg",
@@ -142,7 +167,8 @@
                 value: 28,
                 daily: 1,
                 startDate: "2025-11-05",
-                expiresOn: "2025-12-02" 
+                expiresOn: "2025-12-02",
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/pantoprazol_1_a_pharma_20_mg_gyomornedv_ellenallo_tabletta/51838" 
             },
             {
                 name: "Rosuvastation Sandoz 20mg",
@@ -150,7 +176,8 @@
                 value: 30,
                 daily: 1,
                 startDate: "2025-11-05",
-                expiresOn: "2025-12-04" 
+                expiresOn: "2025-12-04",
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/rosuvastatin_sandoz_20_mg_filmtabletta/54778"
             },
             {
                 name: "Letrox 50mcg",
@@ -158,7 +185,8 @@
                 value: 100,
                 daily: 1,
                 startDate: "2025-11-05",
-                expiresOn: "2026-02-12" 
+                expiresOn: "2026-02-12",
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/letrox_50_g_tabletta/10483"
             },
             {
                 name: "Coverex-AS 5mg",
@@ -166,7 +194,8 @@
                 value: 30,
                 daily: 2,
                 startDate: "2025-11-04",
-                expiresOn: "2025-12-03" 
+                expiresOn: "2025-12-03",
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/coverex_as_5_mg_filmtabletta/15650"
             },
             {
                 name: "Meforal 1000mg",
@@ -174,7 +203,8 @@
                 value: 60,
                 daily: 2,
                 startDate: "2025-11-04",
-                expiresOn: "2025-12-03" 
+                expiresOn: "2025-12-03",
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/meforal_1000_mg_filmtabletta/14594"
             }
         ];
 
@@ -205,7 +235,6 @@
         
         // Helper function to format date from 'YYYY-MM-DD' to 'YYYY.MM.DD'
         function formatStartDate(dateString) {
-            // dateString is in 'YYYY-MM-DD' format
             return dateString.replace(/-/g, '.');
         }
 
@@ -229,10 +258,8 @@
                 const daysRemaining = med.daysRemaining; 
                 const statusClass = getStatusClass(daysRemaining);
                 
-                // Formázza az induló dátumot: YYYY.MM.DD
                 const formattedStartDate = formatStartDate(med.startDate);
                 
-                // Formázza a kifogyás dátumát (Long format English)
                 const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
@@ -268,6 +295,10 @@
                             <div class="days-remaining ${statusClass}">${daysRemaining}</div>
                             <div class="label">Days Remaining</div>
                         </div>
+                        
+                        <a href="${med.link}" class="details-button">
+                            Details 🔗
+                        </a>
                     </div>
                 `;
             });
