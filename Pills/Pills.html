@@ -6,7 +6,6 @@
     <title>Medication Supply Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS is unchanged from previous versions, only added button styling */
         :root {
             --primary-color: #007BFF;
             --secondary-color: #6c757d;
@@ -38,6 +37,42 @@
             margin-bottom: 40px;
             font-weight: 700;
         }
+
+        /* Sort Control Styling */
+        .sort-control {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+
+        .sort-control label {
+            font-weight: 700;
+            margin-right: 10px;
+            color: #495057;
+        }
+
+        .sort-control select {
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007BFF%22%20d%3D%22M287%2073.5c-4.1-4.1-9.3-6.2-14.7-6.2s-10.5%202.1-14.7%206.2L146.2%20199.1%2034.7%2073.5c-4.1-4.1-9.3-6.2-14.7-6.2S10%2069.4%205.8%2073.5c-8.2%208.2-8.2%2021.5%200%2029.7l130%20130c4.1%204.1%209.3%206.2%2014.7%206.2s10.5-2.1%2014.7-6.2l130-130c8.3-8.2%208.3-21.5.1-29.7z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 10px auto;
+        }
+
+        .sort-control select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
 
         .medication-list {
             display: grid;
@@ -87,12 +122,27 @@
             font-weight: 400;
         }
 
+        .equivalence-info {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #28a745; /* Green for equivalent */
+            margin-bottom: 15px;
+            padding: 5px 0;
+            border-top: 1px dotted #e0e0e0;
+            text-align: center;
+        }
+        
+        .equivalence-info strong {
+            font-weight: 700;
+        }
+
+
         .expiration-info {
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px dashed #ced4da;
             text-align: center;
-            flex-grow: 1; /* Ensures this section pushes the button to the bottom */
+            flex-grow: 1; 
         }
 
         .expiration-date {
@@ -145,29 +195,38 @@
     <div class="container">
         <h1>💊 Your Medication Supply Tracker</h1>
 
+        <div class="sort-control">
+            <label for="sortSelector">Sort By:</label>
+            <select id="sortSelector" onchange="renderMedications()">
+                <option value="days_asc">Days Remaining (Ascending)</option>
+                <option value="days_desc">Days Remaining (Descending)</option>
+                <option value="name_asc">Name (A-Z)</option>
+            </select>
+        </div>
+
         <div class="medication-list" id="medicationList">
             </div>
     </div>
 
     <script>
-        // Data structure (added 'link' property)
+        // MODIFIED DATA STRUCTURE: 'equivalentGroup' added for substitution tracking.
         const medications = [
             {
                 name: "ASA Protect Pharmavit (100mg)",
-                boxes: 1,
+                boxes: 4,
                 value: 30,
                 daily: 1,
                 startDate: "2025-11-05", 
-                expiresOn: "2025-12-04",
+                equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/asa_protect_pharmavit_100_mg_gyomornedv_ellenallo_filmtabletta/56808" 
             },
             {
                 name: "PANTOPRAZOL 1 A Pharma 20mg",
-                boxes: 1,
+                boxes: 4,
                 value: 28,
                 daily: 1,
                 startDate: "2025-11-05",
-                expiresOn: "2025-12-02",
+                equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/pantoprazol_1_a_pharma_20_mg_gyomornedv_ellenallo_tabletta/51838" 
             },
             {
@@ -176,8 +235,17 @@
                 value: 30,
                 daily: 1,
                 startDate: "2025-11-05",
-                expiresOn: "2025-12-04",
+                equivalentGroup: "Rosuvastatin", // EQUIVALENT GROUP 1
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/rosuvastatin_sandoz_20_mg_filmtabletta/54778"
+            },
+            {
+                name: "Rozuva-Teva 20mg",
+                boxes: 3,
+                value: 30,
+                daily: 1,
+                startDate: "2025-12-06", 
+                equivalentGroup: "Rosuvastatin", // EQUIVALENT GROUP 2
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/rozuva_teva_20_mg_filmtabletta/59847"
             },
             {
                 name: "Letrox 50mcg",
@@ -185,41 +253,78 @@
                 value: 100,
                 daily: 1,
                 startDate: "2025-11-05",
-                expiresOn: "2026-02-12",
+                equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/letrox_50_g_tabletta/10483"
             },
             {
                 name: "Coverex-AS 5mg",
-                boxes: 2,
+                boxes: 8,
                 value: 30,
                 daily: 2,
                 startDate: "2025-11-04",
-                expiresOn: "2025-12-03",
+                equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/coverex_as_5_mg_filmtabletta/15650"
             },
             {
                 name: "Meforal 1000mg",
-                boxes: 1,
+                boxes: 4,
                 value: 60,
                 daily: 2,
                 startDate: "2025-11-04",
-                expiresOn: "2025-12-03",
+                equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/meforal_1000_mg_filmtabletta/14594"
             }
         ];
+        
+        // --- NEW LOGIC: PRE-CALCULATE AGGREGATED STOCK FOR EQUIVALENT GROUPS ---
+        
+        // 1. Group medications by their equivalentGroup (or their own name if no group)
+        const groups = medications.reduce((acc, med) => {
+            const key = med.equivalentGroup || med.name;
+            if (!acc[key]) {
+                acc[key] = { totalPills: 0, dailyDosage: med.daily, startDate: med.startDate, members: [] };
+            }
+            acc[key].totalPills += med.boxes * med.value;
+            acc[key].members.push(med.name);
+            return acc;
+        }, {});
 
-        // Function to calculate the number of days between two dates
-        function calculateDaysRemaining(expirationDateString) {
+        // 2. Calculate the depletion date for each GROUP
+        const calculatedGroups = {};
+        for (const key in groups) {
+            const group = groups[key];
+            
+            const daysSupply = Math.floor(group.totalPills / group.dailyDosage);
+
             const today = new Date();
-            const expirationDate = new Date(expirationDateString); 
+            const startDate = new Date(group.startDate); 
             
             today.setHours(12, 0, 0, 0);
-            expirationDate.setHours(12, 0, 0, 0);
+            startDate.setHours(12, 0, 0, 0);
 
-            const diffTime = expirationDate.getTime() - today.getTime();
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            const diffTime = today.getTime() - startDate.getTime();
+            const daysUsed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             
-            return diffDays > 0 ? diffDays : 0;
+            const actualDaysUsed = Math.max(0, daysUsed);
+
+            const daysRemaining = daysSupply - actualDaysUsed;
+            
+            const depletionDate = new Date(today);
+            depletionDate.setDate(today.getDate() + daysRemaining);
+
+            calculatedGroups[key] = {
+                depletionDate: depletionDate.toISOString().slice(0, 10),
+                daysRemaining: Math.max(0, daysRemaining),
+                memberCount: group.members.length
+            };
+        }
+        
+        // ------------------------------------------------------------------------
+
+        // FUNCTION: Returns the calculated depletion data for the individual medication (now based on group)
+        function getDepletionData(med) {
+            const key = med.equivalentGroup || med.name;
+            return calculatedGroups[key];
         }
 
         // Function to determine the status color class
@@ -233,23 +338,33 @@
             }
         }
         
-        // Helper function to format date from 'YYYY-MM-DD' to 'YYYY.MM.DD'
-        function formatStartDate(dateString) {
-            return dateString.replace(/-/g, '.');
-        }
-
-        // Function to render the medication cards
+        // FUNCTION: Render the medication cards, incorporating sorting logic
         function renderMedications() {
             const listContainer = document.getElementById('medicationList');
+            const sortCriteria = document.getElementById('sortSelector').value;
             
-            // 1. Calculate Days Remaining for each item
-            const medicationsWithDays = medications.map(med => ({
-                ...med,
-                daysRemaining: calculateDaysRemaining(med.expiresOn)
-            }));
+            // 1. Map medications to include the AGGREGATED daysRemaining and depletion date
+            const medicationsWithDays = medications.map(med => {
+                const calculatedData = getDepletionData(med);
+                return {
+                    ...med,
+                    expiresOn: calculatedData.depletionDate,
+                    daysRemaining: calculatedData.daysRemaining,
+                    isEquivalent: med.equivalentGroup && calculatedData.memberCount > 1
+                };
+            });
 
-            // 2. SORT the list by 'daysRemaining' in ASCENDING (növekvő) order
-            medicationsWithDays.sort((a, b) => a.daysRemaining - b.daysRemaining);
+            // 2. SORT the list based on the selected criteria
+            medicationsWithDays.sort((a, b) => {
+                if (sortCriteria === 'name_asc') {
+                    return a.name.localeCompare(b.name);
+                } else if (sortCriteria === 'days_asc') {
+                    return a.daysRemaining - b.daysRemaining;
+                } else if (sortCriteria === 'days_desc') {
+                    return b.daysRemaining - a.daysRemaining;
+                }
+                return 0;
+            });
 
             let htmlContent = '';
 
@@ -258,17 +373,24 @@
                 const daysRemaining = med.daysRemaining; 
                 const statusClass = getStatusClass(daysRemaining);
                 
-                const formattedStartDate = formatStartDate(med.startDate);
+                const formattedStartDate = med.startDate.replace(/-/g, '.');
                 
                 const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('en-US', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
                 });
+                
+                // NEW: Equivalence Info
+                const equivalenceHtml = med.isEquivalent 
+                    ? `<div class="equivalence-info">Part of <strong>${med.equivalentGroup}</strong> group. Supply based on combined stock.</div>`
+                    : '';
+
 
                 htmlContent += `
                     <div class="medication-card">
                         <h2>${med.name}</h2>
+                        ${equivalenceHtml}
                         <div class="detail-row">
                             <span class="label">Packs:</span>
                             <span class="value">${med.boxes}</span>
@@ -278,7 +400,7 @@
                             <span class="value">${med.value}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="label">Total Pills:</span>
+                            <span class="label">Total Pills (Pack):</span>
                             <span class="value">${totalPills}</span>
                         </div>
                         <div class="detail-row">
@@ -291,9 +413,9 @@
                         </div>
                         
                         <div class="expiration-info">
-                            <div class="expiration-date">Expires On: ${expiresDateFormatted}</div>
+                            <div class="expiration-date">Stock Depletion: ${expiresDateFormatted}</div>
                             <div class="days-remaining ${statusClass}">${daysRemaining}</div>
-                            <div class="label">Days Remaining</div>
+                            <div class="label">Days Remaining (Group Stock)</div>
                         </div>
                         
                         <a href="${med.link}" class="details-button">
@@ -307,7 +429,11 @@
         }
 
         // Run the rendering function when the page loads
-        document.addEventListener('DOMContentLoaded', renderMedications);
+        document.addEventListener('DOMContentLoaded', () => {
+             // Set the default sort
+             document.getElementById('sortSelector').value = 'days_asc'; 
+             renderMedications();
+        });
 
     </script>
 </body>

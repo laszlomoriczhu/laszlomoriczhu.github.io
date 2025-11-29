@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nyugdíj Visszaszámláló 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+        }
+
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            border-radius: 15px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            min-width: 80px;
+            box-shadow: 0 8px 16px rgba(255,107,107,0.3);
+        }
+
+        .number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .label {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .target-date {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            border: 2px dashed #2196f3;
+        }
+
+        .emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            color: #ee5a24;
+            font-weight: bold;
+        }
+
+        .date-big {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2196f3;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .time-unit {
+                min-width: 65px;
+                padding: 12px;
+            }
+            
+            .number {
+                font-size: 1.6em;
+            }
+            
+            .countdown {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🎯</div>
+        <h1>Nyugdíj Visszaszámláló</h1>
+        <p class="subtitle">40 év munka után jár a nyugdíj</p>
+        
+        <div class="progress-container">
+            <h3>📊 Eddig teljesítve:</h3>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <div class="progress-text">
+                <span>36 év 118 nap</span>
+                <span id="progress-percent">0%</span>
+                <span>40 év</span>
+            </div>
+        </div>
+
+        <div class="countdown">
+            <div class="time-unit">
+                <span class="number" id="years">0</span>
+                <span class="label">Év</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="days">0</span>
+                <span class="label">Nap</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="hours">0</span>
+                <span class="label">Óra</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="minutes">0</span>
+                <span class="label">Perc</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="seconds">0</span>
+                <span class="label">Másodperc</span>
+            </div>
+        </div>
+
+        <div class="target-date">
+            <p>🎉 <strong>Becsült nyugdíjba vonulás:</strong><br>
+            <span class="date-big" id="target-date">-</span></p>
+        </div>
+
+        <div class="message">
+            <p>Már csak <span class="highlight" id="total-days">0</span> nap van hátra!<br>
+            <strong>Már majdnem ott vagy! </strong>💚</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateTargetDate() {
+            // Kiindulási dátum: 2023. december 31.
+            const startDate = new Date('2023-12-31T00:00:00');
+            
+            // Már megvan: 36 év + 118 nap
+            // Kell még: 40 év - (36 év + 118 nap) = 3 év + (365-118) nap = 3 év + 247 nap
+            const yearsNeeded = 3;
+            const daysNeeded = 247; // 365 - 118 = 247 nap
+            
+            // Kiszámoljuk a cél dátumot
+            const targetDate = new Date(startDate);
+            targetDate.setFullYear(targetDate.getFullYear() + yearsNeeded);
+            targetDate.setDate(targetDate.getDate() + daysNeeded);
+            
+            return targetDate;
+        }
+
+        function updateProgress() {
+            // Progress bar számítás
+            const totalDaysRequired = 40 * 365; // 40 év napokban
+            const completedDays = (36 * 365) + 118; // 36 év + 118 nap
+            const progressPercent = (completedDays / totalDaysRequired) * 100;
+            
+            document.getElementById('progress-bar').style.width = progressPercent + '%';
+            document.getElementById('progress-percent').textContent = Math.round(progressPercent) + '%';
+        }
+
+        function updateCountdown() {
+            const targetDate = calculateTargetDate();
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+
+            if (timeLeft < 0) {
+                document.getElementById('years').textContent = '0';
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                document.getElementById('total-days').textContent = '0';
+                document.getElementById('target-date').textContent = 'Már nyugdíjas! 🎉';
+                return;
+            }
+
+            // Számítások
+            const totalDays = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const years = Math.floor(totalDays / 365);
+            const days = totalDays % 365;
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Frissítjük a HTML-t
+            document.getElementById('years').textContent = years;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.getElementById('total-days').textContent = totalDays.toLocaleString();
+            
+            // Formázott dátum megjelenítése
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('target-date').textContent = targetDate.toLocaleDateString('hu-HU', options);
+        }
+
+        // Progress bar frissítése
+        updateProgress();
+        
+        // Frissítés minden másodpercben
+        setInterval(updateCountdown, 1000);
+        
+        // Azonnali frissítés oldalbetöltéskor
+        updateCountdown();
+    </script>
+</body>
+</html>
