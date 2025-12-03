@@ -2,177 +2,227 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nyugdíj Visszaszámláló 🎉</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
-            padding: 15px;
+            align-items: center;
+            padding: 10px;
+            touch-action: manipulation;
         }
 
         .container {
             background: white;
             border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             text-align: center;
-            max-width: 800px;
             width: 100%;
-            margin: 15px auto;
+            max-width: 420px;
+            margin: 0 auto;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 12px;
-            font-size: 2em;
+            margin-bottom: 8px;
+            font-size: 1.8em;
+            font-weight: 700;
+            line-height: 1.2;
         }
 
         .subtitle {
             color: #666;
-            margin-bottom: 20px;
-            font-size: 1em;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            line-height: 1.3;
         }
 
         .progress-container {
             background: #f8f9fa;
-            padding: 15px;
+            padding: 12px;
             border-radius: 15px;
-            margin: 15px 0;
+            margin: 12px 0;
+            position: relative;
         }
 
         .progress-bar {
             width: 100%;
-            height: 25px;
+            height: 28px;
             background: #e9ecef;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            margin: 12px 0;
+            margin: 8px 0 5px 0;
+            position: relative;
         }
 
         .progress {
             height: 100%;
             background: linear-gradient(90deg, #4ecdc4, #44a08d);
-            border-radius: 12px;
-            transition: width 0.3s ease;
+            border-radius: 14px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+            font-weight: bold;
+            font-size: 12px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+            z-index: 2;
+            white-space: nowrap;
+            letter-spacing: -0.3px;
         }
 
         .progress-text {
             display: flex;
             justify-content: space-between;
+            margin-top: 4px;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .current-progress {
+            background: #e8f5e9;
+            padding: 8px 10px;
+            border-radius: 10px;
             margin-top: 8px;
-            font-weight: bold;
             font-size: 0.9em;
+            color: #2e7d32;
+            font-weight: 500;
         }
 
         .countdown {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin: 20px 0;
-        }
-
-        @media (min-width: 768px) {
-            .countdown {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 12px;
-            }
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin: 15px 0;
         }
 
         .time-unit {
             background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: white;
-            padding: 12px 8px;
+            padding: 10px 5px;
             border-radius: 10px;
-            box-shadow: 0 6px 12px rgba(255,107,107,0.3);
+            box-shadow: 0 4px 8px rgba(255,107,107,0.25);
         }
 
         .number {
             font-size: 1.5em;
-            font-weight: bold;
+            font-weight: 800;
             display: block;
+            line-height: 1.2;
         }
 
         .label {
-            font-size: 0.75em;
-            opacity: 0.9;
-            margin-top: 4px;
+            font-size: 0.7em;
+            opacity: 0.95;
+            margin-top: 2px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         .target-date {
             background: #e3f2fd;
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 20px;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 15px 0;
             border: 2px dashed #2196f3;
-            font-size: 0.95em;
+            font-size: 0.9em;
         }
 
         .emoji {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2.2em;
+            margin-bottom: 8px;
         }
 
         .highlight {
             color: #ee5a24;
-            font-weight: bold;
+            font-weight: 800;
+            font-size: 1.1em;
         }
 
         .date-big {
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size: 1.1em;
+            font-weight: 700;
             color: #2196f3;
             display: block;
-            margin-top: 5px;
+            margin-top: 3px;
+            line-height: 1.3;
         }
 
         .message {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
+            padding: 12px;
             background: #f9f9f9;
             border-radius: 12px;
-            font-size: 0.95em;
-        }
-
-        .current-progress {
-            background: #e8f5e9;
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 10px;
             font-size: 0.9em;
+            line-height: 1.4;
         }
 
-        .current-days {
-            font-weight: bold;
-            color: #2e7d32;
-        }
-
-        @media (max-width: 360px) {
+        /* Samsung Galaxy S21 FE optimalizálás */
+        @media (max-height: 780px) {
+            body {
+                padding: 8px;
+            }
+            
             .container {
-                padding: 15px;
+                padding: 16px;
             }
             
             h1 {
-                font-size: 1.7em;
+                font-size: 1.6em;
+                margin-bottom: 6px;
+            }
+            
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 12px;
+            }
+            
+            .progress-container {
+                padding: 10px;
+                margin: 8px 0;
+            }
+            
+            .progress-bar {
+                height: 24px;
+                margin: 6px 0 4px 0;
+            }
+            
+            .progress-percent {
+                font-size: 11px;
             }
             
             .countdown {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 6px;
+                gap: 4px;
+                margin: 12px 0;
             }
             
             .time-unit {
-                padding: 10px 6px;
+                padding: 8px 4px;
             }
             
             .number {
@@ -180,26 +230,39 @@
             }
             
             .label {
-                font-size: 0.7em;
+                font-size: 0.65em;
             }
             
-            .date-big {
-                font-size: 1em;
+            .target-date {
+                padding: 10px;
+                margin: 12px 0;
+            }
+            
+            .message {
+                padding: 10px;
+                margin-top: 12px;
             }
         }
 
-        @media (min-width: 480px) and (max-width: 767px) {
+        /* Extra kicsi nézetek (biztonság) */
+        @media (max-height: 680px) {
+            .emoji {
+                display: none;
+            }
+            
+            .container {
+                padding: 12px;
+            }
+            
             .countdown {
-                grid-template-columns: repeat(5, 1fr);
-                gap: 8px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                margin: 10px 0;
             }
             
-            .time-unit {
-                padding: 12px 6px;
-            }
-            
-            .number {
-                font-size: 1.4em;
+            .time-unit:nth-child(4),
+            .time-unit:nth-child(5) {
+                display: none;
             }
         }
     </style>
@@ -214,37 +277,38 @@
             <h3>📊 Eddig teljesítve:</h3>
             <div class="progress-bar">
                 <div class="progress" id="progress-bar"></div>
+                <div class="progress-percent" id="progress-percent">0.00000000%</div>
             </div>
             <div class="progress-text">
-                <span>Kezdet</span>
-                <span id="progress-percent">0%</span>
-                <span>Nyugdíj (40 év)</span>
+                <span>0 év</span>
+                <span id="current-progress-short">0 év 0 nap</span>
+                <span>40 év</span>
             </div>
             <div class="current-progress">
-                Jelenleg: <span class="current-days" id="current-progress">0 év 0 nap</span>
+                Jelenleg: <span id="current-progress">0 év 0 nap</span>
             </div>
         </div>
 
         <div class="countdown">
             <div class="time-unit">
                 <span class="number" id="years">0</span>
-                <span class="label">Év</span>
+                <span class="label">ÉV</span>
             </div>
             <div class="time-unit">
                 <span class="number" id="days">0</span>
-                <span class="label">Nap</span>
+                <span class="label">NAP</span>
             </div>
             <div class="time-unit">
                 <span class="number" id="hours">0</span>
-                <span class="label">Óra</span>
+                <span class="label">ÓRA</span>
             </div>
             <div class="time-unit">
                 <span class="number" id="minutes">0</span>
-                <span class="label">Perc</span>
+                <span class="label">PERC</span>
             </div>
             <div class="time-unit">
                 <span class="number" id="seconds">0</span>
-                <span class="label">Másodperc</span>
+                <span class="label">MP</span>
             </div>
         </div>
 
@@ -255,7 +319,7 @@
 
         <div class="message">
             <p>Már csak <span class="highlight" id="total-days">0</span> nap van hátra!</p>
-            <p><strong>Már majdnem ott vagy! </strong>💚</p>
+            <p><strong>Már majdnem ott vagy!</strong> 💚</p>
         </div>
     </div>
 
@@ -291,7 +355,7 @@
             // Jelenleg teljesített napok (pontosan)
             const currentTotalDays = startDaysCompleted + elapsedDays;
             
-            // Százalék számítás 4 tizedesjegyre
+            // Százalék számítás 8 tizedesjegyre
             const progressPercent = (currentTotalDays / totalDaysRequired) * 100;
             
             // Évek és napok számítása a teljesítményhez
@@ -320,8 +384,7 @@
                     hours: 0, 
                     minutes: 0, 
                     seconds: 0, 
-                    totalDays: 0,
-                    targetDate: targetDate
+                    totalDays: 0
                 };
             }
             
@@ -343,8 +406,7 @@
                 hours: hours,
                 minutes: minutes,
                 seconds: seconds,
-                totalDays: totalDays,
-                targetDate: targetDate
+                totalDays: totalDays
             };
         }
 
@@ -354,9 +416,17 @@
             const progress = calculateCurrentProgress();
             const progressPercentValue = Math.min(progress.percent, 100);
             
+            // Progress bar
             document.getElementById('progress-bar').style.width = progressPercentValue + '%';
-            document.getElementById('progress-percent').textContent = progressPercentValue.toFixed(8) + '%';
+            
+            // Százalék 8 tizedesjeggyel a progress bar közepén
+            document.getElementById('progress-percent').textContent = 
+                progressPercentValue.toFixed(8) + '%';
+            
+            // Jelenlegi állapot szövegesen
             document.getElementById('current-progress').textContent = 
+                `${progress.years} év ${progress.days} nap`;
+            document.getElementById('current-progress-short').textContent = 
                 `${progress.years} év ${progress.days} nap`;
             
             // Visszaszámláló frissítése
@@ -378,30 +448,25 @@
             if (timeLeft.totalDays <= 0) {
                 document.getElementById('target-date').textContent = 'Már nyugdíjas! 🎉';
                 document.getElementById('progress-bar').style.width = '100%';
-                document.getElementById('progress-percent').textContent = '100.0000%';
+                document.getElementById('progress-percent').textContent = '100.00000000%';
             }
         }
 
-        // 7. DEBUG INFO
-        console.log("=== HELYES SZÁMOLÁS ===");
-        console.log("Kezdő dátum (2023.12.31):", startDate.toLocaleDateString('hu-HU'));
-        console.log("Kezdő napok:", startDaysCompleted, "nap = 36 év 118 nap");
-        console.log("Cél napok:", totalDaysRequired, "nap = 40 év");
-        console.log("Hátralévő napok 2023.12.31-től:", daysNeededFrom2023, "nap = 3 év 247 nap");
-        
-        const targetDate = calculateTargetDate();
-        console.log("Céldátum:", targetDate.toLocaleDateString('hu-HU'), "(2023.12.31 + 3 év 247 nap)");
-        
-        const now = new Date();
-        const elapsed = (now - startDate) / (1000 * 60 * 60 * 24);
-        console.log("Ma:", now.toLocaleDateString('hu-HU'));
-        console.log("Előrehaladás 2023.12.31 óta:", elapsed.toFixed(1), "nap");
-        console.log("Jelenlegi teljesítmény napokban:", (startDaysCompleted + elapsed).toFixed(1), "nap");
-        console.log("==================");
-
-        // 8. INICIALIZÁLÁS ÉS FRISSÍTÉS
+        // 7. INICIALIZÁLÁS ÉS FRISSÍTÉS
         updateAllDisplays(); // Azonnali frissítés
         setInterval(updateAllDisplays, 1000); // Másodpercenkénti frissítés
+
+        // 8. MOBIL OPTIMALIZÁLÁS
+        // Samsung Galaxy S21 FE: 1080x1920, 6.4"
+        // Viewport height: ~780px (chrome toolbar miatt)
+        
+        // Megakadályozzuk a zoom-olást
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        
+        // Gyorsabb tap érzékelés
+        document.addEventListener('touchstart', function() {}, {passive: true});
     </script>
 </body>
 </html>
