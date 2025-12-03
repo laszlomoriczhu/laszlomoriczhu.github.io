@@ -557,7 +557,6 @@
             </div>
             <div class="progress-text">
                 <span>0 év</span>
-                <span id="current-progress-short">0 év 0 nap</span>
                 <span>40 év</span>
             </div>
             <div class="current-progress">
@@ -747,8 +746,6 @@
             
             // Jelenlegi állapot szövegesen
             document.getElementById('current-progress').textContent = 
-                `${progress.years} év ${progress.days} nap`;
-            document.getElementById('current-progress-short').textContent = 
                 `${progress.years} év ${progress.days} nap`;
             
             // Visszaszámláló frissítése
