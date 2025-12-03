@@ -51,6 +51,78 @@
             z-index: 100;
         }
 
+        /* Születésnapi torta a container bal felső sarkában (csak 3.-án) */
+        .birthday-cake {
+            position: absolute;
+            top: 40px;
+            left: 15px;
+            z-index: 100;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+
+        .birthday-cake.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .cake {
+            width: 50px;
+            height: 30px;
+            position: relative;
+        }
+
+        .cake-base {
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(to bottom, #ffb6c1 0%, #ff69b4 100%);
+            border-radius: 10px 10px 5px 5px;
+            position: relative;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .cake-base::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 5px;
+            right: 5px;
+            height: 8px;
+            background: linear-gradient(to bottom, #fff0f5 0%, #ffe4e1 100%);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .cake-candle {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 15px;
+            background: linear-gradient(to bottom, #ffd700 0%, #ffa500 100%);
+            border-radius: 2px;
+        }
+
+        .cake-flame {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 12px;
+            background: linear-gradient(to bottom, #ffff00 0%, #ff4500 100%);
+            border-radius: 50% 50% 20% 20%;
+            filter: blur(0.5px);
+            box-shadow: 0 0 10px #ff4500;
+            animation: cakeFlicker 1s infinite alternate;
+        }
+
+        @keyframes cakeFlicker {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1, 0.9); }
+        }
+
         .candle {
             width: 18px;
             height: 36px;
@@ -180,7 +252,6 @@
             font-size: 1.0em;
             font-weight: 600;
             line-height: 1.2;
-            
         }
 
         .subtitle {
@@ -329,13 +400,11 @@
             h1 {
                 font-size: 1.6em;
                 margin-bottom: 6px;
-                padding-right: 70px;
             }
             
             .subtitle {
                 font-size: 0.85em;
                 margin-bottom: 12px;
-                padding-right: 70px;
             }
             
             .progress-container {
@@ -396,6 +465,17 @@
                 width: 8px;
                 height: 16px;
             }
+            
+            /* Torta kisebb */
+            .birthday-cake {
+                top: 12px;
+                left: 12px;
+            }
+            
+            .cake {
+                width: 40px;
+                height: 24px;
+            }
         }
 
         @media (max-width: 380px) {
@@ -410,13 +490,24 @@
                 height: 28px;
             }
             
-            h1 {
-                padding-right: 60px;
-                font-size: 1.5em;
+            .birthday-cake {
+                top: 10px;
+                left: 10px;
             }
             
-            .subtitle {
-                padding-right: 60px;
+            .cake {
+                width: 35px;
+                height: 20px;
+            }
+            
+            .cake-candle {
+                height: 12px;
+            }
+            
+            .cake-flame {
+                top: -20px;
+                width: 6px;
+                height: 10px;
             }
         }
     </style>
@@ -444,6 +535,15 @@
                 <div class="candle-body"></div>
                 <div class="candle-wick"></div>
                 <div class="flame"></div>
+            </div>
+        </div>
+
+        <!-- Születésnapi torta a container bal felső sarkában (csak 3.-án) -->
+        <div class="birthday-cake" id="birthdayCake">
+            <div class="cake">
+                <div class="cake-base"></div>
+                <div class="cake-candle"></div>
+                <div class="cake-flame"></div>
             </div>
         </div>
 
@@ -618,7 +718,21 @@
             }
         }
 
-        // 7. MINDEN FRISSÍTÉSE
+        // 7. SZÜLETÉSNAPI TORTA ELLENŐRZÉSE (csak hónap 3.-án)
+        function checkBirthdayCake() {
+            const now = new Date();
+            const today = now.getDate(); // Hónap napja (1-31)
+            const birthdayCake = document.getElementById('birthdayCake');
+            
+            // Ha ma a hónap 3. napja
+            if (today === 3) {
+                birthdayCake.classList.add('show');
+            } else {
+                birthdayCake.classList.remove('show');
+            }
+        }
+
+        // 8. MINDEN FRISSÍTÉSE
         function updateAllDisplays() {
             // Progress frissítése
             const progress = calculateCurrentProgress();
@@ -655,6 +769,9 @@
             // Adventi gyertyák frissítése
             updateAdventCandles();
             
+            // Születésnapi torta ellenőrzése
+            checkBirthdayCake();
+            
             // Ha már nyugdíjas
             if (timeLeft.totalDays <= 0) {
                 document.getElementById('target-date').textContent = 'Már nyugdíjas! 🎉';
@@ -663,11 +780,11 @@
             }
         }
 
-        // 8. INICIALIZÁLÁS ÉS FRISSÍTÉS
+        // 9. INICIALIZÁLÁS ÉS FRISSÍTÉS
         updateAllDisplays(); // Azonnali frissítés
         setInterval(updateAllDisplays, 1000); // Másodpercenkénti frissítés
 
-        // 9. MOBIL OPTIMALIZÁLÁS
+        // 10. MOBIL OPTIMALIZÁLÁS
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
         });
