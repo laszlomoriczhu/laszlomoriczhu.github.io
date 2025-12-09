@@ -131,6 +131,16 @@
     </div>
 
     <script>
+        // --- Medication Dose Change Definitions (NEW) ---
+        const doseChanges = [
+            // Dózis 1: 2025.10.25-2025.11.03 (Light Orange)
+            { startDate: '2025-10-25', endDate: '2025-11-03', label: 'Dose Change 1', color: 'rgba(255, 165, 0, 0.15)' },
+            // Dózis 2: 2025.11.04-2025.12.07 (Light Blue)
+            { startDate: '2025-11-04', endDate: '2025-12-07', label: 'Dose Change 2', color: 'rgba(54, 162, 235, 0.15)' },
+            // Dózis 3: 2025.12.08-napjaink (Light Purple - using a distant future date)
+            { startDate: '2025-12-08', endDate: '2050-12-31', label: 'Dose Change 3', color: 'rgba(153, 102, 255, 0.15)' }
+        ];
+
         document.addEventListener('DOMContentLoaded', () => {
             const fileName = "{b41a95fe-1686-419e-b04b-2b0a87b145d4}.dia";
             const loadingSpinner = document.getElementById('loading-spinner');
@@ -188,7 +198,8 @@
                         const glucose = parseFloat(node.getAttribute("Gl"));
 
                         if (date && time && !isNaN(glucose)) {
-                            const timestamp = new Date(`${date}T${time}`);
+                            // Set time to ensure correct timezone handling for comparison
+                            const timestamp = new Date(`${date}T${time}:00`);
                             data.push({ x: timestamp, y: glucose });
 
                             // Find Min/Max date
@@ -288,6 +299,91 @@
                     bgChartInstance.destroy(); // Destroy previous chart if exists
                 }
 
+                // -------------------------------------------------------------
+                // 1. Generate Dose Change Annotations (NEW LOGIC)
+                // -------------------------------------------------------------
+                const doseAnnotations = {};
+                doseChanges.forEach((change, index) => {
+                    // Unique key for the annotation
+                    const key = `doseChange_${index}`; 
+                    
+                    // Create the annotation object
+                    doseAnnotations[key] = {
+                        type: 'box',
+                        // xMin/xMax defines the date range
+                        xMin: change.startDate,
+                        xMax: change.endDate, 
+                        // yMin/yMax covers the entire visible area of the chart
+                        yMin: 0,
+                        yMax: 20, 
+                        backgroundColor: change.color,
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        label: {
+                            content: change.label,
+                            display: true,
+                            position: 'start',
+                            color: '#9ca3af', // Light gray text
+                            backgroundColor: 'rgba(17, 24, 39, 0.6)', // Dark background for readability
+                            font: {
+                                size: 10
+                            }
+                        }
+                    };
+                });
+                // -------------------------------------------------------------
+
+
+                // 2. Combine all annotations (Dose Changes + Target Range + Hypo Line)
+                const allAnnotations = {
+                    ...doseAnnotations, // Insert the generated dose changes
+                    
+                    // Existing Target Range Annotation
+                    targetRange: {
+                        type: 'box',
+                        yMin: targetFrom,
+                        yMax: targetTo,
+                        backgroundColor: 'rgba(74, 222, 128, 0.1)', // Greenish band
+                        borderColor: 'rgba(74, 222, 128, 0.3)',
+                        borderWidth: 1,
+                        label: {
+                            content: 'Target Range',
+                            display: true,
+                            position: 'start',
+                            color: 'rgba(74, 222, 128, 0.7)',
+                            font: {
+                                size: 10
+                            }
+                        },
+                        // Ensure Target Range is always visible above dose change backgrounds
+                        z: 1 
+                    },
+                    
+                    // Existing Hypo Line Annotation
+                    hypoLine: {
+                        type: 'line',
+                        yMin: hypo,
+                        yMax: hypo,
+                        borderColor: 'rgb(249, 115, 22)', // Orange
+                        borderWidth: 2,
+                        borderDash: [6, 6], // Dashed line
+                        label: {
+                            content: `Hypo (${hypo.toFixed(1)})`,
+                            display: true,
+                            position: 'start',
+                            color: 'rgb(249, 115, 22)',
+                            backgroundColor: 'rgba(17, 24, 39, 0.6)',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            }
+                        },
+                        // Ensure Hypo Line is always visible above dose change backgrounds
+                        z: 1 
+                    }
+                };
+
+                // 3. Create the Chart
                 bgChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -354,46 +450,10 @@
                                 titleColor: '#fff',
                                 bodyColor: '#fff',
                             },
-                            // Annotations (target range and hypo)
+                            // Annotations (Target Range, Hypo Line, and Dose Changes)
                             annotation: {
-                                annotations: {
-                                    targetRange: {
-                                        type: 'box',
-                                        yMin: targetFrom,
-                                        yMax: targetTo,
-                                        backgroundColor: 'rgba(74, 222, 128, 0.1)', // Greenish band
-                                        borderColor: 'rgba(74, 222, 128, 0.3)',
-                                        borderWidth: 1,
-                                        label: {
-                                            content: 'Target Range',
-                                            display: true,
-                                            position: 'start',
-                                            color: 'rgba(74, 222, 128, 0.7)',
-                                            font: {
-                                                size: 10
-                                            }
-                                        }
-                                    },
-                                    hypoLine: {
-                                        type: 'line',
-                                        yMin: hypo,
-                                        yMax: hypo,
-                                        borderColor: 'rgb(249, 115, 22)', // Orange
-                                        borderWidth: 2,
-                                        borderDash: [6, 6], // Dashed line
-                                        label: {
-                                            content: `Hypo (${hypo.toFixed(1)})`,
-                                            display: true,
-                                            position: 'start',
-                                            color: 'rgb(249, 115, 22)',
-                                            backgroundColor: 'rgba(17, 24, 39, 0.6)',
-                                            font: {
-                                                size: 10,
-                                                weight: 'bold'
-                                            }
-                                        }
-                                    }
-                                }
+                                // All annotation objects are now included here
+                                annotations: allAnnotations 
                             }
                         },
                         interaction: {
