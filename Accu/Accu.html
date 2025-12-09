@@ -10,6 +10,7 @@
     <script src="https://npmcdn.com/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 
     <script>
+        // New
         // Tailwind dark mode configuration
         tailwind.config = {
             darkMode: 'class',
@@ -131,14 +132,14 @@
     </div>
 
     <script>
-        // --- Medication Dose Change Definitions (NEW) ---
+        // --- Medication Dose Change Definitions (FIXED for gap-less display) ---
         const doseChanges = [
-            // Dose 1: 2025.10.25-2025.11.03 (Light Orange)
-            { startDate: '2025-10-25', endDate: '2025-11-03', label: 'Dose Change 1', color: 'rgba(255, 165, 0, 0.15)' },
-            // Dose 2: 2025.11.04-2025.12.07 (Light Blue)
-            { startDate: '2025-11-04', endDate: '2025-12-07', label: 'Dose Change 2', color: 'rgba(54, 162, 235, 0.15)' },
-            // Dose 3: 2025.12.08-today (Light Purple - using a distant future date)
-            { startDate: '2025-12-08', endDate: '2050-12-31', label: 'Dose Change 3', color: 'rgba(153, 102, 255, 0.15)' }
+            // Period 1: Start 2025-10-25, Ends 2025-11-03 23:59:59 (xMax is 2025-11-04)
+            { startDate: '2025-10-25', exclusiveEndDate: '2025-11-04', color: 'rgba(255, 165, 0, 0.15)' },
+            // Period 2: Start 2025-11-04, Ends 2025-12-07 23:59:59 (xMax is 2025-12-08)
+            { startDate: '2025-11-04', exclusiveEndDate: '2025-12-08', color: 'rgba(54, 162, 235, 0.15)' },
+            // Period 3: Start 2025-12-08, Ends now/future (xMax is distant future)
+            { startDate: '2025-12-08', exclusiveEndDate: '2050-12-31', color: 'rgba(153, 102, 255, 0.15)' }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -323,22 +324,18 @@
                     doseAnnotations[key] = {
                         type: 'box',
                         xMin: change.startDate,
-                        xMax: change.endDate, 
-                        // FIX: Changed yMax to a high value to cover the entire chart height
+                        // FIX: Using exclusiveEndDate to ensure full day coverage
+                        xMax: change.exclusiveEndDate, 
+                        // FIX: Changed yMax from 100 to 25
                         yMin: 0,
-                        yMax: 100, // Guaranteed to be higher than any typical BG reading
+                        yMax: 25, // Safely covers any expected BG scale
                         backgroundColor: change.color,
                         borderColor: 'transparent',
                         borderWidth: 0,
                         label: {
-                            content: change.label,
-                            display: true,
-                            position: 'start',
-                            color: '#9ca3af', // Light gray text
-                            backgroundColor: 'rgba(17, 24, 39, 0.6)', // Dark background for readability
-                            font: {
-                                size: 10
-                            }
+                            // FIX: Disable label display
+                            content: '',
+                            display: false, 
                         }
                     };
                 });
