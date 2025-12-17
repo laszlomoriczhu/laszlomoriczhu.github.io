@@ -1,83 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blood Pressure Tracker</title>
+    <title>Vérnyomás Nyilvántartó</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
     <style>
-        /* Base styles for status color coding */
         .status-normal { background-color: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
         .status-elevated { background-color: #fef3c7; color: #92400e; border-left: 4px solid #fbbf24; }
-        .status-high { background-color: #fee2e2; color: #991b1b; border-left: 4px solid #f87171; }
+        .status-high-1 { background-color: #fed7aa; color: #9a3412; border-left: 4px solid #fb923c; }
+        .status-high-2 { background-color: #fee2e2; color: #991b1b; border-left: 4px solid #f87171; }
+        .status-high-3 { background-color: #fecaca; color: #7f1d1d; border-left: 4px solid #dc2626; }
+        .status-optimal { background-color: #dbeafe; color: #1e40af; border-left: 4px solid #3b82f6; }
         
-        /* Utility to make the table look better on mobile */
         @media (max-width: 640px) {
             .table-row > td:before {
                 content: attr(data-label);
                 float: left;
                 font-weight: bold;
+                font-size: 0.75rem;
                 text-transform: uppercase;
                 margin-right: 8px;
+                color: #6b7280;
             }
             .table-row {
                 display: block;
-                margin-bottom: 0.75rem; /* 12px */
-                padding: 0.5rem; /* 8px */
-                border-radius: 0.5rem; /* 8px */
+                margin-bottom: 1rem;
+                padding: 0.75rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             }
             .table-row > td {
                 display: block;
                 text-align: right !important;
-                padding: 0.25rem 0; /* 4px */
+                padding: 0.5rem 0;
                 border-bottom: 1px solid #f3f4f6;
+                font-size: 0.875rem;
             }
             .table-row > td:last-child {
                 border-bottom: none;
+                padding-top: 0.75rem;
             }
             .table-header {
                 display: none;
             }
         }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .tab-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .tab-button:not(.active) {
+            background-color: #e5e7eb;
+            color: #6b7280;
+        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen p-4 sm:p-8">
+<body class="bg-gray-50 min-h-screen p-2 sm:p-8">
 
-    <div class="max-w-6xl mx-auto">
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-6 border-b pb-2">🩺 Blood Pressure Tracker</h1>
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4 sm:mb-6 border-b pb-2">🩺 Vérnyomás Nyilvántartó</h1>
         
-        <div class="flex flex-wrap gap-4 items-center mb-6 bg-white p-4 rounded-lg shadow-md">
-            <label for="date-filter" class="text-gray-700 font-medium">Filter by Date:</label>
-            <input type="date" id="date-filter" onchange="filterData()" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-            <button onclick="resetFilter()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-150">
-                Show All
+        <!-- Szabvány választó -->
+        <div class="bg-white p-3 sm:p-4 rounded-lg shadow-md mb-4">
+            <label for="standard-select" class="block text-sm font-medium text-gray-700 mb-2">Értékelési szabvány:</label>
+            <select id="standard-select" onchange="changeStandard()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base">
+                <option value="acc">USA (ACC/AHA 2017) - Szigorúbb</option>
+                <option value="esc" selected>EU (ESC/ESH 2018) - Európai</option>
+                <option value="who">WHO - Egyszerűsített</option>
+            </select>
+            <div id="standard-info" class="mt-3 p-3 bg-blue-50 rounded text-xs sm:text-sm text-gray-700"></div>
+        </div>
+
+        <!-- Szűrők -->
+        <div class="bg-white p-3 sm:p-4 rounded-lg shadow-md mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label for="date-from" class="block text-sm font-medium text-gray-700 mb-1">Időszak kezdete:</label>
+                    <input type="date" id="date-from" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="date-to" class="block text-sm font-medium text-gray-700 mb-1">Időszak vége:</label>
+                    <input type="date" id="date-to" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+            </div>
+            <button onclick="resetFilter()" class="mt-3 w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-150 text-sm">
+                Összes megjelenítése
             </button>
         </div>
 
-        <div id="summary-dashboard" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            </div>
+        <!-- Tab váltó -->
+        <div class="flex gap-2 mb-4 overflow-x-auto">
+            <button onclick="showTab('table')" id="tab-table" class="tab-button active">📊 Táblázat</button>
+            <button onclick="showTab('chart')" id="tab-chart" class="tab-button">📈 Diagram</button>
+        </div>
 
-        <div class="bg-white rounded-lg shadow-xl overflow-x-auto">
+        <!-- Statisztikák -->
+        <div id="summary-dashboard" class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-4"></div>
+
+        <!-- Táblázat nézet -->
+        <div id="table-view" class="bg-white rounded-lg shadow-xl overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50 table-header">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SYS (Systolic)</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DIA (Diastolic)</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PULSE</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dátum</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Idő</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">SYS</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">DIA</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pulzus</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Státusz</th>
                     </tr>
                 </thead>
-                <tbody id="data-table-body" class="bg-white divide-y divide-gray-200">
-                    </tbody>
+                <tbody id="data-table-body" class="bg-white divide-y divide-gray-200"></tbody>
             </table>
         </div>
-        
+
+        <!-- Diagram nézet -->
+        <div id="chart-view" class="bg-white rounded-lg shadow-xl p-3 sm:p-6" style="display: none;">
+            <canvas id="bp-chart"></canvas>
         </div>
+    </div>
 
     <script>
-        // 1. DATA INJECTION
         const rawData = `
 Date|Time|SYS|DIA|PULSE
 2025.10.24|18:50|166|105|82
@@ -118,31 +169,66 @@ Date|Time|SYS|DIA|PULSE
 2025.12.09|17:32|110|77|82
 2025.12.10|17:40|107|71|73
 2025.12.11|18:26|116|75|76
+2025.12.12|19:50|115|75|72
+2025.12.13|17:41|108|70|74
+2025.12.14|12:03|117|76|76
+2025.12.14|18:45|121|76|73
+2025.12.15|17:40|128|90|82
+2025.12.16|16:56|114|74|81
         `.trim();
 
-        // 2. DATA PROCESSING
+        let currentStandard = 'esc';
+        let chartInstance = null;
+
+        const standards = {
+            acc: {
+                name: 'USA (ACC/AHA 2017)',
+                description: 'Szigorúbb amerikai szabvány. A 130/80 már magas vérnyomásnak számít.',
+                link: 'https://www.ahajournals.org/doi/10.1161/HYP.0000000000000065',
+                categories: [
+                    { label: 'Normális', class: 'status-normal', check: (s, d) => s < 120 && d < 80 },
+                    { label: 'Emelkedett', class: 'status-elevated', check: (s, d) => (s >= 120 && s < 130) && d < 80 },
+                    { label: 'Magas (1. stádium)', class: 'status-high-1', check: (s, d) => (s >= 130 && s < 140) || (d >= 80 && d < 90) },
+                    { label: 'Magas (2. stádium)', class: 'status-high-2', check: (s, d) => s >= 140 || d >= 90 }
+                ]
+            },
+            esc: {
+                name: 'EU (ESC/ESH 2018)',
+                description: 'Európai szabvány. Részletesebb kategóriákkal, enyhébb határértékekkel.',
+                link: 'https://academic.oup.com/eurheartj/article/39/33/3021/5079119',
+                categories: [
+                    { label: 'Optimális', class: 'status-optimal', check: (s, d) => s < 120 && d < 80 },
+                    { label: 'Normális', class: 'status-normal', check: (s, d) => (s >= 120 && s < 130) || (d >= 80 && d < 85) },
+                    { label: 'Magas normális', class: 'status-elevated', check: (s, d) => (s >= 130 && s < 140) || (d >= 85 && d < 90) },
+                    { label: 'Hypertonia 1.', class: 'status-high-1', check: (s, d) => (s >= 140 && s < 160) || (d >= 90 && d < 100) },
+                    { label: 'Hypertonia 2.', class: 'status-high-2', check: (s, d) => (s >= 160 && s < 180) || (d >= 100 && d < 110) },
+                    { label: 'Hypertonia 3.', class: 'status-high-3', check: (s, d) => s >= 180 || d >= 110 }
+                ]
+            },
+            who: {
+                name: 'WHO',
+                description: 'Világegészségügyi Szervezet egyszerűsített kategóriái.',
+                link: 'https://www.who.int/news-room/fact-sheets/detail/hypertension',
+                categories: [
+                    { label: 'Normális', class: 'status-normal', check: (s, d) => s < 140 && d < 90 },
+                    { label: 'Magas vérnyomás', class: 'status-high-2', check: (s, d) => s >= 140 || d >= 90 }
+                ]
+            }
+        };
+
         function processData(dataString) {
             const lines = dataString.split('\n');
             const [headerLine, ...dataLines] = lines;
-            const headers = headerLine.split('|').map(h => h.trim());
-
+            
             return dataLines.map(line => {
                 const values = line.split('|').map(v => v.trim());
-                const record = {};
-                headers.forEach((header, index) => {
-                    record[header] = values[index];
-                });
-
-                // Clean up date and time formats for consistency and filtering
-                record.Date = record.Date.replace(/\./g, '-');
-                record.Time = record.Time.replace(/\./g, ':');
-                
-                // Convert numerical values to actual numbers
-                record.SYS = parseInt(record.SYS, 10);
-                record.DIA = parseInt(record.DIA, 10);
-                record.PULSE = parseInt(record.PULSE, 10);
-
-                // Add Status property
+                const record = {
+                    Date: values[0].replace(/\./g, '-'),
+                    Time: values[1].replace(/\./g, ':'),
+                    SYS: parseInt(values[2], 10),
+                    DIA: parseInt(values[3], 10),
+                    PULSE: parseInt(values[4], 10)
+                };
                 record.Status = getBPStatus(record.SYS, record.DIA);
                 return record;
             });
@@ -151,126 +237,231 @@ Date|Time|SYS|DIA|PULSE
         const allData = processData(rawData);
         let filteredData = [...allData];
 
-        // 3. CORE LOGIC: COLOR CODING (Egészségügyi Színkódolás)
         function getBPStatus(sys, dia) {
-            // Using standard guidelines (e.g., ACC/AHA 2017)
-            if (sys < 120 && dia < 80) {
-                return { label: 'Normal', class: 'status-normal' };
-            } else if ((sys >= 120 && sys < 130) && dia < 80) {
-                return { label: 'Elevated', class: 'status-elevated' };
-            } else if ((sys >= 130 && sys < 140) || (dia >= 80 && dia < 90)) {
-                return { label: 'High (Stage 1)', class: 'status-high' };
-            } else if (sys >= 140 || dia >= 90) {
-                 return { label: 'High (Stage 2)', class: 'status-high' };
-            } else {
-                return { label: 'Unknown', class: 'bg-gray-100' };
+            const standard = standards[currentStandard];
+            for (let cat of standard.categories) {
+                if (cat.check(sys, dia)) {
+                    return { label: cat.label, class: cat.class };
+                }
+            }
+            return { label: 'Ismeretlen', class: 'bg-gray-100' };
+        }
+
+        function changeStandard() {
+            currentStandard = document.getElementById('standard-select').value;
+            const standard = standards[currentStandard];
+            document.getElementById('standard-info').innerHTML = `
+                <strong>${standard.name}:</strong> ${standard.description}
+                <a href="${standard.link}" target="_blank" class="text-blue-600 hover:text-blue-800 underline ml-2">
+                    Részletek →
+                </a>
+            `;
+            
+            filteredData = filteredData.map(record => ({
+                ...record,
+                Status: getBPStatus(record.SYS, record.DIA)
+            }));
+            
+            renderSummary(filteredData);
+            renderTable(filteredData);
+            if (chartInstance) {
+                renderChart(filteredData);
             }
         }
 
-        // 4. RENDERING FUNCTIONS
-        
-        // Render the main data table
         function renderTable(data) {
             const tableBody = document.getElementById('data-table-body');
-            tableBody.innerHTML = ''; // Clear previous data
+            tableBody.innerHTML = '';
 
             data.forEach(record => {
                 const row = document.createElement('tr');
                 row.className = `table-row ${record.Status.class} transition duration-150 hover:shadow-lg`;
                 
                 row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" data-label="Date:">${record.Date}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-label="Time:">${record.Time}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold" data-label="SYS:">${record.SYS}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold" data-label="DIA:">${record.DIA}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" data-label="Pulse:">${record.PULSE}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold" data-label="Status:">
-                        <span class="px-2 inline-flex text-xs leading-5 rounded-full capitalize" style="background-color: inherit; color: inherit;">
-                            ${record.Status.label}
-                        </span>
-                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900" data-label="Dátum:">${record.Date}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600" data-label="Idő:">${record.Time}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-bold" data-label="SYS:">${record.SYS}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-bold" data-label="DIA:">${record.DIA}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600" data-label="Pulzus:">${record.PULSE}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-semibold" data-label="Státusz:">${record.Status.label}</td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
-        // Render the summary dashboard (Összegző Statisztikák)
         function renderSummary(data) {
             const dashboard = document.getElementById('summary-dashboard');
             dashboard.innerHTML = '';
             
             if (data.length === 0) {
-                dashboard.innerHTML = '<div class="col-span-4 text-center p-4 bg-yellow-100 text-yellow-700 rounded-lg">No data matches the current filter.</div>';
+                dashboard.innerHTML = '<div class="col-span-4 text-center p-4 bg-yellow-100 text-yellow-700 rounded-lg text-sm">Nincs adat a kiválasztott időszakra.</div>';
                 return;
             }
 
-            const totalSYS = data.reduce((sum, r) => sum + r.SYS, 0);
-            const totalDIA = data.reduce((sum, r) => sum + r.DIA, 0);
-            const totalPULSE = data.reduce((sum, r) => sum + r.PULSE, 0);
-            const count = data.length;
-
-            const avgSYS = (totalSYS / count).toFixed(1);
-            const avgDIA = (totalDIA / count).toFixed(1);
-            const avgPULSE = (totalPULSE / count).toFixed(1);
-
+            const avgSYS = (data.reduce((sum, r) => sum + r.SYS, 0) / data.length).toFixed(1);
+            const avgDIA = (data.reduce((sum, r) => sum + r.DIA, 0) / data.length).toFixed(1);
+            const avgPULSE = (data.reduce((sum, r) => sum + r.PULSE, 0) / data.length).toFixed(1);
             const avgStatus = getBPStatus(Math.round(avgSYS), Math.round(avgDIA));
 
             const summaryItems = [
-                { title: 'Average SYS', value: avgSYS, unit: 'mmHg', class: avgStatus.class },
-                { title: 'Average DIA', value: avgDIA, unit: 'mmHg', class: avgStatus.class },
-                { title: 'Average Pulse', value: avgPULSE, unit: 'BPM', class: 'bg-white shadow-md' },
-                { title: 'Total Readings', value: count, unit: 'Count', class: 'bg-white shadow-md' }
+                { title: 'Átlag SYS', value: avgSYS, unit: 'Hgmm', class: avgStatus.class },
+                { title: 'Átlag DIA', value: avgDIA, unit: 'Hgmm', class: avgStatus.class },
+                { title: 'Átlag pulzus', value: avgPULSE, unit: 'BPM', class: 'bg-white shadow-md' },
+                { title: 'Mérések', value: data.length, unit: 'db', class: 'bg-white shadow-md' }
             ];
 
             summaryItems.forEach(item => {
                 dashboard.innerHTML += `
-                    <div class="${item.class} p-5 rounded-xl transition duration-300 transform hover:scale-105 border-b-4 border-l-4 border-opacity-70">
-                        <div class="text-sm font-medium text-gray-500">${item.title}</div>
-                        <div class="mt-1 text-3xl font-extrabold text-gray-900">
-                            ${item.value} <span class="text-base font-semibold text-gray-500">${item.unit}</span>
+                    <div class="${item.class} p-3 sm:p-5 rounded-xl transition duration-300 transform hover:scale-105 border-b-4 border-l-4 border-opacity-70">
+                        <div class="text-xs sm:text-sm font-medium text-gray-500">${item.title}</div>
+                        <div class="mt-1 text-xl sm:text-3xl font-extrabold text-gray-900">
+                            ${item.value} <span class="text-sm sm:text-base font-semibold text-gray-500">${item.unit}</span>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // 5. FILTERING (Dátum Szűrés)
-        function filterData() {
-            const dateFilter = document.getElementById('date-filter').value;
+        function renderChart(data) {
+            const ctx = document.getElementById('bp-chart').getContext('2d');
             
-            if (!dateFilter) {
-                filteredData = [...allData];
-            } else {
-                // The date format in data is YYYY-MM-DD
-                const formattedFilterDate = dateFilter.replace(/\//g, '-'); 
-                
-                filteredData = allData.filter(record => {
-                    return record.Date === formattedFilterDate;
-                });
+            if (chartInstance) {
+                chartInstance.destroy();
             }
+
+            const labels = data.map(r => `${r.Date} ${r.Time}`);
+            const sysData = data.map(r => r.SYS);
+            const diaData = data.map(r => r.DIA);
+            const pulseData = data.map(r => r.PULSE);
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'SYS (Szisztolés)',
+                            data: sysData,
+                            borderColor: 'rgb(239, 68, 68)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'DIA (Diasztolés)',
+                            data: diaData,
+                            borderColor: 'rgb(59, 130, 246)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: 'Pulzus',
+                            data: pulseData,
+                            borderColor: 'rgb(34, 197, 94)',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Vérnyomás és pulzus alakulása',
+                            font: { size: 16 }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Értékek'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                autoSkip: true,
+                                maxTicksLimit: 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function filterData() {
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo = document.getElementById('date-to').value;
             
-            // Re-render
+            filteredData = allData.filter(record => {
+                if (dateFrom && record.Date < dateFrom) return false;
+                if (dateTo && record.Date > dateTo) return false;
+                return true;
+            });
+            
             renderSummary(filteredData);
             renderTable(filteredData);
+            if (chartInstance) {
+                renderChart(filteredData);
+            }
         }
 
         function resetFilter() {
-            document.getElementById('date-filter').value = '';
-            filterData();
+            document.getElementById('date-from').value = '';
+            document.getElementById('date-to').value = '';
+            filteredData = [...allData];
+            renderSummary(filteredData);
+            renderTable(filteredData);
+            if (chartInstance) {
+                renderChart(filteredData);
+            }
         }
 
-        // 6. INITIALIZATION
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set max date for filter to the latest date in the data
-            const latestDate = allData.reduce((latest, record) => {
-                return record.Date > latest ? record.Date : latest;
-            }, allData[0].Date);
-            document.getElementById('date-filter').setAttribute('max', latestDate);
+        function showTab(tab) {
+            document.getElementById('tab-table').classList.remove('active');
+            document.getElementById('tab-chart').classList.remove('active');
+            
+            if (tab === 'table') {
+                document.getElementById('table-view').style.display = 'block';
+                document.getElementById('chart-view').style.display = 'none';
+                document.getElementById('tab-table').classList.add('active');
+            } else {
+                document.getElementById('table-view').style.display = 'none';
+                document.getElementById('chart-view').style.display = 'block';
+                document.getElementById('tab-chart').classList.add('active');
+                renderChart(filteredData);
+            }
+        }
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const minDate = allData[0].Date;
+            const maxDate = allData[allData.length - 1].Date;
+            document.getElementById('date-from').setAttribute('min', minDate);
+            document.getElementById('date-from').setAttribute('max', maxDate);
+            document.getElementById('date-to').setAttribute('min', minDate);
+            document.getElementById('date-to').setAttribute('max', maxDate);
+            
+            changeStandard();
             renderSummary(allData);
             renderTable(allData);
         });
-
     </script>
 </body>
 </html>

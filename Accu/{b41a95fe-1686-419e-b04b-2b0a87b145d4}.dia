@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <DIARY>
-    <DIARYINFO Ver="3.30" Dt="2025-12-14" Tm="11:16:41.345" EnBgUnit="1" EnCarbUnit="0" HasPump="0" InsulinHeader1="1" InsulinHeader2="2" InsulinHeader3="3"/>
+    <DIARYINFO Ver="3.30" Dt="2025-12-17" Tm="10:09:24.173" EnBgUnit="1" EnCarbUnit="0" HasPump="0" InsulinHeader1="1" InsulinHeader2="2" InsulinHeader3="3"/>
     <APPINFO>
         <CREATE Dt="2025-11-11" Name="Accu-Chek Smart Pix Software" Tm="14:56" Ver="3.2.5.22144"/>
-        <CHANGE Dt="2025-12-14" Name="Accu-Chek Smart Pix Software" Tm="11:16" Ver="3.2.5.22144"/>
+        <CHANGE Dt="2025-12-17" Name="Accu-Chek Smart Pix Software" Tm="10:09" Ver="3.2.5.22144"/>
     </APPINFO>
-    <PATIENT Pid1="AwJR5aOixaPrzo4E" Pid2="AwJRWHV1EmYvGVZlbw==" Pid3="AwJRI53gfZ+d/O8ns89f" ID3isDate="1" Diabetes="2" Therapy="4"/>
+    <PATIENT Pid1="AwIbr+noj+mhhMRO" Pid2="AwIbEj8/WCxlUxwvJQ==" Pid3="AwIbadeqN9XXtqVt+YUV" ID3isDate="1" Diabetes="2" Therapy="4"/>
     <METERINFO Cnt="1">
-        <METER Name="Active" SN="034288543" Dt="2025-12-14" Tm="11:14" ModelType="2102">
+        <METER Name="Active" SN="034288543" Dt="2025-12-17" Tm="10:07" ModelType="2102">
             <BGSETTINGS>
                 <ST3DAY_CONFIG Active="0" Configured="0" StartDt="1999-12-31" BreakfastTm="00:00" LunchTm="00:00" DinnerTm="00:00" BedTm="00:00"/>
             </BGSETTINGS>
         </METER>
     </METERINFO>
-    <VISITS Cnt="15">
+    <VISITS Cnt="16">
         <ONEVISIT Dt="2025-11-11" Tm="14:56:27.702">
             <ACSPIX Type="2107" SN="CM030204010713020002" Ver="3.02.04"/>
             <DEVICEUPLOAD Dt="2025-11-11" Tm="14:53" Di="0" type="1" OutOfChronOrder="0">
@@ -134,8 +134,16 @@
                 </BGSETTINGS>
             </DEVICEUPLOAD>
         </ONEVISIT>
+        <ONEVISIT Dt="2025-12-17" Tm="10:09:24.173">
+            <ACSPIX Type="2107" SN="CM030204010713020002" Ver="3.02.04"/>
+            <DEVICEUPLOAD Dt="2025-12-17" Tm="10:07" Di="0" type="1" OutOfChronOrder="0">
+                <BGSETTINGS>
+                    <ST3DAY_CONFIG Active="0" Configured="0" StartDt="1999-12-31" BreakfastTm="00:00" LunchTm="00:00" DinnerTm="00:00" BedTm="00:00"/>
+                </BGSETTINGS>
+            </DEVICEUPLOAD>
+        </ONEVISIT>
     </VISITS>
-    <DIARYDATA Cnt="292">
+    <DIARYDATA Cnt="313">
         <BG Dt="2025-10-25" Tm="13:43" Gl="18.4" Vs="3" Di="0"/>
         <BG Dt="2025-10-25" Tm="15:52" Gl="6.8" Vs="3" Di="0"/>
         <BG Dt="2025-10-25" Tm="21:17" Gl="7.3" Vs="3" Di="0"/>
@@ -428,6 +436,27 @@
         <BG Dt="2025-12-14" Tm="07:10" Gl="5.2" Vs="3" Di="0"/>
         <BG Dt="2025-12-14" Tm="10:03" Gl="7.7" Vs="3" Di="0"/>
         <BG Dt="2025-12-14" Tm="11:12" Gl="6.7" Vs="3" Di="0"/>
+        <BG Dt="2025-12-14" Tm="12:33" Gl="5.2" Vs="3" Di="0"/>
+        <BG Dt="2025-12-14" Tm="14:52" Gl="5.6" Vs="3" Di="0"/>
+        <BG Dt="2025-12-14" Tm="19:17" Gl="7.3" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="05:46" Gl="5.9" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="08:20" Gl="9.3" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="09:34" Gl="6.9" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="14:40" Gl="10.3" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="16:49" Gl="7.2" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="18:02" Gl="5.0" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="19:20" Gl="8.0" Vs="3" Di="0"/>
+        <BG Dt="2025-12-15" Tm="21:13" Gl="6.5" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="06:01" Gl="5.2" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="08:30" Gl="6.3" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="10:39" Gl="5.8" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="13:22" Gl="5.3" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="14:13" Gl="5.8" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="16:51" Gl="6.6" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="18:49" Gl="6.2" Vs="3" Di="0"/>
+        <BG Dt="2025-12-16" Tm="21:14" Gl="5.2" Vs="3" Di="0"/>
+        <BG Dt="2025-12-17" Tm="08:49" Gl="8.7" Vs="3" Di="0"/>
+        <BG Dt="2025-12-17" Tm="09:56" Gl="7.8" Vs="3" Di="0"/>
     </DIARYDATA>
     <SETTINGS EnBgUnit="1">
         <timerange PeriodType="0" ScrollTypeExt="7"/>
@@ -435,5 +464,5 @@
         <status HypoUseLbgi="1" HypoUseWeeksLimit="0" HypoWeeksLimit="2" MeanHiRd="13.9" TgRngTo="8.9" TgRngFrom="3.9" HypoLmt="3.9" VarRelHi="50" VarRelLo="33" VarAbsHi="4.2" VarAbsLo="2.8" VarRel="1" HypoCgmHi="4" HypoCgmLo="0.8" VarCgmHi="4.2" VarCgmLo="2.8" TestsPerDay="1"/>
         <timeblock B0="05:30:00" B1="08:00:00" B2="11:00:00" B3="12:30:00" B4="17:00:00" B5="18:30:00" B6="21:30:00" B7="00:00:00"/>
     </SETTINGS>
-    <CHECK Key="AwKgEiorzWxtezWWTVajRjFLJa1EV5QeHDZjyFF+u10G"/>
+    <CHECK Key="AwJq0x84/B5mGHLEJlvHIX1SNvQsO+xuZm8Lzld+u1pV"/>
 </DIARY>
