@@ -134,14 +134,12 @@
     <script>
         // --- Medication Dose Change Definitions (FIXED for gap-less display) ---
         const doseChanges = [
-            // Period 1: Start 2025-10-25, Ends 2025-11-03
+            // Period 1: Start 2025-10-25, Ends 2025-11-03 23:59:59 (xMax is 2025-11-04)
             { startDate: '2025-10-25', exclusiveEndDate: '2025-11-04', color: 'rgba(255, 165, 0, 0.15)' },
-            // Period 2: Start 2025-11-04, Ends 2025-12-07
+            // Period 2: Start 2025-11-04, Ends 2025-12-07 23:59:59 (xMax is 2025-12-08)
             { startDate: '2025-11-04', exclusiveEndDate: '2025-12-08', color: 'rgba(54, 162, 235, 0.15)' },
-            // Period 3: Start 2025-12-08, Ends 2025-12-20
-            { startDate: '2025-12-08', exclusiveEndDate: '2025-12-21', color: 'rgba(153, 102, 255, 0.15)' },
-            // Period 4: Start 2025-12-21, Ends now/future
-            { startDate: '2025-12-21', exclusiveEndDate: '2050-12-31', color: 'rgba(75, 192, 192, 0.15)' }
+            // Period 3: Start 2025-12-08, Ends now/future (xMax is distant future)
+            { startDate: '2025-12-08', exclusiveEndDate: '2050-12-31', color: 'rgba(153, 102, 255, 0.15)' }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
