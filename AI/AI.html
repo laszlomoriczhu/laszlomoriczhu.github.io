@@ -1,330 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Röviden az AI-ról - 2024-12-25</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>AI Stratégiai Nagykönyv 2025 - A Teljes Tudástár</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-color: #f5f5f5;
-            color: #333;
+        :root {
+            --primary: #1a73e8;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
         }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 1rem 2rem;
-            text-align: center;
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; line-height: 1.8; background-color: var(--bg); color: var(--text); scroll-behavior: smooth; }
+        
+        header { 
+            background: var(--primary); 
+            color: white; 
+            padding: 5rem 2rem; 
+            text-align: center; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        nav {
-            margin: 2rem 0;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        nav ul li {
-            margin: 0.5rem;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: #4CAF50;
-            border: 1px solid #4CAF50;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-        nav ul li a:hover {
-            background: #4CAF50;
-            color: white;
-        }
-        section {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        footer {
-            margin-top: 2rem;
-            background: #333;
-            color: white;
-            padding: 1rem;
-            text-align: left;
-        }
-        footer a {
-            color: #4CAF50;
-        }
-        @media (orientation: landscape) and (max-width: 800px) {
-            body {
-                background: #333;
-                color: white;
-            }
-            nav ul li a {
-                color: white;
-                border-color: white;
-            }
+        header h1 { font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -2px; }
+        header p { font-size: 1.3rem; opacity: 0.9; margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+        nav { position: sticky; top: 0; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border); padding: 1rem 0; }
+        nav ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+        nav ul li a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.2s; border: 1px solid transparent; }
+        nav ul li a:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        section { max-width: 1100px; margin: 3rem auto; padding: 4rem; background: var(--white); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+        h2 { font-size: 2.5rem; color: var(--primary); border-bottom: 3px solid #f1f5f9; padding-bottom: 1rem; margin-top: 0; font-weight: 800; }
+        h3 { font-size: 1.8rem; color: var(--secondary); margin-top: 3rem; font-weight: 700; border-left: 5px solid var(--accent); padding-left: 1rem; }
+        
+        p { margin-bottom: 1.5rem; font-size: 1.15rem; color: #334155; text-align: justify; }
+
+        .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .glossary-item { background: #f8fafc; padding: 2rem; border-radius: 16px; border: 1px solid var(--border); transition: transform 0.3s; }
+        .glossary-item:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .glossary-item strong { display: block; font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--primary); }
+
+        .deep-dive-box { background: #f0f7ff; border-radius: 16px; padding: 2.5rem; margin: 2.5rem 0; border-right: 6px solid var(--primary); }
+        .deep-dive-box h4 { margin-top: 0; color: var(--primary); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 1rem; }
+
+        .model-card { border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; background: #fff; }
+        .tag { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; color: white; }
+        .tag-openai { background: #10a37f; }
+        .tag-google { background: #4285f4; }
+        .tag-china { background: #6133ff; }
+
+        .link-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .link-list li a { display: block; padding: 1rem; background: #f1f5f9; border-radius: 10px; text-decoration: none; color: var(--primary); font-weight: 600; transition: background 0.2s; }
+        .link-list li a:hover { background: var(--primary); color: white; }
+
+        footer { background: #0f172a; color: white; padding: 5rem 2rem; text-align: center; margin-top: 5rem; }
+        .footer-note { opacity: 0.7; font-size: 0.9rem; margin-top: 2rem; }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            section { margin: 1rem; padding: 2rem; }
+            nav ul { gap: 0.5rem; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Röviden az AI-ról</h1>
-        <p>Készítés dátuma: 2024-12-25</p>
-    </header>
 
-    <nav>
-        <ul>
-            <li><a href="#section1">Mi is az AI?</a></li>
-            <li><a href="#section2">Mi az OpenAI?</a></li>
-            <li><a href="#section3">Mi az a ChatGPT?</a></li>
-            <li><a href="#section4">GPT verziók</a></li>
-            <li><a href="#section6">Adatbiztonság</a></li>
-            <li><a href="#section6">Technológiák</a></li>
-            <li><a href="#section7">Hol fut?</a></li>
-            <li><a href="#section8">Verzió különbségek</a></li>
-            <li><a href="#section9">Érdekességek</a></li>
-            <li><a href="#section10">Programozás támogatás</a></li>
-            <li><a href="#section11">Mi a DeepSeek?</a></li>
-            <li><a href="#section12">A DeepSeek verziók története és elérhető típusok</a></li>
-            <li><a href="#section13">ChatGPT kézikönyv összefoglaló</a></li>
-            <li><a href="#section14">A CHATGPT ÉS AZ AI LEHETŐSÉGEINEK KIAKNÁZÁSA összefoglaló</a></li>
-        </ul>
-    </nav>
+<header>
+    <h1>AI Stratégiai Nagykönyv</h1>
+    <p>A technológiai szingularitás, a multimodális modellek és az autonóm ágensek 2025-ös világának teljes körű elemzése.</p>
+</header>
 
-    <section id="section1">
-        <h2>Mi is az AI?</h2>
-        <p>A mesterséges intelligencia (<a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank">AI</a>) az a technológia, amely lehetővé teszi, hogy a gépek képesek legyenek az emberi gondolkodás bizonyos elemeit szimulálni. Az AI alapja a gépi tanulás, ahol algoritmusokat használnak nagy mennyiségű adat feldolgozására és minták felismerésére. Az AI alkalmazásai között megtalálhatók a képfelismerő rendszerek, az önvezető autók, a természetes nyelvfeldolgozó rendszerek és még sok más. A cél az, hogy az AI képes legyen önálló döntések meghozatalára vagy bonyolult problémák megoldására emberi beavatkozás nélkül.</p>
-    </section>
+<nav>
+    <ul>
+        <li><a href="#fogalmak">0. FOGALMAK</a></li>
+        <li><a href="#openai">I. OPENAI</a></li>
+        <li><a href="#google">II. GOOGLE</a></li>
+        <li><a href="#kína">III. KÍNA & OPEN SOURCE</a></li>
+        <li><a href="#ágensek">IV. ÁGENSEK</a></li>
+        <li><a href="#infra">V. INFRASTRUKTÚRA</a></li>
+        <li><a href="#linkek">VI. LINKGYŰJTEMÉNY</a></li>
+    </ul>
+</nav>
 
-    <section id="section2">
-        <h2>Mi az OpenAI?</h2>
-        <p>Az <a href="https://openai.com" target="_blank">OpenAI</a> egy mesterséges intelligenciára szakosodott kutatócég, amelynek célja az AI technológia biztonságos és előnyös fejlesztése az emberiség számára. Az OpenAI nemcsak kutatási eredményeket közöl, hanem AI-alapú termékeket is fejleszt, például a ChatGPT-t és a DALL-E-t. A szervezet jelentős hangsúlyt fektet az etikus AI használatra, valamint arra, hogy az új technológiák mindenki számára elérhetők és átláthatók legyenek. Az OpenAI számos együttműködést folytat más vállalatokkal és kutatóintézetekkel világszerte.</p>
-        <p>Az "open" az OpenAI névben azt jelenti, hogy a szervezet nyíltan és átláthatóan működik, és célja az mesterséges intelligencia (MI) kutatásának és fejlesztésének demokratizálása. Az OpenAI eredetileg úgy indult, hogy olyan kutatásokat végezzen, amelyek mindenki számára hozzáférhetőek és hasznosak, valamint hogy az MI-t biztonságosan és felelősségteljesen fejlessze. A "nyitott" (open) jelző tehát arra utal, hogy a szervezet elkötelezett a tudományos együttműködés és a technológiai fejlődés mellett, miközben igyekszik a mesterséges intelligenciát az egész emberiség javára használni.</p>
-    </section>
-
-    <section id="section3">
-        <h2>Mi az a ChatGPT?</h2>
-        <p>A ChatGPT egy mesterséges intelligenciával működő chatbot, amely természetes nyelvi feldolgozási (NLP) technológiát használ. Az <a href="https://en.wikipedia.org/wiki/ChatGPT" target="_blank">OpenAI</a> által kifejlesztett modell képes összetett beszélgetésekre, kérdések megválaszolására, kreatív szövegek generálására és technikai problémák megoldására. A ChatGPT felhasználási területei széleskörűek, beleértve az oktatást, ügyfélszolgálatot, tartalomkészítést és még sok mást. A modell mögött álló technológia a GPT (Generative Pre-trained Transformer), amely mélytanulási algoritmusokat alkalmaz az adatok elemzésére és előrejelzések készítésére.</p>
-    </section>
-
-    <section id="section4">
-        <h2>Milyen Generatív Pre-trained Transformer (GPT) verziók vannak?</h2>
-        <p>A Generative Pre-trained Transformer (GPT) modellek különböző verziókban jelentek meg, mindegyik jelentős fejlesztéseket hozva az előzőhöz képest. A GPT-1 2018-ban jelent meg, és alapvető szövegelemzési képességekkel rendelkezett. A GPT-2 2019-ben került kiadásra, amely már jelentős előrelépés volt a nyelvi modellezésben. A GPT-3 2020-ban debütált, amely hatalmas paraméterszámával forradalmasította az AI-alapú szöveggenerálást. A GPT-3.5 2022-ben érkezett, míg a GPT-4-et 2023-ban mutatták be, amely tovább növelte a pontosságot és a hatékonyságot. Ezek mellett léteznek kisebb, optimalizált "Mini Turbo" verziók is, amelyek gyorsabbak és kevésbé erőforrás-igényesek.</p>
-        <div class="content-box">
-            <ul>
-                <li><strong>GPT-2:</strong> 2019. február 14. - A GPT-2 volt az első igazán sikeres modell az OpenAI-tól, amely képes volt koherens szövegek generálására. Az előző verziókhoz képest jelentős javulást hozott. <strong>Eltelt idő:</strong> 2 év a GPT-1 megjelenése után.</li>
-                <li><strong>GPT-3:</strong> 2020. június 11. - A GPT-3 megjelenése hatalmas mérföldkő volt, hiszen 175 milliárd paramétert tartalmazott, így sokkal pontosabb és kifinomultabb válaszokat adott. <strong>Eltelt idő:</strong> 1 év a GPT-2 megjelenése után.</li>
-                <li><strong>GPT-3.5:</strong> 2022. március 1. - A GPT-3 finomhangolt változata, amely gyorsabb válaszokat és jobb koherenciát biztosított. <strong>Eltelt idő:</strong> 1 év 9 hónap a GPT-3 megjelenése után.</li>
-                <li><strong>GPT-4:</strong> 2023. március 14. - A GPT-4 jelentős fejlődést hozott a szövegértés és a komplex problémák megoldása terén. Ez az egyik legfejlettebb generatív AI modell, amely jobb teljesítményt és többnyelvű támogatást kínál. <strong>Eltelt idő:</strong> 1 év a GPT-3.5 megjelenése után.</li>
-                <li><strong>GPT-4 Mini:</strong> 2023. szeptember - A GPT-4 kisebb, gyorsabb és optimalizált verziója, amely csökkentett memóriahasználattal, de a GPT-4 képességeivel működik. <strong>Eltelt idő:</strong> 6 hónap a GPT-4 megjelenése után.</li>
-                <li><strong>GPT-4 Turbo:</strong> 2024. április - A GPT-4 továbbfejlesztett és gyorsabb változata, amely kisebb költséggel kínál válaszokat. <strong>Eltelt idő:</strong> 7 hónap a GPT-4 Mini megjelenése után.</li>
-            </ul>
-        </div>
-        <p>Megjelenési időpontok és diagram:</p>
-        <div>
-            <canvas id="gptTimeline" width="600" height="400"></canvas>
-        </div>
-    </section>
-
-    <section id="section5">
-        <h2>Adatbiztonság</h2>    
-        <p>A ChatGPT és más OpenAI modellek működése során az adatbiztonság és a felhasználói adatvédelem kiemelt fontosságú. Az OpenAI különféle intézkedéseket hozott annak érdekében, hogy megvédje a felhasználók adatainak biztonságát, és biztosítsa, hogy azok ne kerüljenek illetéktelen kezekbe. Néhány alapvető elv és intézkedés, amelyek az OpenAI és a ChatGPT működésében érvényesek:</p> 
-        <ul>
-            <li><strong>Adatok nem tárolása:</strong> Az OpenAI nem tárolja a felhasználói interakciókat hosszú távon. A modellek nem őrzik meg a felhasználói adatokat, és az egyes beszélgetések nem kerülnek összekapcsolásra más felhasználók adatával.</li>
-            <li><strong>Adatkezelési irányelvek:</strong> Az OpenAI rendelkezik adatkezelési irányelvekkel, amelyek tisztázzák, hogyan kezelik a felhasználói adatokat, például azokat, amelyek a szolgáltatás működtetéséhez szükségesek. Az adatokat anonim módon dolgozzák fel, ha nem szükségesek egy adott szolgáltatás biztosításához.</li>
-            <li><strong>Biztonsági intézkedések:</strong> Az OpenAI alkalmazza a legújabb biztonsági protokollokat a felhasználói adatok védelme érdekében, ideértve az adatátviteli titkosítást és a rendszeres biztonsági ellenőrzéseket.</li>
-            <li><strong>Felhasználói irányítás:</strong> A felhasználóknak lehetőségük van törölni az általuk generált tartalmakat vagy egyéb adatokat, amelyekkel kapcsolatba léptek a rendszerrel.</li>
-            <li><strong>Gyakorlati korlátozások:</strong> A rendszer úgy van kialakítva, hogy nem kérhet vagy tárolhat személyes, érzékeny adatokat (például bankkártya-információk, személyazonosító okmányok stb.), és a felhasználók nem kötelesek megosztani ilyen adatokat a platform használata során.</li>
-        </ul>
-        <p>Ezek a lépések segítenek abban, hogy a ChatGPT és az OpenAI által nyújtott szolgáltatások biztonságosak és megfeleljenek a magánélet védelmére vonatkozó szabályozásoknak, mint például az EU GDPR előírásainak. Fontos megjegyezni, hogy mindig ajánlott kerülni a személyes vagy érzékeny információk megosztását, amikor bármilyen online szolgáltatást használunk, beleértve a ChatGPT-t is.</p>
-    </section>
+<section id="fogalmak">
+    <h2>0. Alapfogalmak és a Jövő Definíciói</h2>
+    <p>Az MI nem egyetlen technológia, hanem tudományágak és architektúrák összessége. 2025-re a terminológia kiforrottabbá vált, különválasztva a statisztikai alapú és a logikai alapú rendszereket.</p>
     
-    <section id="section6">
-        <h2>Milyen nyelveken, technológiával készül, fejlesztik?</h2>
-        <p>A GPT modellek fejlesztésében különböző programozási nyelvek és technológiák vesznek részt. Az alapvető nyelv a Python, amelyet az AI kutatási területeken széles körben használnak. A TensorFlow és a PyTorch gépi tanulási keretrendszerek biztosítják az alapvető infrastruktúrát a modellek képzéséhez és futtatásához. Az OpenAI ezen kívül fejlett algoritmusokat és adatfeldolgozási technikákat alkalmaz, hogy a modellek hatékonyak és megbízhatóak legyenek. A modern AI rendszerek fejlesztése során az elosztott rendszerek és a felhőszolgáltatások is fontos szerepet játszanak.</p>
-        <p>A fejlesztés során különböző programozási nyelvek és eszközök kerültek használatra, mint például:</p>
-        <ul>
-            <li><strong>Python:</strong> A mesterséges intelligencia fejlesztésének egyik legnépszerűbb nyelve, különösen a gépi tanulásban és a mesterséges intelligencia modellek képzésében. A Python rengeteg hasznos könyvtárral rendelkezik, például <code>TensorFlow</code>, <code>PyTorch</code>, amelyek lehetővé teszik az egyszerű fejlesztést és tesztelést.</li>
-            <li><strong>CUDA:</strong> A párhuzamos számítások és a GPU-k használata a mélytanulási modellek gyorsítására. Az OpenAI számos modelljét úgy optimalizálják, hogy gyorsabban végezze el a szükséges számításokat, és a CUDA (NVIDIA által kifejlesztett programozási eszköz) segít abban, hogy a modellek nagyobb skálán és gyorsabban működjenek.</li>
-            <li><strong>Hadoop és Spark:</strong> Nagy adathalmazok kezelésére és feldolgozására szolgáló eszközök, amelyek lehetővé teszik az AI modellek számára a hatékony tanulást.</li>
-        </ul>
-    </section>
+    <div class="glossary-grid">
+        <div class="glossary-item">
+            <strong>Mesterséges Intelligencia (AI)</strong>
+            Minden olyan algoritmus, amely emberi intelligenciát igényelő feladatokat (látás, beszéd, döntés) végez.
+        </div>
+        <div class="glossary-item">
+            <strong>LLM (Large Language Model)</strong>
+            Nagy Nyelvi Modell. Gigantikus szövegadaton tanított neurális háló, amely képes az emberi nyelv megértésére és generálására.
+        </div>
+        <div class="glossary-item">
+            <strong>AGI (Általános Intelligencia)</strong>
+            Olyan MI, amely bármilyen szellemi munkát képes elvégezni, amit egy ember. 2025-ben az o1 széria megjelenése után sokak szerint ez már nem "ha", hanem "mikor" kérdése.
+        </div>
+        <div class="glossary-item">
+            <strong>ASI (Szuperintelligencia)</strong>
+            Az a hipotetikus pont, ahol a gép intelligenciája minden téren (kreativitás, érzelmi intelligencia, tudományos felfedezés) meghaladja a legokosabb emberét is.
+        </div>
+        <div class="glossary-item">
+            <strong>Multimodalitás</strong>
+            A modell képessége, hogy egyszerre "lásson", "halljon" és "olvasson". 2025-ben az élvonalbeli modellek már natívan (átalakítás nélkül) értelmezik a videót és hangot.
+        </div>
+        <div class="glossary-item">
+            <strong>Reasoning (Érvelés)</strong>
+            A korábbi "gyors" gondolkodással (System 1) szemben az MI új generációja (System 2) képes megállni, belső monológon keresztül ellenőrizni a logikáját, és kijavítani a hibáit válaszadás előtt.
+        </div>
+        <div class="glossary-item">
+            <strong>Tokenizáció & Kontextus</strong>
+            A token az MI alapegysége. A kontextus-ablak pedig az a "rövid távú memória", amiben a gép az aktuális adatokat (pl. egy egész könyvet) tárolja elemzés közben.
+        </div>
+    </div>
+</section>
 
-    <section id="section7">
-        <h2>Hol fut?</h2>
-        <p>A GPT modellek nagy számítási kapacitást igényelnek, ezért felhőalapú környezetekben futtatják őket. Az Amazon Web Services (<a href="https://aws.amazon.com" target="_blank">AWS</a>), a Microsoft Azure és a Google Cloud Platform olyan népszerű szolgáltatók, amelyek az OpenAI modelljei számára is infrastruktúrát biztosítanak. Ezek a platformok lehetővé teszik a nagy mennyiségű adat valós idejű feldolgozását, valamint a modellképzéshez és -futtatáshoz szükséges erőforrások rugalmas skálázását.</p>
-    </section>
+<section id="openai">
+    <h2>I. OpenAI: A Logikai Áttörés</h2>
+    <p>Az OpenAI 2025-re megőrizte piacvezető szerepét azzal, hogy a puszta "csevegéstől" elmozdult a tudományos precizitású érvelés felé.</p>
 
-    <section id="section8">
-        <h2>Mi a különbség a ChatGPT verziók között?</h2>
-        <p>A ChatGPT verziói közötti különbségek leginkább a modell képességeiben és a felhasználói hozzáférésben mutatkoznak meg. Az ingyenes felhasználók általában a régebbi vagy kisebb modellekhez férhetnek hozzá, amelyek korlátozottabb teljesítményt nyújtanak. A regisztrált felhasználók több funkcióhoz és fejlettebb modellekhez férhetnek hozzá. Az előfizetők számára elérhetők a legújabb verziók, például a GPT-4, amelyek nagyobb pontosságot és jobb válaszadási képességeket kínálnak, valamint gyorsabb válaszidővel működnek. Az előfizetések gyakran magukban foglalják a prioritásos hozzáférést és további szolgáltatásokat is.</p>
-        <p>Az OpenAI a ChatGPT-t különböző verziókban kínálja, mindegyik különböző funkciókkal és előnyökkel rendelkezik. Az ingyenes felhasználók és az előfizetők közötti legfontosabb különbségek a következőképpen alakulnak:</p>
-        <ul>
-            <li><strong>Ingyenes felhasználó:</strong> Az ingyenes verzió hozzáférést biztosít a GPT-3.5 modellekhez, ami elég ahhoz, hogy alapvető információkat kérjünk tőlem, vagy szöveget generáljunk. Az ingyenes felhasználóknál a válaszidők hosszabbak lehetnek, és bizonyos funkciók nem állnak rendelkezésre.</li>
-            <li><strong>Regisztrált felhasználó:</strong> Ha regisztrálsz és belépsz, akkor hozzáférhetsz az újabb verziókhoz, például a GPT-4-hez, valamint gyorsabb válaszokat és prémium funkciókat is élvezhetsz.</li>
-            <li><strong>Előfizető:</strong> Az előfizetéses modellek, például a ChatGPT Plus, hozzáférést biztosítanak a legújabb, leggyorsabb és legpontosabb modellekhez. Az előfizetők számára a válaszidők gyorsabbak, a kéréseiket hamarabb feldolgozzák, és korlátlan hozzáférést kapnak a GPT-4-es modellekhez, amelyek fejlettebbek és pontosabbak.</li>
-        </ul>
-    </section>
+    <h3>OpenAI o1: A "Strawberry" projekt sikere</h3>
+    <p>Az o1-széria (korábban Strawberry kódnéven ismert) bevezetett egy forradalmi újítást: a tanítási idő helyett a <strong>válaszadási idő alatti számítást</strong> (inference-time compute). Ez azt jelenti, hogy ha a modellnek egy rendkívül nehéz matematikai vagy programozási feladatot adunk, nem azonnal válaszol, hanem akár 10-60 másodpercig "gondolkodik", szimulálva az emberi logikai folyamatokat.</p>
+    
+    <div class="deep-dive-box">
+        <h4>A GPT-5 és a Jövő</h4>
+        <p>A pletykák szerint a GPT-5 (vagy kódnevén 'Orion') már nem csak egy nyelvmodell, hanem egy "gondolkodó motor", amely képes autonóm módon kutatásokat végezni. Az OpenAI célja, hogy az MI ne csak válaszoljon, hanem proaktívan segítse a tudományos felfedezéseket.</p>
+    </div>
 
-    <section id="section9">
-        <h2>Érdemes, érdekes infók a ChatGPT</h2>
-        <p>A ChatGPT egyike a legnépszerűbb AI-alapú eszközöknek, amelyet világszerte több millióan használnak napi szinten. Érdekesség, hogy a modell fejlesztése során több trillió szavas adathalmazt használtak fel, amely magában foglalja az internet számos különböző forrását. A ChatGPT képes több nyelven kommunikálni, és folyamatosan tanul az interakciók során. További érdekességekért látogass el az <a href="https://openai.com/blog" target="_blank">OpenAI Blog</a> oldalára.</p>
-    </section>
+    <h3>Sora és SearchGPT</h3>
+    <p>A <strong>Sora</strong> videógenerátor integrálódott a kreatív munkafolyamatokba, míg a <strong>SearchGPT</strong> közvetlen kihívást intézett a Google keresője ellen. Utóbbi nem csak linkeket ad, hanem strukturált, forrásmegjelölt válaszokat, valós idejű adatokkal frissítve.</p>
+</section>
 
-    <section id="section10">
-        <h2>Hogyan lehet használni programozás támogatásra?</h2>
-        <p>A ChatGPT számos módon támogatja a programozókat, legyen szó kezdőkről vagy tapasztalt fejlesztőkről. Az AI képes kódot generálni különböző programozási nyelveken, például Python, JavaScript, Java vagy C#. Emellett segíthet hibák diagnosztizálásában és javításában, algoritmusok optimalizálásában, valamint bonyolult rendszerek megértésében. A programozók számára értékes funkció még az API-k dokumentációjának készítése, a kódbázis elemzése és az egységtesztek generálása. A ChatGPT használata felgyorsítja a fejlesztési folyamatokat, és lehetővé teszi, hogy a fejlesztők gyorsabban találjanak megoldást komplex problémákra.</p>
-    </section>
+<section id="google">
+    <h2>II. Google Gemini: Az Adat és az Ökoszisztéma Ereje</h2>
+    <p>A Google 2025-ben a világ legnagyobb adatvagyonára (YouTube, Maps, Gmail) építve hozta létre a legpraktikusabb MI ökoszisztémát.</p>
 
-    <section id="section11">
-        <h2>Mi a DeepSeek?</h2>
-        <p>A DeepSeek egy fejlett mesterséges intelligencia (AI) rendszer, amelyet a DeepSeek vállalat fejlesztett ki. A DeepSeek célja, hogy innovatív AI megoldásokat kínáljon különböző iparágak számára, beleértve az egészségügyet, pénzügyet, oktatást és ügyfélszolgálatot. A DeepSeek technológiája a legmodernebb gépi tanulási és mélytanulási algoritmusokon alapul, amelyek lehetővé teszik a nagy mennyiségű adat gyors és pontos feldolgozását.</p>
-        <p>A DeepSeek rendszere kiemelkedik a természetes nyelvfeldolgozás (NLP) terén, ahol képes komplex beszélgetések lebonyolítására, szövegek elemzésére és információ kinyerésére. A rendszer különösen hatékony a nagy mennyiségű strukturálatlan adat feldolgozásában, amely lehetővé teszi a felhasználók számára, hogy gyorsan és pontosan hozzáférjenek a szükséges információkhoz.</p>
-        <p>A DeepSeek számos előnyt kínál a felhasználóknak:</p>
-        <ul>
-            <li><strong>Magas pontosság:</strong> A DeepSeek rendszere kiválóan teljesít a szövegelemzés és adatfeldolgozás terén, magas pontosságú eredményeket nyújtva.</li>
-            <li><strong>Skálázhatóság:</strong> A rendszer könnyen skálázható, így akár kis vállalkozások, akár nagyvállalatok számára is ideális megoldást kínál.</li>
-            <li><strong>Felhasználóbarát felület:</strong> A DeepSeek rendszere könnyen használható, intuitív felülettel rendelkezik, amely lehetővé teszi a felhasználók számára, hogy gyorsan és hatékonyan dolgozzanak.</li>
-            <li><strong>Többnyelvű támogatás:</strong> A DeepSeek képes több nyelven is kommunikálni, ami nemzetközi szinten is használhatóvá teszi.</li>
-            <li><strong>Folyamatos fejlesztés:</strong> A DeepSeek folyamatosan fejleszti technológiáit, hogy mindig a legújabb és leginnovatívabb megoldásokat kínálja felhasználóinak.</li>
-        </ul>
-        <p>A DeepSeek rendszere számos alkalmazási területen hasznosítható, például:</p>
-        <ul>
-            <li><strong>Egészségügy:</strong> A DeepSeek segíthet a betegségek diagnosztizálásában, a betegadatok elemzésében és a személyre szabott kezelési tervek kidolgozásában.</li>
-            <li><strong>Pénzügy:</strong> A rendszer képes a pénzügyi adatok elemzésére, kockázatértékelésre és befektetési javaslatokra.</li>
-            <li><strong>Oktatás:</strong> A DeepSeek segíthet a tanulási anyagok személyre szabásában, a diákok teljesítményének elemzésében és az oktatási folyamatok optimalizálásában.</li>
-            <li><strong>Ügyfélszolgálat:</strong> A DeepSeek képes automatikusan válaszolni az ügyfelek kérdéseire, csökkentve ezzel az ügyfélszolgálati költségeket és javítva a felhasználói élményt.</li>
-        </ul>
-        <p>A DeepSeek jövőbeni tervei között szerepel a technológia további fejlesztése, újabb iparágakba való bevezetése és a globális piacokon való terjeszkedés. A vállalat elkötelezett az iránt, hogy innovatív és hatékony AI megoldásokat kínáljon, amelyek hozzájárulnak a társadalom és a gazdaság fejlődéséhez.</p>
-    </section>
+    
 
-    <section id="section12">
-        <h2>A DeepSeek verziók története és elérhető típusok</h2>
-        <p>A DeepSeek fejlesztése 2020-ban kezdődött, amikor az első prototípusokat a DeepSeek kutatócsapata kifejlesztette. A kezdeti verziók főként a természetes nyelvfeldolgozás (NLP) alapjaira épültek, és korlátozott képességekkel rendelkeztek. Az első nyilvános verzió, a DeepSeek 1.0, 2021-ben jelent meg, amely már képes volt egyszerű beszélgetések lebonyolítására és szövegelemzésre. A DeepSeek 2.0, amely 2022-ben került kiadásra, jelentős fejlődést hozott a nyelvi modellek terén, többek között a többnyelvű támogatás és a komplexebb kérdések megválaszolása terén. A legújabb verzió, a DeepSeek 3.0, 2023-ban debütált, amely tovább növelte a pontosságot, a sebességet és a skálázhatóságot, valamint új funkciókat vezetett be, mint például a valós idejű adatfeldolgozás és a mélyebb kontextusértés. Jelenleg a DeepSeek több verziója érhető el, amelyek különböző felhasználói igényekhez igazodnak:</p>
-        <ul>
-            <li><strong>DeepSeek Lite:</strong> Egy könnyű, gyors verzió, amely alacsony erőforrás-igényű eszközökön is fut, ideális kisvállalkozások és egyéni felhasználók számára.</li>
-            <li><strong>DeepSeek Pro:</strong> A professzionális felhasználók számára kifejlesztett verzió, amely magasabb pontosságot és fejlettebb funkciókat kínál, például komplex adatelemzést és testreszabható modelleket.</li>
-            <li><strong>DeepSeek Enterprise:</strong> Nagyvállalati szintű megoldás, amely kiemelkedő skálázhatóságot és biztonsági funkciókat kínál, ideális nagyvállalatok és intézmények számára.</li>
-            <li><strong>DeepSeek API:</strong> Fejlesztők számára elérhető API, amely lehetővé teszi a DeepSeek technológiák integrálását saját alkalmazásokba és rendszerekbe.</li>
-        </ul>
-        <p>A DeepSeek folyamatosan fejleszti technológiáit, és tervei között szerepel további verziók kiadása, amelyek még innovatívabb és hatékonyabb megoldásokat kínálnak majd a felhasználóknak.</p>
-    </section>
+    <h3>Gemini 2.0 és a "Native Multimodality"</h3>
+    <p>A Gemini 2.0 legnagyobb előnye, hogy a modellek natívan multimodálisak. Míg más rendszerek külön modulokat használnak a kép és szöveg összekötésére, a Gemini egyetlen neurális hálóban dolgozza fel ezeket. Ez teszi lehetővé a <strong>Project Astra</strong> működését: egy élő videókapcsolaton keresztül az MI érti, amit lát, és azonnal, késleltetés nélkül válaszol.</p>
 
-    <section id="section13">
-        <h2>ChatGPT kézikönyv összefoglaló</h2>
-        <p>A ChatGPT kézikönyv bemutatja a mesterséges intelligencia (AI) és a nagy nyelvi modellek (LLM) világát, különös tekintettel a ChatGPT-re. A könyv célja, hogy egyszerű és közérthető nyelven mutassa be az AI technológiát, és segítsen a felhasználóknak hatékonyan használni ezeket az eszközöket. A ChatGPT egy mesterséges intelligencia alapú chatbot, amelyet az OpenAI fejlesztett ki, és képes emberi nyelven kommunikálni, válaszolni kérdésekre, szövegeket generálni és kreatív feladatokat segíteni.</p>
-        <p>A könyv részletesen bemutatja a ChatGPT hatékony használatát és korlátait, valamint azt, hogy milyen területeken használható jól (pl. tartalomgenerálás, nyelvi feladatok, kutatás, programozás) és milyen területeken nem (pl. teljes munkafolyamatok automatizálása, pontos és aktuális információk nyújtása). A ChatGPT több nyelven is képes kommunikálni, beleértve a magyart is, bár az angol nyelvű válaszok általában pontosabbak.</p>
-        <p>A könyv továbbá bemutatja a prompt engineering alapjait, amelyek segítenek a felhasználóknak abban, hogy hatékonyabban kommunikáljanak a nyelvi modellekkel. A promptolási stratégiák közé tartozik a priming, a tiszta utasítások, az iteratív finomítás, a gondolatmenet szerinti promptolás, a nulla és néhány példás tanulás, a szerep alapú promptolás és a formátum szerinti promptolás. Ezek a stratégiák segítenek abban, hogy a modell pontosabb és relevánsabb válaszokat adjon.</p>
-        <p>A könyv végén gyakorlati példákat is találunk, amelyek bemutatják, hogyan használható a ChatGPT különböző területeken, például levélírás, információszerzés, marketing, kisvállalkozások, egészség és fitness. A könyv célja, hogy a felhasználók bátran kísérletezzenek az AI technológiákkal és kiaknázzák azok lehetőségeit.</p>
-        <h3>Az AI és a nagy nyelvi modellek világa</h3>
-        <p>Az AI technológia rohamosan fejlődik, és számos területre kiterjed, beleértve a munkavégzést, a kommunikációt és a döntéshozatalt. A nagy nyelvi modellek (LLM), mint a ChatGPT, képesek komplex szövegeket generálni és értelmezni, ami lehetővé teszi számukra, hogy emberi nyelven kommunikáljanak. Ezek a modellek hatalmas adathalmazokon tanulnak, és képesek új tartalmakat generálni, amelyek korábban nem léteztek.</p>
-        <h3>Mi az a mesterséges intelligencia?</h3>
-        <p>A mesterséges intelligencia (AI) olyan technológiai megoldásokat foglal magában, amelyek során a gépek emberi intelligenciát mimikálnak. Az AI már évtizedek óta létezik, de az elmúlt években jelentős fejlődésen ment keresztül, köszönhetően a megnövekedett számítási kapacitásoknak és az új AI modelleknek. Példák az AI-ra az okostelefonokban található személyi asszisztensek, az ajánló rendszerek, a képfelismerés, a virtuális ügyfélszolgálat és a navigációs rendszerek.</p>
-        <h3>Mi az a generatív AI?</h3>
-        <p>A generatív AI az AI azon formája, amely képes új tartalmakat generálni, például szöveget, képeket, zenét vagy videókat. Ezek a modellek tanulásra és alkalmazkodásra képesek, és képesek új ötleteket szolgáltatni. A nagy nyelvi modellek, mint a ChatGPT, a generatív AI egyik legismertebb alkalmazása. Ezek a modellek hatalmas szöveges adathalmazokon tanulnak, és képesek emberi nyelven kommunikálni.</p>
-        <h3>ChatGPT</h3>
-        <p>A ChatGPT egy mesterséges intelligencia alapú chatbot, amelyet az OpenAI fejlesztett ki. Képes emberi nyelven kommunikálni, válaszolni kérdésekre, szövegeket generálni és kreatív feladatokat segíteni. A ChatGPT-t széles körben használják tartalomgenerálásra, információgyűjtésre, ötletelésre, programozási problémák megoldására és oktatási segédanyagként. A ChatGPT nem helyettesítheti az emberi gondolkodást és szakértelmet, de kiváló eszköz lehet a hatékonyság növelésére.</p>
-        <h3>Prompt engineering</h3>
-        <p>A prompt engineering a nyelvi modellek hatékony használatának művészete és tudománya. A promptolási stratégiák közé tartozik a priming, a tiszta utasítások, az iteratív finomítás, a gondolatmenet szerinti promptolás, a nulla és néhány példás tanulás, a szerep alapú promptolás és a formátum szerinti promptolás. Ezek a stratégiák segítenek abban, hogy a modell pontosabb és relevánsabb válaszokat adjon.</p>
-        <h3>Gyakorlati példák</h3>
-        <p>A könyv végén gyakorlati példákat találunk, amelyek bemutatják, hogyan használható a ChatGPT különböző területeken, például levélírás, információszerzés, marketing, kisvállalkozások, egészség és fitness. Ezek a példák segítenek a felhasználóknak abban, hogy gyakorlatban is alkalmazzák az AI technológiát.</p>
-        <p>A könyv célja, hogy a felhasználók bátran kísérletezzenek az AI technológiákkal és kiaknázzák azok lehetőségeit. Az AI nem csak a jövő technológiája, hanem már a jelenünk része is, és a felhasználók számára rengeteg lehetőséget kínál a hatékonyság növelésére és a kreativitás ösztönzésére.</p>
-    </section>
+    <div class="deep-dive-box">
+        <h4>A 2 Milliós Kontextusablak jelentősége</h4>
+        <p>A Gemini képes akár 2 millió tokent (kb. 1.5 millió szót vagy 10-20 órányi videót) egyszerre elemezni. Ez lehetővé teszi, hogy feltöltsünk neki egy cég teljes éves dokumentációját, és olyan összefüggéseket találjon benne, amiket egy emberi elemző hónapok alatt sem látna meg.</p>
+    </div>
 
-    <section id="section14">
-        <h1>A CHATGPT ÉS AZ AI LEHETŐSÉGEINEK KIAKNÁZÁSA kézikönyv öszefoglaló</h1>
-        <p>A könyv tartalma egy útmutató arról, hogyan lehet kihasználni a ChatGPT és más mesterséges intelligencia (AI) eszközök lehetőségeit az üzleti életben és a mindennapokban. A könyv részletesen bemutatja a GPT-4-et, az Auto-GPT-t, a GPT Store-t, valamint különböző prompt keretrendszereket és alkalmazásokat, amelyek segíthetnek a ChatGPT hatékonyabb használatában. Emellett áttekintést nyújt más nagy nyelvi modellekről (LLM-ekről) és további AI eszközökről is.</p>
+    <h3>NotebookLM: A személyes tudásbázis</h3>
+    <p>2025-ben a NotebookLM a kutatók és diákok kedvencévé vált. Képes bármilyen forrásból (PDF, weboldal, videó) egy zárt, hallucináció-mentes tudástárat építeni, és abból akár mélyreható audio-beszélgetéseket (AI-podcastokat) generálni.</p>
+</section>
 
-        <h2>Főbb témák és fejezetek:</h2>
-        <ul>
-            <li><strong>Bevezetés a GPT-4-be</strong>: A GPT-4 bemutatása, különbségek a GPT-3-hoz képest, és alkalmazási lehetőségek.</li>
-            <li><strong>GPT-k és a GPT Store</strong>: Az egyéni GPT-k létrehozása és a GPT Store használata.</li>
-            <li><strong>Az Auto-GPT ígérete</strong>: Az Auto-GPT bemutatása, amely önállóan képes feladatok végrehajtására.</li>
-            <li><strong>Átfogó megközelítés a ChatGPT promptokhoz</strong>: Promptok írásának módszertana, különböző keretrendszerek (pl. A.C.E., T.A.S.K., C.L.E.A.R.) és alkalmazási területek (üzleti stratégia, termelékenység, tartalomírás, tanulás, kapcsolati/személyes, fitnesz, egészség és életmód).</li>
-            <li><strong>Más nagy nyelvi modellek (LLM-ek)</strong>: További LLM-ek bemutatása, mint a Claude, Gemini, Perplexity AI, Co-Pilot, Mistral Large, Grok, LaMDA, Jurassic-1, LLAMA, Gopher.</li>
-            <li><strong>További AI eszközök</strong>: Olyan eszközök bemutatása, mint az Otter.ai, Canva, Prezi, Grammarly, Chatfuel, Synthesia, Wondershare, Leadfeeder, Lumen5, Pictory, MarketMuse, Microsoft Bing, Leexi, Wisecut, Airgram, GitHub Copilot, Notion AI, Lately, ChatSpot, Keras, Ideogram, Crayon, PredictNow.ai, Heyday, ElevenLabs, Perplexity, Claude 3, AIPRM, Beautiful.ai, Clockwise, Promptbase, Reclaim.ai, Spinach.io, Levity, Pi, Originality.ai, Tammyl.ai, Krisp, Songr, Phosus, Decktopus, Descript, Mem, Fathom, Feedly, Adobe Firefly, Gong, Hyperwrite, Microsoft Copilot, Meta AI, Loudly, Midjourney, AI Companion, Soundraw, Firefiles, Namelix, HeyGen, Jasper, QuillBot, Opus Clip.</li>
-        </ul>
+<section id="kína">
+    <h2>III. DeepSeek és a Nyílt Forráskód Lázadása</h2>
+    <p>2025-ben megdőlt a dogma, miszerint csak a milliárd dolláros amerikai modellek lehetnek jók. A kínai DeepSeek és a Meta Llama-szériája demokratizálta az intelligenciát.</p>
 
-        <h2>Kiemelt témák:</h2>
-        <ul>
-            <li><strong>Promptok írása</strong>: A könyv részletesen bemutatja, hogyan lehet hatékony promptokat írni a ChatGPT számára, különböző keretrendszerek segítségével (pl. A.C.E., T.A.S.K., C.L.E.A.R.).</li>
-            <li><strong>Üzleti alkalmazások</strong>: A ChatGPT és más AI eszközök használata üzleti stratégiákban, marketingben, termelékenység növelésében és adatelemzésben.</li>
-            <li><strong>Tartalomírás</strong>: A ChatGPT segítségével történő tartalomkészítés, blogok, e-mailek, közösségi média posztok írása.</li>
-            <li><strong>Tanulás és oktatás</strong>: AI eszközök használata tanulási tervek készítéséhez, könyvek összefoglalásához, tantervek fejlesztéséhez.</li>
-            <li><strong>Egészség és életmód</strong>: AI segítségével történő étkezési tervek készítése, edzéstervek, egészségügyi tanácsadás.</li>
-        </ul>
+    <h3>DeepSeek-V3/R1: A Hatékonyság Királya</h3>
+    <p>A DeepSeek bebizonyította, hogy tizedannyi erőforrásból (és pénzből) is építhető GPT-4 szintű modell. Az általuk használt <em>MLA (Multi-head Latent Attention)</em> és a kevert szakértői modellek (MoE) architektúrája lehetővé tette, hogy a modell villámgyors és olcsó legyen, miközben a matematikai képességei az o1-et közelítik.</p>
 
-        <h2>Következtetés:</h2>
-        <p>A könyv hangsúlyozza, hogy az AI nem egy csodaszer, hanem egy eszköz, amelyet helyesen kell használni a hatékonyság növelése érdekében. A ChatGPT és más AI eszközök használata lehetővé teszi a vállalkozások számára, hogy innovatívabbak és versenyképesebbek legyenek a gyorsan változó digitális világban.</p>
+    <div class="model-card">
+        <span class="tag tag-meta">Meta Llama 4</span>
+        <p>Mark Zuckerberg stratégiája beérett: a Llama 4 nyílt forráskódúvá tételével a világ szinte összes vállalata a Meta technológiájára kezdett építkezni. Ez biztosítja, hogy az MI fejlődése ne csak néhány zárt laboratórium kezében legyen.</p>
+    </div>
+</section>
 
-        <p>Ha többet szeretnél megtudni az AI eszközök használatáról, vagy szeretnéd integrálni ezeket az eszközöket az üzleti folyamataidba, a könyv ajánlja, hogy fordulj egy WSI Digitális Marketing Tanácsadóhoz.</p>
-    </section>
+<section id="ágensek">
+    <h2>IV. Az Ágens-korszak: A gép, amely cselekszik</h2>
+    <p>2025 az <strong>Ágensek Éve</strong>. Az MI már nem csak egy chatbot, hanem egy digitális alkalmazott, aki képes önállóan navigálni a szoftverek között.</p>
 
-    <footer>
-        <p>Források és további információk:</p>
-        <ul>
-            <li><a href="https://hu.wikipedia.org/wiki/ChatGPT" target="_blank">Wikipedia: ChatGPT</a></li>
-            <li><a href="https://openai.com" target="_blank">OpenAI hivatalos weboldal</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/Artificial_intelligence" target="_blank">Wikipedia: Mesterséges intelligencia</a></li>
-            <li><a href="https://en.wikipedia.org/wiki/OpenAI" target="_blank">Wikipedia: OpenAI</a></li>
-            <li><a href="https://openai.com/research" target="_blank">OpenAI Kutatás</a></li>
-        </ul>
-        <p>Néhány rövidítés magyarázata:</p>
-        <ul>
-            <li><strong>AI</strong> - Artificial Intelligence (Mesterséges Intelligencia).</li>
-            <li><strong>OpenAI:</strong> - Az OpenAI egy mesterséges intelligencia kutatóintézet és vállalat, amelynek célja biztonságos és hasznos mesterséges intelligencia fejlesztése.</li>
-            <li><strong>ChatGPT:</strong> - A ChatGPT egy mesterséges intelligenciával működő beszélgető rendszer, amely képes szöveges alapú interakcióra.</li>
-            <li><strong>GPT</strong> - Generative Pre-trained Transformer (Generatív Előképzett Transzformer).</li>
-            <li><strong>NLP</strong> - Natural Language Processing (Természetes Nyelvfeldolgozás).</li>
-            <li><strong>PyTorch</strong> - Egy nyílt forráskódú gépi tanulási könyvtár, amelyet a Facebook fejlesztett ki.</li>
-            <li><strong>AWS</strong> - Amazon Web Services, a felhőalapú számítási szolgáltatások egyik piacvezetője.</li>
-            <li><strong>Azure</strong> - A Microsoft által nyújtott felhőalapú szolgáltatási platform.</li>
-            <li><strong>API</strong> - Application Programming Interface (Alkalmazásprogramozási Interfész).</li>
-        </ul>
-    </footer>
+    <h3>Computer Use (Anthropic & OpenAI)</h3>
+    <p>Az ágensek ma már "látják" a képernyőt, tudják mozgatni az egeret és használni a billentyűzetet. Ez lehetővé teszi a komplex feladatok automatizálását:</p>
+    <ul>
+        <li><strong>Pénzügy:</strong> Számlák összegyűjtése az e-mailekből, adatok beírása az ERP rendszerbe, utalások előkészítése.</li>
+        <li><strong>Szoftverfejlesztés:</strong> Az MI (pl. Devin vagy GitHub Copilot Workspace) önállóan javítja a hibákat, teszteli a kódot és élesíti a weboldalt.</li>
+        <li><strong>Utazás:</strong> Nem csak repjegyet keres, hanem végigviszi a foglalást, asztalt foglal az étteremben és naptárba rögzíti az eseményeket.</li>
+    </ul>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('gptTimeline').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['GPT-1', 'GPT-2', 'GPT-3', 'GPT-3.5', 'GPT-4', 'GPT-4 Mini', 'GPT-4 Turbo'],
-                datasets: [{
-                    label: 'Megjelenési idő különbségek (hónap)',
-                    data: [0, 24, 12, 21, 12, 6, 7],
-                    backgroundColor: 'rgba(76, 175, 80, 0.6)',
-                    borderColor: 'rgba(76, 175, 80, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Hónapok'
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'GPT Verziók'
-                        }
-                    }
-                }
-            }
-        });
-    </script>
+    <div class="deep-dive-box">
+        <h4>Agentic Workflows</h4>
+        <p>A legmodernebb rendszerekben több szakosodott ágens dolgozik együtt: egy "Menedzser" ágens kiosztja a feladatot egy "Kutató" és egy "Író" ágensnek, majd egy "Kritikus" ágens ellenőrzi a minőséget. Ez a hierarchikus felépítés minimalizálja a hibákat.</p>
+    </div>
+</section>
+
+<section id="infra">
+    <h2>V. Hardver, Energia és Szintetikus Adatok</h2>
+    <p>A szoftveres fejlődés mögött egy gigantikus fizikai gépezet dübörög, amely megváltoztatja a globális energiagazdálkodást.</p>
+
+    <h3>NVIDIA Blackwell és TPUv5</h3>
+    <p>Az <strong>NVIDIA B200 (Blackwell)</strong> architektúra 2025-re alapvetővé vált. Ezek a chipek 20-szor gyorsabbak az előző generációnál az érvelési folyamatok során. A Google saját TPU-jai (Tensor Processing Units) pedig lehetővé teszik számukra, hogy ne függjenek az NVIDIA-tól.</p>
+
+    <h3>Az Energia és az Atomenergia</h3>
+    <p>Mivel az MI adatközpontok áramigénye egyes országokéval vetekszik, a tech-óriások (Microsoft, Google, Amazon) saját kisméretű atomreaktorokat (SMR) kezdtek építeni. Az MI fejlődésének legnagyobb gátja ma már nem a kód, hanem az elektromos hálózat kapacitása.</p>
+
+    <div class="deep-dive-box">
+        <h4>Szintetikus Adatok: A "Data Wall" áttörése</h4>
+        <p>Mivel az emberiség által generált összes szöveget (internet, könyvek) már felhasználták a tanításhoz, a modellek mostantól <strong>önmagukat tanítják</strong>. Az MI által generált, logikailag helyes adatokon (szintetikus adatok) való tanítás lehetővé teszi az intelligencia további skálázását akkor is, ha "elfogy az internet".</p>
+    </div>
+</section>
+
+<section id="linkek">
+    <h2>VI. Hasznos Linkek és Források</h2>
+    <p>Maradj naprakész a legfontosabb források segítségével:</p>
+    
+    <h3>Fejlesztői és Modell Platformok</h3>
+    <ul class="link-list">
+        <li><a href="https://openai.com" target="_blank">OpenAI Hivatalos Oldal</a></li>
+        <li><a href="https://deepmind.google" target="_blank">Google DeepMind</a></li>
+        <li><a href="https://huggingface.co" target="_blank">Hugging Face (Az AI "GitHub-ja")</a></li>
+        <li><a href="https://anthropic.com" target="_blank">Anthropic (Claude)</a></li>
+        <li><a href="https://www.deepseek.com" target="_blank">DeepSeek AI</a></li>
+        <li><a href="https://ai.meta.com" target="_blank">Meta AI (Llama modellek)</a></li>
+    </ul>
+
+    <h3>Hírek és Elemzések</h3>
+    <ul class="link-list">
+        <li><a href="https://www.therundown.ai" target="_blank">The Rundown AI (Napi hírek)</a></li>
+        <li><a href="https://www.ben-evans.com" target="_blank">Benedict Evans (Stratégiai elemzések)</a></li>
+        <li><a href="https://www.superhuman.ai" target="_blank">Superhuman AI Newsletter</a></li>
+    </ul>
+
+    <h3>Eszközök Napi Használatra</h3>
+    <ul class="link-list">
+        <li><a href="https://chatgpt.com" target="_blank">ChatGPT</a></li>
+        <li><a href="https://gemini.google.com" target="_blank">Google Gemini</a></li>
+        <li><a href="https://www.perplexity.ai" target="_blank">Perplexity (AI Kereső)</a></li>
+        <li><a href="https://notebooklm.google.com" target="_blank">NotebookLM</a></li>
+    </ul>
+</section>
+
+<footer>
+    <p><strong>AI Stratégiai Nagykönyv - 2025</strong></p>
+    <p>Készült az emberi és mesterséges intelligencia szimbiózisában.</p>
+    <div class="footer-note">
+        Verzió: 4.0.0 | Frissítve: 2025.12.21 | Minden jog fenntartva az emberiségnek.
+    </div>
+</footer>
+
 </body>
 </html>
