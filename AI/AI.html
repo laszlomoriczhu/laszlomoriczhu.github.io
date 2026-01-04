@@ -15,7 +15,74 @@
             --white: #ffffff;
             --border: #e2e8f0;
             --success: #10b981;
+            
+            /* Téma változók (Light Mode alapértelmezés) */
+            --nav-bg: rgba(255, 255, 255, 0.97);
+            --section-bg: #ffffff;
+            --heading-border: #f1f5f9;
+            --p-text: #334155;
+            --card-bg: #f8fafc;
+            --box-bg: #f0f7ff;
+            --link-bg: #f1f5f9;
+            --footer-bg: #0f172a;
         }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #020617;       /* Nagyon sötét kék/szürke háttér */
+                --text: #f1f5f9;     /* Világos szöveg */
+                --border: #1e293b;   /* Sötét keretek */
+                --nav-bg: rgba(15, 23, 42, 0.97);
+                --section-bg: #0f172a;
+                --heading-border: #1e293b;
+                --p-text: #cbd5e1;   /* Enyhén törtfehér a bekezdéseknek */
+                --card-bg: #1e293b;
+                --box-bg: #172554;   /* Mélykék a kiemeléseknek */
+                --link-bg: #1e293b;
+                --footer-bg: #020617;
+                
+                /* Színek világosítása a sötét háttérhez */
+                --primary: #3b82f6;
+                --secondary: #a78bfa;
+            }
+        }
+
+        /* Manuális mód felülírások */
+        body.light-mode {
+            --primary: #1a73e8;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --text: #1e293b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --nav-bg: rgba(255, 255, 255, 0.97);
+            --section-bg: #ffffff;
+            --heading-border: #f1f5f9;
+            --p-text: #334155;
+            --card-bg: #f8fafc;
+            --box-bg: #f0f7ff;
+            --link-bg: #f1f5f9;
+            --footer-bg: #0f172a;
+        }
+
+        body.dark-mode {
+            --bg: #020617;
+            --text: #f1f5f9;
+            --border: #1e293b;
+            --nav-bg: rgba(15, 23, 42, 0.97);
+            --section-bg: #0f172a;
+            --heading-border: #1e293b;
+            --p-text: #cbd5e1;
+            --card-bg: #1e293b;
+            --box-bg: #172554;
+            --link-bg: #1e293b;
+            --footer-bg: #020617;
+            --primary: #3b82f6;
+            --secondary: #a78bfa;
+        }
+
         body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; line-height: 1.8; background-color: var(--bg); color: var(--text); scroll-behavior: smooth; }
         
         header { 
@@ -28,42 +95,63 @@
         header h1 { font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -2px; }
         header p { font-size: 1.3rem; opacity: 0.9; margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto; }
 
-        nav { position: sticky; top: 0; background: rgba(255, 255, 255, 0.97); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border); padding: 1rem 0; }
+        nav { position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--border); padding: 1rem 0; }
         nav ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
         nav ul li a { text-decoration: none; color: var(--text); font-weight: 600; font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.2s; border: 1px solid transparent; }
         nav ul li a:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .theme-toggle { background: transparent; border: 1px solid var(--border); color: var(--text); cursor: pointer; padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 1.2rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+        .theme-toggle:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
-        section { max-width: 1100px; margin: 3rem auto; padding: 4rem; background: var(--white); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
-        h2 { font-size: 2.5rem; color: var(--primary); border-bottom: 3px solid #f1f5f9; padding-bottom: 1rem; margin-top: 0; font-weight: 800; }
+        section { max-width: 1100px; margin: 3rem auto; padding: 4rem; background: var(--section-bg); border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+        h2 { font-size: 2.5rem; color: var(--primary); border-bottom: 3px solid var(--heading-border); padding-bottom: 1rem; margin-top: 0; font-weight: 800; }
         h3 { font-size: 1.8rem; color: var(--secondary); margin-top: 3rem; font-weight: 700; border-left: 5px solid var(--accent); padding-left: 1rem; }
         
-        p { margin-bottom: 1.5rem; font-size: 1.15rem; color: #334155; text-align: justify; }
+        p { margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--p-text); text-align: justify; }
 
-        .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .glossary-item { background: #f8fafc; padding: 2rem; border-radius: 16px; border: 1px solid var(--border); transition: transform 0.3s; }
+        .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .glossary-item { background: var(--card-bg); padding: 2rem; border-radius: 16px; border: 1px solid var(--border); transition: transform 0.3s; }
         .glossary-item:hover { transform: translateY(-5px); border-color: var(--primary); }
         .glossary-item strong { display: block; font-size: 1.2rem; margin-bottom: 0.8rem; color: var(--primary); }
 
-        .deep-dive-box { background: #f0f7ff; border-radius: 16px; padding: 2.5rem; margin: 2.5rem 0; border-right: 6px solid var(--primary); }
+        .deep-dive-box { background: var(--box-bg); border-radius: 16px; padding: 2.5rem; margin: 2.5rem 0; border-right: 6px solid var(--primary); }
         .deep-dive-box h4 { margin-top: 0; color: var(--primary); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; margin-bottom: 1rem; }
 
-        .model-card { border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; background: #fff; }
+        .model-card { border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; background: var(--section-bg); }
         .tag { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; color: white; }
         .tag-openai { background: #10a37f; }
         .tag-google { background: #4285f4; }
         .tag-china { background: #6133ff; }
 
         .link-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-        .link-list li a { display: block; padding: 1rem; background: #f1f5f9; border-radius: 10px; text-decoration: none; color: var(--primary); font-weight: 600; transition: background 0.2s; }
+        .link-list li a { display: block; padding: 1rem; background: var(--link-bg); border-radius: 10px; text-decoration: none; color: var(--primary); font-weight: 600; transition: background 0.2s; }
         .link-list li a:hover { background: var(--primary); color: white; }
+        .link-list li a[href$=".pdf"]::before {
+            content: "\1F4C4";
+            margin-right: 0.5rem;
+        }
 
-        footer { background: #0f172a; color: white; padding: 5rem 2rem; text-align: center; margin-top: 5rem; }
+        footer { background: var(--footer-bg); color: white; padding: 5rem 2rem; text-align: center; margin-top: 5rem; }
         .footer-note { opacity: 0.7; font-size: 0.9rem; margin-top: 2rem; }
 
         @media (max-width: 768px) {
-            header h1 { font-size: 2.2rem; }
-            section { margin: 1rem; padding: 2rem; }
-            nav ul { gap: 0.5rem; }
+            header { padding: 3rem 1rem; }
+            header h1 { font-size: 2rem; letter-spacing: -1px; }
+            header p { font-size: 1.1rem; }
+            
+            nav { padding: 0.5rem 0; }
+            nav ul { gap: 0.4rem; padding: 0 0.5rem; }
+            nav ul li a { font-size: 0.75rem; padding: 0.4rem 0.6rem; }
+
+            section { margin: 1.5rem 1rem; padding: 1.5rem; border-radius: 16px; }
+            h2 { font-size: 1.8rem; }
+            h3 { font-size: 1.4rem; margin-top: 2rem; }
+            p { font-size: 1rem; text-align: left; }
+
+            .glossary-grid { gap: 1rem; }
+            .deep-dive-box { padding: 1.5rem; margin: 1.5rem 0; border-right-width: 4px; }
+            .link-list { grid-template-columns: 1fr; }
+            footer { padding: 3rem 1rem; }
         }
     </style>
 </head>
@@ -83,6 +171,7 @@
         <li><a href="#ágensek">IV. ÁGENSEK</a></li>
         <li><a href="#infra">V. INFRASTRUKTÚRA</a></li>
         <li><a href="#linkek">VI. LINKGYŰJTEMÉNY</a></li>
+        <li><button id="theme-toggle" class="theme-toggle" aria-label="Téma váltása">🌓</button></li>
     </ul>
 </nav>
 
@@ -231,6 +320,11 @@
         <li><a href="https://www.perplexity.ai" target="_blank">Perplexity (AI Kereső)</a></li>
         <li><a href="https://notebooklm.google.com" target="_blank">NotebookLM</a></li>
     </ul>
+
+    <h3>Ajánlott Olvasmányok</h3>
+    <ul class="link-list">
+        <li><a href="Prompt-Mastery-eBook-Hungarian.pdf" target="_blank">Promptok művészete</a></li>
+    </ul>
 </section>
 
 <footer>
@@ -240,6 +334,35 @@
         Verzió: 4.0.0 | Frissítve: 2025.12.21 | Minden jog fenntartva az emberiségnek.
     </div>
 </footer>
+
+<script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    // Ellenőrizzük a mentett beállítást vagy a rendszer preferenciát
+    const currentTheme = localStorage.getItem('theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (currentTheme === 'dark' || (!currentTheme && systemDark)) {
+        body.classList.add('dark-mode');
+        toggleBtn.innerHTML = '☀️'; // Ha sötét van, Nap ikon (váltás világosra)
+    } else {
+        body.classList.add('light-mode');
+        toggleBtn.innerHTML = '🌙'; // Ha világos van, Hold ikon (váltás sötétre)
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        if (body.classList.contains('dark-mode')) {
+            body.classList.replace('dark-mode', 'light-mode');
+            localStorage.setItem('theme', 'light');
+            toggleBtn.innerHTML = '🌙';
+        } else {
+            body.classList.replace('light-mode', 'dark-mode');
+            localStorage.setItem('theme', 'dark');
+            toggleBtn.innerHTML = '☀️';
+        }
+    });
+</script>
 
 </body>
 </html>
