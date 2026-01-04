@@ -10,6 +10,7 @@
     <script src="https://npmcdn.com/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 
     <script>
+        // New
         // Tailwind dark mode configuration
         tailwind.config = {
             darkMode: 'class',
@@ -131,6 +132,18 @@
     </div>
 
     <script>
+        // --- Medication Dose Change Definitions (FIXED for gap-less display) ---
+        const doseChanges = [
+            // Period 1: Start 2025-10-25, Ends 2025-11-03
+            { startDate: '2025-10-25', exclusiveEndDate: '2025-11-04', color: 'rgba(255, 165, 0, 0.15)' },
+            // Period 2: Start 2025-11-04, Ends 2025-12-07
+            { startDate: '2025-11-04', exclusiveEndDate: '2025-12-08', color: 'rgba(54, 162, 235, 0.15)' },
+            // Period 3: Start 2025-12-08, Ends 2025-12-20
+            { startDate: '2025-12-08', exclusiveEndDate: '2025-12-21', color: 'rgba(153, 102, 255, 0.15)' },
+            // Period 4: Start 2025-12-21, Ends now/future
+            { startDate: '2025-12-21', exclusiveEndDate: '2050-12-31', color: 'rgba(75, 192, 192, 0.15)' }
+        ];
+
         document.addEventListener('DOMContentLoaded', () => {
             const fileName = "{b41a95fe-1686-419e-b04b-2b0a87b145d4}.dia";
             const loadingSpinner = document.getElementById('loading-spinner');
@@ -146,10 +159,15 @@
             let targetRangeFrom = 3.9;
             let targetRangeTo = 8.9;
             let hypoLimit = 3.9;
+            let minTimestamp = null; // Stores the min date of actual data
+            let maxTimestamp = null; // Stores the max date of actual data
 
-            // Format date to YYYY-MM-DD string
+            // FIX: Robustly format date to YYYY-MM-DD string using local time components
             function formatDateToInput(date) {
-                return date.toISOString().split('T')[0];
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
             }
 
             async function loadAndProcessData() {
@@ -173,8 +191,8 @@
                     const settingsNode = xmlDoc.getElementsByTagName("status")[0];
 
                     const data = [];
-                    let minDate = new Date('9999-12-31');
-                    let maxDate = new Date('1000-01-01');
+                    let minDate = new Date('9999-12-31T00:00:00');
+                    let maxDate = new Date('1000-01-01T00:00:00');
 
                     // Read and store target values
                     targetRangeFrom = parseFloat(settingsNode.getAttribute("TgRngFrom") || 3.9);
@@ -188,12 +206,13 @@
                         const glucose = parseFloat(node.getAttribute("Gl"));
 
                         if (date && time && !isNaN(glucose)) {
-                            const timestamp = new Date(`${date}T${time}`);
+                            // FIX: Using T00:00:00 helps JavaScript recognize it as local time, preventing UTC shifts
+                            const timestamp = new Date(`${date}T${time}:00`); 
                             data.push({ x: timestamp, y: glucose });
 
                             // Find Min/Max date
-                            if (timestamp < minDate) minDate = timestamp;
-                            if (timestamp > maxDate) maxDate = timestamp;
+                            if (timestamp.getTime() < minDate.getTime()) minDate = timestamp;
+                            if (timestamp.getTime() > maxDate.getTime()) maxDate = timestamp;
                         }
                     }
 
@@ -205,10 +224,13 @@
                     data.sort((a, b) => a.x - b.x);
                     
                     allChartData = data; // Save all data
+                    minTimestamp = data[0].x; // Set actual min timestamp
+                    maxTimestamp = data[data.length - 1].x; // Set actual max timestamp
 
-                    // 4. Set date pickers to min/max date
-                    filterStartDateInput.value = formatDateToInput(minDate);
-                    filterEndDateInput.value = formatDateToInput(maxDate);
+
+                    // 4. Set date pickers to min/max date using the robust function
+                    filterStartDateInput.value = formatDateToInput(minTimestamp);
+                    filterEndDateInput.value = formatDateToInput(maxTimestamp);
 
                     // 5. Update dashboard with the full dataset
                     updateDashboard(allChartData);
@@ -249,8 +271,11 @@
                 document.getElementById('stat-max').textContent = data.length > 0 ? max.toFixed(1) : '-';
                 document.getElementById('stat-min').textContent = data.length > 0 ? min.toFixed(1) : '-';
 
-                // Render chart
-                renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit);
+                // Determine the visible range for the chart's X-axis
+                let chartMinX = data.length > 0 ? data[0].x : null;
+                let chartMaxX = data.length > 0 ? data[data.length - 1].x : null;
+
+                renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit, chartMinX, chartMaxX);
             }
 
             // Filter event handler
@@ -273,41 +298,118 @@
 
             // Reset event handler
             function handleReset() {
+                // Reset to full data range
                 updateDashboard(allChartData);
-                // Optionally reset the date pickers
+                
+                // Reset the date pickers
                 if (allChartData.length > 0) {
-                    filterStartDateInput.value = formatDateToInput(allChartData[0].x);
-                    filterEndDateInput.value = formatDateToInput(allChartData[allChartData.length - 1].x);
+                    filterStartDateInput.value = formatDateToInput(minTimestamp);
+                    filterEndDateInput.value = formatDateToInput(maxTimestamp);
                 }
             }
 
-            function renderChart(data, targetFrom, targetTo, hypo) {
+            // Updated renderChart function with X-axis range and Y-axis fix
+            function renderChart(data, targetFrom, targetTo, hypo, chartMinX, chartMaxX) {
                 const ctx = document.getElementById('bgChart').getContext('2d');
                 
                 if (bgChartInstance) {
                     bgChartInstance.destroy(); // Destroy previous chart if exists
                 }
 
+                // -------------------------------------------------------------
+                // 1. Generate Dose Change Annotations 
+                // -------------------------------------------------------------
+                const doseAnnotations = {};
+                doseChanges.forEach((change, index) => {
+                    const key = `doseChange_${index}`; 
+                    
+                    doseAnnotations[key] = {
+                        type: 'box',
+                        xMin: change.startDate,
+                        // FIX: Using exclusiveEndDate to ensure full day coverage
+                        xMax: change.exclusiveEndDate, 
+                        // FIX: Changed yMax from 100 to 25
+                        yMin: 0,
+                        yMax: 25, // Safely covers any expected BG scale
+                        backgroundColor: change.color,
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        label: {
+                            // FIX: Disable label display
+                            content: '',
+                            display: false, 
+                        }
+                    };
+                });
+                // -------------------------------------------------------------
+
+                // 2. Combine all annotations (Dose Changes + Target Range + Hypo Line)
+                const allAnnotations = {
+                    ...doseAnnotations, 
+                    
+                    // Existing Target Range Annotation
+                    targetRange: {
+                        type: 'box',
+                        yMin: targetFrom,
+                        yMax: targetTo,
+                        backgroundColor: 'rgba(74, 222, 128, 0.1)', 
+                        borderColor: 'rgba(74, 222, 128, 0.3)',
+                        borderWidth: 1,
+                        label: {
+                            content: 'Target Range',
+                            display: true,
+                            position: 'start',
+                            color: 'rgba(74, 222, 128, 0.7)',
+                            font: {
+                                size: 10
+                            }
+                        },
+                        z: 1 
+                    },
+                    
+                    // Existing Hypo Line Annotation
+                    hypoLine: {
+                        type: 'line',
+                        yMin: hypo,
+                        yMax: hypo,
+                        borderColor: 'rgb(249, 115, 22)', 
+                        borderWidth: 2,
+                        borderDash: [6, 6], 
+                        label: {
+                            content: `Hypo (${hypo.toFixed(1)})`,
+                            display: true,
+                            position: 'start',
+                            color: 'rgb(249, 115, 22)',
+                            backgroundColor: 'rgba(17, 24, 39, 0.6)',
+                            font: {
+                                size: 10,
+                                weight: 'bold'
+                            }
+                        },
+                        z: 1 
+                    }
+                };
+
+                // 3. Create the Chart
                 bgChartInstance = new Chart(ctx, {
                     type: 'line',
                     data: {
                         datasets: [{
                             label: 'Blood Glucose (mmol/L)',
                             data: data,
-                            borderColor: 'rgb(59, 130, 246)', // Blue line
+                            borderColor: 'rgb(59, 130, 246)', 
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             borderWidth: 2,
                             pointBackgroundColor: (context) => {
-                                // Color points based on value
                                 const value = context.raw.y;
-                                if (value > targetTo) return 'rgb(239, 68, 68)'; // High (red)
-                                if (value < hypo) return 'rgb(249, 115, 22)'; // Low (orange)
-                                return 'rgb(59, 130, 246)'; // Normal (blue)
+                                if (value > targetTo) return 'rgb(239, 68, 68)'; 
+                                if (value < hypo) return 'rgb(249, 115, 22)'; 
+                                return 'rgb(59, 130, 246)'; 
                             },
                             pointRadius: 3,
                             pointHoverRadius: 6,
-                            fill: true, // Fill area
-                            tension: 0.1 // Slight curve
+                            fill: true, 
+                            tension: 0.1 
                         }]
                     },
                     options: {
@@ -316,6 +418,9 @@
                         scales: {
                             x: {
                                 type: 'time',
+                                // FIX: Force the X-axis scale to match the visible data range
+                                min: chartMinX, 
+                                max: chartMaxX,
                                 time: {
                                     unit: 'day',
                                     tooltipFormat: 'yyyy. MM. dd. HH:mm',
@@ -345,7 +450,7 @@
                         },
                         plugins: {
                             legend: {
-                                display: false // No need for a legend with only one dataset
+                                display: false 
                             },
                             tooltip: {
                                 mode: 'index',
@@ -354,46 +459,8 @@
                                 titleColor: '#fff',
                                 bodyColor: '#fff',
                             },
-                            // Annotations (target range and hypo)
                             annotation: {
-                                annotations: {
-                                    targetRange: {
-                                        type: 'box',
-                                        yMin: targetFrom,
-                                        yMax: targetTo,
-                                        backgroundColor: 'rgba(74, 222, 128, 0.1)', // Greenish band
-                                        borderColor: 'rgba(74, 222, 128, 0.3)',
-                                        borderWidth: 1,
-                                        label: {
-                                            content: 'Target Range',
-                                            display: true,
-                                            position: 'start',
-                                            color: 'rgba(74, 222, 128, 0.7)',
-                                            font: {
-                                                size: 10
-                                            }
-                                        }
-                                    },
-                                    hypoLine: {
-                                        type: 'line',
-                                        yMin: hypo,
-                                        yMax: hypo,
-                                        borderColor: 'rgb(249, 115, 22)', // Orange
-                                        borderWidth: 2,
-                                        borderDash: [6, 6], // Dashed line
-                                        label: {
-                                            content: `Hypo (${hypo.toFixed(1)})`,
-                                            display: true,
-                                            position: 'start',
-                                            color: 'rgb(249, 115, 22)',
-                                            backgroundColor: 'rgba(17, 24, 39, 0.6)',
-                                            font: {
-                                                size: 10,
-                                                weight: 'bold'
-                                            }
-                                        }
-                                    }
-                                }
+                                annotations: allAnnotations 
                             }
                         },
                         interaction: {

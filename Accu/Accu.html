@@ -28,7 +28,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #111827; /* Dark gray background */
-            color: #d1d5db; /* Light gray text */
+            color: #f3f4f6; /* Light gray text - Improved contrast */
         }
         .chart-container {
             position: relative;
@@ -50,7 +50,7 @@
             background: #6b7280;
         }
         /* Styling the date picker icon in dark mode */
-        input[type="date"]::-webkit-calendar-picker-indicator {
+        input[type="date"]::-webkit-calendar-picker-indicator, input[type="time"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
     </style>
@@ -60,12 +60,11 @@
         
         <header class="mb-8">
             <h1 class="text-4xl font-bold text-white mb-2">Accu Blood Glucose Analyzer</h1>
-            <p class="text-lg text-gray-400">Blood glucose level data visualization from the uploaded .dia file.</p>
         </header>
 
         <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg mb-8">
             <h3 class="text-xl font-semibold text-white mb-4">Select Period</h3>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
                 <div class="col-span-1">
                     <label for="filter-start-date" class="block text-sm font-medium text-gray-300 mb-1">Start Date</label>
                     <input type="date" id="filter-start-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
@@ -73,6 +72,14 @@
                 <div class="col-span-1">
                     <label for="filter-end-date" class="block text-sm font-medium text-gray-300 mb-1">End Date</label>
                     <input type="date" id="filter-end-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="col-span-1">
+                    <label for="filter-start-time" class="block text-sm font-medium text-gray-300 mb-1">Start Time</label>
+                    <input type="time" id="filter-start-time" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="col-span-1">
+                    <label for="filter-end-time" class="block text-sm font-medium text-gray-300 mb-1">End Time</label>
+                    <input type="time" id="filter-end-time" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
                 </div>
                 <div class="col-span-1">
                     <button id="filter-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
@@ -94,19 +101,28 @@
             </div>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-sm font-medium text-gray-400 uppercase">Average Value</h3>
-                <p id="stat-avg" class="text-3xl font-bold text-white">-</p>
+                <div class="flex items-baseline">
+                    <p id="stat-avg" class="text-3xl font-bold text-white">-</p>
+                    <span id="trend-avg" class="ml-2 text-sm font-medium"></span>
+                </div>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-sm font-medium text-red-400 uppercase">Maximum Value</h3>
-                <p id="stat-max" class="text-3xl font-bold text-red-300">-</p>
+                <div class="flex items-baseline">
+                    <p id="stat-max" class="text-3xl font-bold text-red-300">-</p>
+                    <span id="trend-max" class="ml-2 text-sm font-medium"></span>
+                </div>
             </div>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-sm font-medium text-blue-400 uppercase">Minimum Value</h3>
-                <p id="stat-min" class="text-3xl font-bold text-blue-300">-</p>
+                <div class="flex items-baseline">
+                    <p id="stat-min" class="text-3xl font-bold text-blue-300">-</p>
+                    <span id="trend-min" class="ml-2 text-sm font-medium"></span>
+                </div>
             </div>
         </div>
 
-        <main class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
+        <main class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg mb-8">
             <h2 class="text-2xl font-semibold text-white mb-6">Blood Glucose Level (mmol/L) - Timeline</h2>
             <div id="loading-spinner" class="flex justify-center items-center h-64">
                 <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -125,6 +141,67 @@
                 <canvas id="bgChart"></canvas>
             </div>
         </main>
+
+        <section class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-semibold text-white mb-6">Daily Average Glucose (mmol/L)</h2>
+            <div class="chart-container">
+                <canvas id="dailyAvgChart"></canvas>
+            </div>
+        </section>
+
+        <section class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-white">Estimated HbA1c History</h2>
+                <div class="flex items-center space-x-2">
+                    <label for="hba1c-window" class="text-sm text-gray-300">Lookback (days):</label>
+                    <input type="number" id="hba1c-window" value="90" min="1" class="w-20 bg-gray-700 text-white p-1 rounded border border-gray-600 focus:ring-blue-500 focus:border-blue-500 text-center">
+                    <div class="flex space-x-1 ml-2">
+                        <button id="btn-30" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 text-white text-xs rounded transition">30</button>
+                        <button id="btn-60" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 text-white text-xs rounded transition">60</button>
+                        <button id="btn-90" class="px-2 py-1 bg-gray-600 hover:bg-gray-500 text-white text-xs rounded transition">90</button>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="hba1cChart"></canvas>
+            </div>
+            
+            <div class="mt-8 max-w-2xl mx-auto">
+                <h4 class="text-lg font-semibold text-white mb-4 text-center">HbA1c és Átlagos Vércukorszint Összefüggése</h4>
+                <div class="overflow-hidden rounded-lg border border-gray-700">
+                    <table class="min-w-full text-sm text-left text-gray-300">
+                        <thead class="text-xs text-white uppercase bg-gray-700">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 font-bold">HbA1c (%)</th>
+                                <th scope="col" class="px-6 py-3 font-bold">Becsült átlagos vércukorszint (mmol/l)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700 bg-gray-800">
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-white">6%</td>
+                                <td class="px-6 py-4">kb. 7,0 mmol/l</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-white">7%</td>
+                                <td class="px-6 py-4">kb. 8,6 mmol/l</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-white">8%</td>
+                                <td class="px-6 py-4">kb. 10,2 mmol/l</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-white">9%</td>
+                                <td class="px-6 py-4">kb. 11,8 mmol/l</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-white">10%</td>
+                                <td class="px-6 py-4">kb. 13,4 mmol/l</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
         
         <footer class="text-center text-gray-500 mt-8">
             <p>Accu Project - Modern Web Application</p>
@@ -145,16 +222,450 @@
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            const fileName = "{b41a95fe-1686-419e-b04b-2b0a87b145d4}.dia";
+            const rawData = `
+Date|Time|Gl
+2025.10.25|13:43|18.4
+2025.10.25|15:52|6.8
+2025.10.25|21:17|7.3
+2025.10.26|07:39|7.0
+2025.10.26|14:51|16.0
+2025.10.26|17:09|8.7
+2025.10.26|18:08|8.4
+2025.10.26|20:32|7.6
+2025.10.27|20:10|9.1
+2025.10.28|12:08|12.5
+2025.10.28|15:22|7.8
+2025.10.28|16:46|5.5
+2025.10.28|19:17|8.5
+2025.10.29|15:25|6.8
+2025.10.29|16:08|5.9
+2025.10.29|16:59|6.0
+2025.10.29|19:13|5.6
+2025.10.29|23:00|5.5
+2025.10.30|08:09|6.7
+2025.10.30|11:46|7.8
+2025.10.30|13:56|4.8
+2025.10.30|16:36|5.2
+2025.10.30|17:12|5.2
+2025.10.30|19:25|6.7
+2025.10.30|22:19|5.6
+2025.10.31|11:57|4.5
+2025.10.31|12:47|4.9
+2025.10.31|14:25|4.9
+2025.10.31|16:00|6.5
+2025.10.31|19:37|7.8
+2025.11.01|11:08|5.2
+2025.11.01|13:37|4.5
+2025.11.01|14:16|5.8
+2025.11.01|17:08|7.3
+2025.11.01|19:28|7.4
+2025.11.01|20:37|6.9
+2025.11.01|23:17|7.3
+2025.11.02|06:45|5.9
+2025.11.02|07:50|6.9
+2025.11.02|10:05|7.5
+2025.11.02|11:52|4.4
+2025.11.02|14:13|8.0
+2025.11.02|16:21|8.5
+2025.11.02|19:27|7.0
+2025.11.03|07:21|6.1
+2025.11.03|10:04|8.2
+2025.11.03|10:53|10.5
+2025.11.03|12:13|8.6
+2025.11.03|13:32|8.4
+2025.11.03|15:07|7.0
+2025.11.03|17:06|6.2
+2025.11.03|18:54|8.4
+2025.11.03|20:59|5.7
+2025.11.04|06:53|5.9
+2025.11.04|12:13|6.0
+2025.11.04|13:58|5.7
+2025.11.04|15:45|5.9
+2025.11.04|16:24|6.2
+2025.11.04|18:04|5.9
+2025.11.04|20:18|7.4
+2025.11.05|05:32|7.3
+2025.11.05|08:23|6.0
+2025.11.05|09:42|5.9
+2025.11.05|09:46|5.5
+2025.11.05|13:04|7.9
+2025.11.05|13:06|6.6
+2025.11.05|15:55|7.2
+2025.11.05|19:30|6.7
+2025.11.06|06:45|6.3
+2025.11.06|09:12|7.4
+2025.11.06|11:51|6.1
+2025.11.06|13:53|7.2
+2025.11.06|17:00|6.9
+2025.11.06|19:04|5.3
+2025.11.06|20:32|5.3
+2025.11.07|08:33|6.2
+2025.11.07|10:13|7.3
+2025.11.07|14:12|7.0
+2025.11.07|17:24|7.8
+2025.11.07|19:14|7.0
+2025.11.07|22:30|5.9
+2025.11.08|06:49|7.0
+2025.11.08|10:05|6.5
+2025.11.08|15:01|7.8
+2025.11.08|19:58|8.3
+2025.11.09|06:19|6.9
+2025.11.09|09:12|6.0
+2025.11.09|11:59|5.5
+2025.11.09|12:33|5.9
+2025.11.09|13:51|6.0
+2025.11.09|17:47|5.8
+2025.11.09|19:17|6.2
+2025.11.10|04:33|5.9
+2025.11.10|08:54|7.7
+2025.11.10|10:30|7.0
+2025.11.10|15:03|7.4
+2025.11.10|16:32|5.9
+2025.11.10|19:18|6.5
+2025.11.10|19:19|5.8
+2025.11.11|10:56|8.8
+2025.11.11|12:02|8.3
+2025.11.11|13:32|8.9
+2025.11.11|15:03|7.4
+2025.11.11|16:37|4.8
+2025.11.11|18:41|6.2
+2025.11.11|22:31|5.7
+2025.11.12|06:04|6.0
+2025.11.12|09:01|8.9
+2025.11.12|11:54|5.7
+2025.11.12|14:09|6.9
+2025.11.12|17:18|6.0
+2025.11.12|19:23|8.4
+2025.11.13|07:15|7.2
+2025.11.13|08:51|8.2
+2025.11.13|11:03|6.1
+2025.11.13|13:23|8.2
+2025.11.13|16:25|5.6
+2025.11.13|18:52|5.4
+2025.11.14|06:23|6.6
+2025.11.14|09:19|9.3
+2025.11.14|11:29|6.8
+2025.11.14|13:39|6.5
+2025.11.14|17:43|7.4
+2025.11.15|07:09|6.0
+2025.11.15|09:04|9.4
+2025.11.15|11:01|6.0
+2025.11.15|11:47|4.6
+2025.11.15|12:26|7.2
+2025.11.15|14:46|5.2
+2025.11.15|17:58|8.0
+2025.11.15|20:00|5.4
+2025.11.15|21:40|5.4
+2025.11.16|08:41|7.3
+2025.11.16|10:34|7.9
+2025.11.16|12:21|5.2
+2025.11.16|16:24|5.5
+2025.11.16|19:39|6.6
+2025.11.17|07:42|8.8
+2025.11.17|09:18|7.6
+2025.11.17|11:44|5.0
+2025.11.17|14:36|6.3
+2025.11.17|16:16|5.1
+2025.11.17|19:15|5.3
+2025.11.18|09:05|8.7
+2025.11.18|11:21|4.8
+2025.11.18|12:21|5.4
+2025.11.18|14:31|6.0
+2025.11.18|17:21|6.3
+2025.11.18|20:02|6.7
+2025.11.19|09:31|7.7
+2025.11.19|11:46|5.6
+2025.11.19|13:33|5.7
+2025.11.19|16:29|5.8
+2025.11.19|19:01|6.0
+2025.11.20|09:03|8.8
+2025.11.20|11:09|6.3
+2025.11.20|11:56|6.1
+2025.11.20|13:26|8.3
+2025.11.20|16:36|6.2
+2025.11.20|18:11|6.7
+2025.11.21|08:32|7.7
+2025.11.21|10:23|7.5
+2025.11.21|13:34|5.2
+2025.11.21|15:07|5.8
+2025.11.21|17:30|5.8
+2025.11.22|07:32|6.3
+2025.11.22|08:53|7.4
+2025.11.22|11:18|6.3
+2025.11.22|13:12|5.5
+2025.11.22|14:31|12.2
+2025.11.22|15:55|7.4
+2025.11.22|17:44|8.4
+2025.11.22|19:02|7.0
+2025.11.22|20:33|5.8
+2025.11.23|09:02|6.9
+2025.11.23|10:26|6.1
+2025.11.23|12:49|5.8
+2025.11.23|14:08|6.4
+2025.11.23|19:30|6.4
+2025.11.24|08:31|8.0
+2025.11.24|10:04|5.4
+2025.11.24|10:33|5.4
+2025.11.24|11:40|6.1
+2025.11.24|14:19|6.7
+2025.11.24|16:13|6.5
+2025.11.24|19:08|6.1
+2025.11.25|08:48|6.9
+2025.11.25|09:35|5.8
+2025.11.25|11:01|5.5
+2025.11.25|13:06|5.5
+2025.11.25|15:16|5.2
+2025.11.25|18:05|6.8
+2025.11.26|09:59|7.6
+2025.11.26|14:37|8.7
+2025.11.26|15:30|7.0
+2025.11.26|16:17|6.6
+2025.11.26|19:14|6.7
+2025.11.27|09:53|6.0
+2025.11.27|15:29|7.4
+2025.11.27|18:41|6.4
+2025.11.28|10:33|6.0
+2025.11.28|19:15|5.4
+2025.11.28|23:19|5.3
+2025.11.29|10:16|6.8
+2025.11.29|15:33|6.3
+2025.11.29|18:30|8.7
+2025.11.29|19:56|8.3
+2025.11.30|08:12|5.7
+2025.11.30|10:02|8.8
+2025.11.30|10:40|7.7
+2025.11.30|15:32|5.5
+2025.11.30|19:28|6.3
+2025.12.01|10:35|5.7
+2025.12.01|13:03|6.1
+2025.12.02|10:02|7.0
+2025.12.02|11:37|7.0
+2025.12.02|12:40|5.8
+2025.12.02|14:59|5.3
+2025.12.02|20:21|8.4
+2025.12.03|08:20|7.3
+2025.12.03|17:09|5.8
+2025.12.04|11:16|5.3
+2025.12.04|19:21|6.5
+2025.12.05|09:02|7.1
+2025.12.05|10:50|7.1
+2025.12.05|17:20|5.3
+2025.12.05|20:18|5.2
+2025.12.06|08:15|8.6
+2025.12.06|10:18|5.5
+2025.12.06|12:52|5.8
+2025.12.06|15:06|5.3
+2025.12.06|16:25|5.8
+2025.12.06|18:40|6.3
+2025.12.07|08:25|6.3
+2025.12.07|13:07|7.0
+2025.12.07|16:53|5.0
+2025.12.08|08:06|6.5
+2025.12.08|13:49|5.1
+2025.12.08|18:34|5.5
+2025.12.09|04:01|4.8
+2025.12.09|07:47|6.8
+2025.12.09|08:36|10.1
+2025.12.09|09:43|8.5
+2025.12.09|11:03|6.8
+2025.12.09|11:48|4.9
+2025.12.09|13:23|4.8
+2025.12.09|14:18|5.1
+2025.12.09|15:54|5.3
+2025.12.09|17:03|6.7
+2025.12.09|20:31|6.2
+2025.12.10|09:07|9.3
+2025.12.10|10:01|6.3
+2025.12.10|11:35|5.2
+2025.12.10|13:56|5.8
+2025.12.10|15:18|5.2
+2025.12.10|17:27|5.9
+2025.12.10|19:36|5.3
+2025.12.10|20:41|5.8
+2025.12.10|23:52|5.7
+2025.12.11|04:49|5.0
+2025.12.11|07:07|8.0
+2025.12.11|07:53|7.5
+2025.12.11|09:00|7.5
+2025.12.11|11:14|6.2
+2025.12.11|12:37|4.9
+2025.12.11|14:38|6.9
+2025.12.11|17:19|5.4
+2025.12.11|19:35|6.9
+2025.12.12|05:06|5.2
+2025.12.12|07:00|5.6
+2025.12.12|07:38|6.3
+2025.12.12|09:18|6.7
+2025.12.12|10:51|5.2
+2025.12.12|10:58|5.0
+2025.12.12|13:05|6.4
+2025.12.12|14:08|5.2
+2025.12.12|15:12|5.8
+2025.12.12|20:01|7.8
+2025.12.12|21:09|7.9
+2025.12.13|00:04|5.1
+2025.12.13|06:29|5.4
+2025.12.13|07:38|6.8
+2025.12.13|08:30|6.9
+2025.12.13|11:55|4.1
+2025.12.13|13:55|7.9
+2025.12.13|15:28|5.2
+2025.12.13|17:11|5.0
+2025.12.13|19:32|4.8
+2025.12.13|22:13|6.1
+2025.12.14|07:10|5.2
+2025.12.14|10:03|7.7
+2025.12.14|11:12|6.7
+2025.12.14|12:33|5.2
+2025.12.14|14:52|5.6
+2025.12.14|19:17|7.3
+2025.12.15|05:46|5.9
+2025.12.15|08:20|9.3
+2025.12.15|09:34|6.9
+2025.12.15|14:40|10.3
+2025.12.15|16:49|7.2
+2025.12.15|18:02|5.0
+2025.12.15|19:20|8.0
+2025.12.15|21:13|6.5
+2025.12.16|06:01|5.2
+2025.12.16|08:30|6.3
+2025.12.16|10:39|5.8
+2025.12.16|13:22|5.3
+2025.12.16|14:13|5.8
+2025.12.16|16:51|6.6
+2025.12.16|18:49|6.2
+2025.12.16|21:14|5.2
+2025.12.17|08:49|8.7
+2025.12.17|09:56|7.8
+2025.12.17|12:24|4.9
+2025.12.17|15:59|4.9
+2025.12.17|17:25|5.6
+2025.12.17|19:45|7.2
+2025.12.18|09:50|5.2
+2025.12.18|14:31|5.0
+2025.12.18|19:11|7.7
+2025.12.18|20:04|8.5
+2025.12.18|20:05|7.8
+2025.12.18|21:35|5.3
+2025.12.19|06:13|5.2
+2025.12.19|09:26|7.8
+2025.12.19|11:09|4.9
+2025.12.19|12:47|6.0
+2025.12.19|14:30|7.6
+2025.12.19|16:10|7.8
+2025.12.19|21:15|5.7
+2025.12.20|07:07|5.9
+2025.12.20|11:34|5.3
+2025.12.20|15:35|7.5
+2025.12.20|17:49|5.9
+2025.12.20|21:36|6.2
+2025.12.21|06:35|6.3
+2025.12.21|09:59|5.5
+2025.12.21|12:06|5.0
+2025.12.21|14:27|8.2
+2025.12.21|15:26|5.9
+2025.12.21|17:38|4.8
+2025.12.21|20:03|6.3
+2025.12.22|05:25|5.3
+2025.12.22|09:54|8.4
+2025.12.22|10:55|6.5
+2025.12.22|14:27|7.6
+2025.12.22|15:36|6.4
+2025.12.22|18:11|4.6
+2025.12.22|20:19|6.5
+2025.12.22|21:33|7.4
+2025.12.23|05:17|5.5
+2025.12.23|09:24|6.0
+2025.12.23|11:46|5.8
+2025.12.23|12:31|6.4
+2025.12.23|14:24|6.7
+2025.12.23|15:35|5.5
+2025.12.23|17:12|6.2
+2025.12.23|18:55|5.8
+2025.12.23|19:56|6.9
+2025.12.23|21:15|7.9
+2025.12.23|22:10|8.1
+2025.12.24|07:38|5.7
+2025.12.24|10:00|6.9
+2025.12.24|11:49|4.9
+2025.12.24|14:39|6.2
+2025.12.24|15:39|5.5
+2025.12.24|18:04|6.4
+2025.12.24|19:17|6.1
+2025.12.25|07:08|7.8
+2025.12.25|09:39|7.3
+2025.12.25|11:11|6.0
+2025.12.25|21:54|6.1
+2025.12.26|08:58|6.8
+2025.12.26|11:46|6.2
+2025.12.26|14:02|5.8
+2025.12.26|15:27|8.0
+2025.12.26|15:50|6.5
+2025.12.26|18:06|4.8
+2025.12.27|09:38|7.0
+2025.12.27|11:58|4.9
+2025.12.27|14:11|5.9
+2025.12.27|17:41|5.6
+2025.12.27|20:06|6.3
+2025.12.28|07:05|6.3
+2025.12.28|10:28|5.8
+2025.12.28|12:51|7.2
+2025.12.28|15:48|5.2
+2025.12.28|18:02|6.2
+2025.12.28|19:58|6.4
+2025.12.28|21:27|8.5
+2025.12.29|10:43|6.6
+2025.12.29|15:35|6.0
+2025.12.29|18:29|5.9
+2025.12.30|06:54|7.2
+2025.12.30|07:47|10.3
+2025.12.30|09:54|7.0
+2025.12.30|10:51|5.7
+2025.12.30|13:29|7.4
+2025.12.30|17:02|7.3
+2025.12.30|20:43|6.5
+2025.12.31|09:47|6.8
+2025.12.31|14:06|7.0
+2025.12.31|16:37|5.9
+2025.12.31|19:32|8.0
+2025.12.31|21:18|8.3
+2025.12.31|23:05|6.0
+2026.01.01|08:58|6.9
+2026.01.01|12:45|5.4
+2026.01.01|14:27|7.9
+2026.01.01|17:19|6.0
+2026.01.01|20:05|5.9
+2026.01.02|06:24|5.4
+2026.01.02|14:31|8.5
+2026.01.02|17:01|7.9
+2026.01.03|08:01|6.8
+2026.01.03|11:08|5.6
+2026.01.03|12:30|4.9
+2026.01.03|13:29|5.7
+2026.01.03|16:10|8.4
+2026.01.03|17:20|6.0
+2026.01.03|19:57|8.2
+2026.01.03|21:42|5.0
+2026.01.04|07:18|6.1
+`.trim();
+
             const loadingSpinner = document.getElementById('loading-spinner');
             const errorMessage = document.getElementById('error-message');
             const errorText = document.getElementById('error-text');
             const filterStartDateInput = document.getElementById('filter-start-date');
             const filterEndDateInput = document.getElementById('filter-end-date');
+            const filterStartTimeInput = document.getElementById('filter-start-time');
+            const filterEndTimeInput = document.getElementById('filter-end-time');
             const filterButton = document.getElementById('filter-button');
             const resetButton = document.getElementById('reset-button');
+            const hba1cWindowInput = document.getElementById('hba1c-window');
+            const btn30 = document.getElementById('btn-30');
+            const btn60 = document.getElementById('btn-60');
+            const btn90 = document.getElementById('btn-90');
 
             let bgChartInstance = null; // To store the chart instance
+            let dailyChartInstance = null; // To store the daily average chart instance
+            let hba1cChartInstance = null; // To store the HbA1c chart instance
             let allChartData = []; // To store all read data
             let targetRangeFrom = 3.9;
             let targetRangeTo = 8.9;
@@ -170,59 +681,41 @@
                 return `${year}-${month}-${day}`;
             }
 
-            async function loadAndProcessData() {
+            function loadAndProcessData() {
                 try {
-                    // 1. Load data
-                    const response = await fetch(fileName);
-                    if (!response.ok) {
-                        throw new Error(`Network error: ${response.status} ${response.statusText}. File not found: ${fileName}`);
-                    }
-                    const xmlText = await response.text();
-
-                    // 2. Process XML
-                    const parser = new DOMParser();
-                    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-                    
-                    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
-                        throw new Error("XML file processing failed. It might be corrupted.");
-                    }
-
-                    const bgNodes = xmlDoc.getElementsByTagName("BG");
-                    const settingsNode = xmlDoc.getElementsByTagName("status")[0];
-
+                    // 1. Parse rawData
+                    const lines = rawData.split('\n');
                     const data = [];
                     let minDate = new Date('9999-12-31T00:00:00');
                     let maxDate = new Date('1000-01-01T00:00:00');
 
-                    // Read and store target values
-                    targetRangeFrom = parseFloat(settingsNode.getAttribute("TgRngFrom") || 3.9);
-                    targetRangeTo = parseFloat(settingsNode.getAttribute("TgRngTo") || 8.9);
-                    hypoLimit = parseFloat(settingsNode.getAttribute("HypoLmt") || 3.9);
+                    // Skip header (index 0)
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        const parts = line.split('|');
+                        if (parts.length >= 3) {
+                            const dateStr = parts[0].replace(/\./g, '-'); // 2025.10.25 -> 2025-10-25
+                            const timeStr = parts[1];
+                            const glucose = parseFloat(parts[2]);
 
-                    // 3. Data extraction
-                    for (let node of bgNodes) {
-                        const date = node.getAttribute("Dt");
-                        const time = node.getAttribute("Tm");
-                        const glucose = parseFloat(node.getAttribute("Gl"));
-
-                        if (date && time && !isNaN(glucose)) {
-                            // FIX: Using T00:00:00 helps JavaScript recognize it as local time, preventing UTC shifts
-                            const timestamp = new Date(`${date}T${time}:00`); 
-                            data.push({ x: timestamp, y: glucose });
-
-                            // Find Min/Max date
-                            if (timestamp.getTime() < minDate.getTime()) minDate = timestamp;
-                            if (timestamp.getTime() > maxDate.getTime()) maxDate = timestamp;
+                            if (dateStr && timeStr && !isNaN(glucose)) {
+                                const timestamp = new Date(`${dateStr}T${timeStr}:00`);
+                                data.push({ x: timestamp, y: glucose });
+                                
+                                if (timestamp.getTime() < minDate.getTime()) minDate = timestamp;
+                                if (timestamp.getTime() > maxDate.getTime()) maxDate = timestamp;
+                            }
                         }
                     }
 
                     if (data.length === 0) {
-                        throw new Error("No valid blood glucose (BG) data found in the file.");
+                        throw new Error("No valid data found in rawData.");
                     }
-
                     // Sort data by time
                     data.sort((a, b) => a.x - b.x);
-                    
+
                     allChartData = data; // Save all data
                     minTimestamp = data[0].x; // Set actual min timestamp
                     maxTimestamp = data[data.length - 1].x; // Set actual max timestamp
@@ -236,8 +729,17 @@
                     updateDashboard(allChartData);
 
                     // 6. Add event handlers to buttons
+                    // 6. Initialize HbA1c Chart
+                    updateHbA1cChart();
+
+                    // 7. Add event handlers to buttons
                     filterButton.addEventListener('click', handleFilter);
                     resetButton.addEventListener('click', handleReset);
+                    hba1cWindowInput.addEventListener('change', updateHbA1cChart);
+                    
+                    btn30.addEventListener('click', () => { hba1cWindowInput.value = 30; updateHbA1cChart(); });
+                    btn60.addEventListener('click', () => { hba1cWindowInput.value = 60; updateHbA1cChart(); });
+                    btn90.addEventListener('click', () => { hba1cWindowInput.value = 90; updateHbA1cChart(); });
 
                 } catch (error) {
                     console.error("Error during data processing:", error);
@@ -246,6 +748,36 @@
                 } finally {
                     loadingSpinner.classList.add('hidden');
                 }
+            }
+
+            // Helper to update trend indicators
+            function updateTrend(elementId, current, previous, higherIsBetter) {
+                const el = document.getElementById(elementId);
+                if (!el) return;
+                
+                const diff = current - previous;
+                if (Math.abs(diff) < 0.1) {
+                    el.textContent = '-';
+                    el.className = 'ml-2 text-sm font-medium text-gray-500';
+                    return;
+                }
+                
+                const isGood = higherIsBetter ? diff > 0 : diff < 0;
+                const arrow = diff > 0 ? '↑' : '↓';
+                const colorClass = isGood ? 'text-green-400' : 'text-red-400';
+                
+                el.textContent = `${arrow} ${Math.abs(diff).toFixed(1)}`;
+                el.className = `ml-2 text-sm font-medium ${colorClass}`;
+            }
+
+            function clearTrends() {
+                ['trend-avg', 'trend-max', 'trend-min'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.textContent = '';
+                        el.className = '';
+                    }
+                });
             }
 
             // New function to update statistics and chart
@@ -267,15 +799,99 @@
 
                 // Display statistics
                 document.getElementById('stat-count').textContent = data.length;
-                document.getElementById('stat-avg').textContent = data.length > 0 ? (sum / data.length).toFixed(1) : '-';
+                
+                const avg = data.length > 0 ? (sum / data.length) : 0;
+                document.getElementById('stat-avg').textContent = data.length > 0 ? avg.toFixed(1) : '-';
                 document.getElementById('stat-max').textContent = data.length > 0 ? max.toFixed(1) : '-';
                 document.getElementById('stat-min').textContent = data.length > 0 ? min.toFixed(1) : '-';
+
+                // --- Trend Calculation ---
+                if (data.length > 0) {
+                    const currentStart = data[0].x;
+                    const currentEnd = data[data.length - 1].x;
+                    const duration = currentEnd.getTime() - currentStart.getTime();
+                    
+                    if (duration > 0) {
+                        const prevEndTimestamp = currentStart.getTime() - 1;
+                        const prevStartTimestamp = prevEndTimestamp - duration;
+                        const prevStartDate = new Date(prevStartTimestamp);
+                        const prevEndDate = new Date(prevEndTimestamp);
+
+                        // Get time filter values to apply to previous period as well
+                        const startTimeVal = filterStartTimeInput.value;
+                        const endTimeVal = filterEndTimeInput.value;
+
+                        const prevData = allChartData.filter(item => {
+                            // 1. Time Window Check
+                            if (item.x < prevStartDate || item.x > prevEndDate) return false;
+
+                            // 2. Time of Day Check (if active)
+                            if (startTimeVal && endTimeVal) {
+                                const itemMinutes = item.x.getHours() * 60 + item.x.getMinutes();
+                                const [sh, sm] = startTimeVal.split(':').map(Number);
+                                const startMinutes = sh * 60 + sm;
+                                const [eh, em] = endTimeVal.split(':').map(Number);
+                                const endMinutes = eh * 60 + em;
+
+                                if (startMinutes <= endMinutes) {
+                                    return itemMinutes >= startMinutes && itemMinutes <= endMinutes;
+                                } else {
+                                    return itemMinutes >= startMinutes || itemMinutes <= endMinutes;
+                                }
+                            }
+                            return true;
+                        });
+
+                        if (prevData.length > 0) {
+                            let pSum = 0, pMin = Infinity, pMax = -Infinity;
+                            for (const item of prevData) {
+                                pSum += item.y;
+                                if (item.y < pMin) pMin = item.y;
+                                if (item.y > pMax) pMax = item.y;
+                            }
+                            const pAvg = pSum / prevData.length;
+
+                            updateTrend('trend-avg', avg, pAvg, false); // Lower avg is better
+                            updateTrend('trend-max', max, pMax, false); // Lower max is better
+                            updateTrend('trend-min', min, pMin, true);  // Higher min is better (usually)
+                        } else {
+                            clearTrends();
+                        }
+                    } else {
+                        clearTrends();
+                    }
+                } else {
+                    clearTrends();
+                }
 
                 // Determine the visible range for the chart's X-axis
                 let chartMinX = data.length > 0 ? data[0].x : null;
                 let chartMaxX = data.length > 0 ? data[data.length - 1].x : null;
 
                 renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit, chartMinX, chartMaxX);
+
+                // Calculate and render Daily Averages
+                const dailyGroups = {};
+                data.forEach(item => {
+                    // Use local date components to avoid UTC shifts
+                    const year = item.x.getFullYear();
+                    const month = (item.x.getMonth() + 1).toString().padStart(2, '0');
+                    const day = item.x.getDate().toString().padStart(2, '0');
+                    const dateKey = `${year}-${month}-${day}`;
+                    
+                    if (!dailyGroups[dateKey]) {
+                        dailyGroups[dateKey] = { sum: 0, count: 0, date: dateKey };
+                    }
+                    dailyGroups[dateKey].sum += item.y;
+                    dailyGroups[dateKey].count++;
+                });
+
+                const dailyData = Object.values(dailyGroups).map(g => ({
+                    x: g.date,
+                    y: g.sum / g.count
+                })).sort((a, b) => new Date(a.x) - new Date(b.x));
+
+                renderDailyAvgChart(dailyData, targetRangeFrom, targetRangeTo, hypoLimit);
             }
 
             // Filter event handler
@@ -289,8 +905,28 @@
                     return;
                 }
 
+                const startTimeVal = filterStartTimeInput.value;
+                const endTimeVal = filterEndTimeInput.value;
+
                 const filteredData = allChartData.filter(item => {
-                    return item.x >= startDate && item.x <= endDate;
+                    // Date check
+                    if (item.x < startDate || item.x > endDate) return false;
+
+                    // Time check
+                    if (startTimeVal && endTimeVal) {
+                        const itemMinutes = item.x.getHours() * 60 + item.x.getMinutes();
+                        const [sh, sm] = startTimeVal.split(':').map(Number);
+                        const startMinutes = sh * 60 + sm;
+                        const [eh, em] = endTimeVal.split(':').map(Number);
+                        const endMinutes = eh * 60 + em;
+
+                        if (startMinutes <= endMinutes) {
+                            return itemMinutes >= startMinutes && itemMinutes <= endMinutes;
+                        } else {
+                            return itemMinutes >= startMinutes || itemMinutes <= endMinutes;
+                        }
+                    }
+                    return true;
                 });
 
                 updateDashboard(filteredData);
@@ -306,6 +942,8 @@
                     filterStartDateInput.value = formatDateToInput(minTimestamp);
                     filterEndDateInput.value = formatDateToInput(maxTimestamp);
                 }
+                filterStartTimeInput.value = '';
+                filterEndTimeInput.value = '';
             }
 
             // Updated renderChart function with X-axis range and Y-axis fix
@@ -323,6 +961,40 @@
                 doseChanges.forEach((change, index) => {
                     const key = `doseChange_${index}`; 
                     
+                    // Calculate stats for this period using allChartData
+                    // Note: We use the full dataset to show historical performance for this period
+                    const pStart = new Date(`${change.startDate}T00:00:00`);
+                    const pEnd = new Date(`${change.exclusiveEndDate}T00:00:00`);
+                    const periodData = allChartData.filter(d => d.x >= pStart && d.x < pEnd);
+                    
+                    let labelContent = [`Period ${index + 1}`];
+                    
+                    if (periodData.length > 0) {
+                        const values = periodData.map(d => d.y);
+                        const avg = values.reduce((a, b) => a + b, 0) / values.length;
+                        
+                        // TIR (Time in Range)
+                        const inRange = values.filter(v => v >= targetFrom && v <= targetTo).length;
+                        const tir = (inRange / values.length) * 100;
+                        
+                        // GMI (Glucose Management Indicator - approx HbA1c)
+                        // Formula: 3.31 + 0.02392 * (mmol/L * 18.0182)
+                        const gmi = 3.31 + (0.02392 * avg * 18.0182);
+                        
+                        // CV (Coefficient of Variation)
+                        const sqDiffs = values.map(v => Math.pow(v - avg, 2));
+                        const avgSqDiff = sqDiffs.reduce((a, b) => a + b, 0) / values.length;
+                        const stDev = Math.sqrt(avgSqDiff);
+                        const cv = (stDev / avg) * 100;
+
+                        labelContent.push(`Avg: ${avg.toFixed(1)}`);
+                        labelContent.push(`TIR: ${tir.toFixed(0)}%`);
+                        labelContent.push(`GMI: ${gmi.toFixed(1)}%`);
+                        labelContent.push(`CV: ${cv.toFixed(0)}%`);
+                    } else {
+                        labelContent.push('(No Data)');
+                    }
+
                     doseAnnotations[key] = {
                         type: 'box',
                         xMin: change.startDate,
@@ -335,9 +1007,19 @@
                         borderColor: 'transparent',
                         borderWidth: 0,
                         label: {
-                            // FIX: Disable label display
-                            content: '',
-                            display: false, 
+                            content: labelContent,
+                            display: true,
+                            position: 'start',
+                            xAdjust: 10,
+                            yAdjust: 10,
+                            color: 'rgba(255, 255, 255, 0.9)',
+                            font: {
+                                size: 11,
+                                family: 'Inter'
+                            },
+                            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                            padding: 6,
+                            borderRadius: 4
                         }
                     };
                 });
@@ -413,11 +1095,15 @@
                         }]
                     },
                     options: {
+                        layout: {
+                            padding: { left: 20, right: 20 }
+                        },
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
                             x: {
                                 type: 'time',
+                                offset: true,
                                 // FIX: Force the X-axis scale to match the visible data range
                                 min: chartMinX, 
                                 max: chartMaxX,
@@ -431,20 +1117,20 @@
                                 title: {
                                     display: true,
                                     text: 'Date and Time',
-                                    color: '#d1d5db'
+                                    color: '#f3f4f6'
                                 },
                                 ticks: {
-                                    color: '#9ca3af',
+                                    color: '#d1d5db',
                                 }
                             },
                             y: {
                                 title: {
                                     display: true,
                                     text: 'Blood Glucose (mmol/L)',
-                                    color: '#d1d5db'
+                                    color: '#f3f4f6'
                                 },
                                 ticks: {
-                                    color: '#9ca3af',
+                                    color: '#d1d5db',
                                 }
                             }
                         },
@@ -467,6 +1153,284 @@
                             mode: 'nearest',
                             axis: 'x',
                             intersect: false
+                        }
+                    }
+                });
+            }
+
+            function renderDailyAvgChart(data, targetFrom, targetTo, hypo) {
+                const ctx = document.getElementById('dailyAvgChart').getContext('2d');
+                
+                if (dailyChartInstance) {
+                    dailyChartInstance.destroy();
+                }
+
+                dailyChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        datasets: [{
+                            label: 'Daily Average (mmol/L)',
+                            data: data,
+                            backgroundColor: (context) => {
+                                const value = context.raw.y;
+                                if (value > targetTo) return 'rgba(239, 68, 68, 0.7)'; // Red
+                                if (value < 3.9) return 'rgba(249, 115, 22, 0.7)'; // Orange (Hypo)
+                                return 'rgba(59, 130, 246, 0.7)'; // Blue
+                            },
+                            borderRadius: 4,
+                            borderSkipped: false
+                        }]
+                    },
+                    options: {
+                        onClick: (e, elements) => {
+                            if (elements.length > 0) {
+                                const index = elements[0].index;
+                                const dateStr = data[index].x;
+                                
+                                filterStartDateInput.value = dateStr;
+                                filterEndDateInput.value = dateStr;
+                                filterStartTimeInput.value = '';
+                                filterEndTimeInput.value = '';
+                                
+                                handleFilter();
+                                
+                                document.getElementById('bgChart').scrollIntoView({ behavior: 'smooth' });
+                            }
+                        },
+                        onHover: (event, chartElement) => {
+                            event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'day',
+                                    tooltipFormat: 'yyyy. MM. dd.',
+                                    displayFormats: { day: 'MM. dd.' }
+                                },
+                                title: { display: true, text: 'Date', color: '#f3f4f6' },
+                                ticks: { color: '#d1d5db' }
+                            },
+                            y: {
+                                title: { display: true, text: 'Average Glucose (mmol/L)', color: '#f3f4f6' },
+                                ticks: { color: '#d1d5db' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `Avg: ${context.raw.y.toFixed(1)} mmol/L`
+                                }
+                            },
+                            annotation: {
+                                annotations: {
+                                    targetLine: {
+                                        type: 'line',
+                                        yMin: targetTo,
+                                        yMax: targetTo,
+                                        borderColor: 'rgba(74, 222, 128, 0.6)',
+                                        borderWidth: 2,
+                                        borderDash: [5, 5],
+                                        label: {
+                                            content: `Target Max (${targetTo})`,
+                                            display: true,
+                                            position: 'end',
+                                            backgroundColor: 'rgba(0,0,0,0.5)',
+                                            color: 'white',
+                                            font: { size: 10 }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateHbA1cChart() {
+                const windowSize = parseInt(hba1cWindowInput.value) || 90;
+                if (allChartData.length === 0) return;
+
+                // 1. Aggregate Daily Averages (Independent of filters)
+                const dailyMap = new Map();
+                allChartData.forEach(item => {
+                    const year = item.x.getFullYear();
+                    const month = (item.x.getMonth() + 1).toString().padStart(2, '0');
+                    const day = item.x.getDate().toString().padStart(2, '0');
+                    const dayStr = `${year}-${month}-${day}`;
+                    
+                    if (!dailyMap.has(dayStr)) {
+                        dailyMap.set(dayStr, { sum: 0, count: 0, date: new Date(dayStr + 'T00:00:00') });
+                    }
+                    const entry = dailyMap.get(dayStr);
+                    entry.sum += item.y;
+                    entry.count++;
+                });
+
+                const dailyArr = Array.from(dailyMap.values())
+                    .map(e => ({ date: e.date, avg: e.sum / e.count }))
+                    .sort((a, b) => a.date - b.date);
+
+                if (dailyArr.length === 0) return;
+
+                const firstDate = dailyArr[0].date;
+                const firstDayAvg = dailyArr[0].avg;
+                const hba1cData = [];
+
+                // 2. Calculate Moving Average & HbA1c for each day
+                dailyArr.forEach(dayData => {
+                    const currentDate = dayData.date;
+                    // Window start: currentDate - windowSize + 1 day
+                    const windowStartDate = new Date(currentDate);
+                    windowStartDate.setDate(currentDate.getDate() - windowSize + 1);
+
+                    // Calculate days before the first recorded date (padding needed)
+                    const diffTime = firstDate.getTime() - windowStartDate.getTime();
+                    let paddingDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (paddingDays < 0) paddingDays = 0;
+                    if (paddingDays > windowSize) paddingDays = windowSize;
+
+                    // Get actual data in window
+                    const dataInWindow = dailyArr.filter(d => d.date >= windowStartDate && d.date <= currentDate);
+                    
+                    let sum = 0;
+                    let count = 0;
+                    
+                    dataInWindow.forEach(d => {
+                        sum += d.avg;
+                        count++;
+                    });
+
+                    // Apply padding with oldest daily average
+                    if (paddingDays > 0) {
+                        sum += paddingDays * firstDayAvg;
+                        count += paddingDays;
+                    }
+
+                    if (count > 0) {
+                        const avgGl = sum / count;
+                        // HbA1c = (Avg + 2.59) / 1.59
+                        const hba1c = (avgGl + 2.59) / 1.59;
+                        hba1cData.push({ x: currentDate, hba1c: hba1c, avgGl: avgGl });
+                    }
+                });
+
+                renderHbA1cChartCanvas(hba1cData);
+            }
+
+            function renderHbA1cChartCanvas(data) {
+                const ctx = document.getElementById('hba1cChart').getContext('2d');
+                if (hba1cChartInstance) hba1cChartInstance.destroy();
+
+                // Generate dose annotations for HbA1c chart
+                const hba1cDoseAnnotations = {};
+                doseChanges.forEach((change, index) => {
+                    hba1cDoseAnnotations[`dose_${index}`] = {
+                        type: 'box',
+                        xMin: change.startDate,
+                        xMax: change.exclusiveEndDate,
+                        // No yMin/yMax means it spans the entire vertical area
+                        backgroundColor: change.color,
+                        borderWidth: 0
+                    };
+                });
+
+                hba1cChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Estimated HbA1c (%)',
+                            data: data.map(d => ({x: d.x, y: d.hba1c})),
+                            borderColor: 'rgb(168, 85, 247)',
+                            backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y',
+                            segment: {
+                                borderColor: ctx => {
+                                    const val = ctx.p1.parsed.y;
+                                    if (val > 8) return 'rgb(239, 68, 68)'; // Red
+                                    if (val > 7) return 'rgb(234, 179, 8)'; // Yellow
+                                    return 'rgb(34, 197, 94)'; // Green
+                                }
+                            }
+                        },
+                        {
+                            label: 'Avg Glucose (mmol/L)',
+                            data: data.map(d => ({x: d.x, y: d.avgGl})),
+                            borderColor: 'rgba(59, 130, 246, 0.6)',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            fill: false,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                min: minTimestamp,
+                                max: maxTimestamp,
+                                time: { unit: 'month', displayFormats: { month: 'yyyy. MM.' } },
+                                title: { display: true, text: 'Date', color: '#f3f4f6' },
+                                ticks: { color: '#d1d5db' }
+                            },
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: { display: true, text: 'HbA1c (%)', color: '#f3f4f6' },
+                                ticks: { color: '#d1d5db' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                title: { display: true, text: 'Avg Glucose (mmol/L)', color: '#f3f4f6' },
+                                ticks: { color: '#d1d5db' },
+                                grid: {
+                                    drawOnChartArea: false,
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, labels: { color: '#f3f4f6' } },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false,
+                                callbacks: {
+                                    label: (context) => {
+                                        if (context.dataset.label.includes('HbA1c')) {
+                                            return `HbA1c: ${context.raw.y.toFixed(2)}%`;
+                                        }
+                                        return `Avg Glucose: ${context.raw.y.toFixed(1)} mmol/L`;
+                                    }
+                                }
+                            },
+                            annotation: {
+                                annotations: {
+                                    ...hba1cDoseAnnotations,
+                                    line7: {
+                                        type: 'line', yMin: 7, yMax: 7, yScaleID: 'y', borderColor: 'rgba(234, 179, 8, 0.5)', borderWidth: 1, borderDash: [5, 5],
+                                        label: { content: '7%', display: true, position: 'start', color: 'rgba(234, 179, 8, 0.8)', font: {size: 10}, backgroundColor: 'transparent' }
+                                    },
+                                    line8: {
+                                        type: 'line', yMin: 8, yMax: 8, yScaleID: 'y', borderColor: 'rgba(239, 68, 68, 0.5)', borderWidth: 1, borderDash: [5, 5],
+                                        label: { content: '8%', display: true, position: 'start', color: 'rgba(239, 68, 68, 0.8)', font: {size: 10}, backgroundColor: 'transparent' }
+                                    }
+                                }
+                            }
                         }
                     }
                 });
