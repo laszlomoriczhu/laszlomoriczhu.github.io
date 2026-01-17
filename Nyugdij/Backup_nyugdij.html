@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nyugdíj Visszaszámláló 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, black 0%, grey 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            touch-action: manipulation;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Adventi gyertyák a container jobb felső sarkában */
+        .advent-candles {
+            position: absolute;
+            top: 30px;
+            right: 15px;
+            display: flex;
+            gap: 6px;
+            z-index: 100;
+        }
+
+        .candle {
+            width: 18px;
+            height: 36px;
+            position: relative;
+        }
+
+        .candle-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #f8f9fa 0%, 
+                #e9ecef 30%, 
+                #ffffff 70%, 
+                #f0f0f0 100%);
+            border-radius: 4px 4px 2px 2px;
+            position: relative;
+            box-shadow: 
+                inset 0 1px 0 rgba(255,255,255,0.8),
+                inset 0 -1px 0 rgba(0,0,0,0.05),
+                0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .candle-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 35px;
+            background: linear-gradient(to bottom, #ffd700 0%, #ffa500 100%);
+            border-radius: 4px 4px 0 0;
+            opacity: 0.7;
+        }
+
+        .candle-body::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 2px;
+            right: 2px;
+            bottom: 4px;
+            background: linear-gradient(to right, 
+                rgba(255,255,255,0.4) 0%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(255,255,255,0.4) 100%);
+            border-radius: 2px;
+        }
+
+        .candle-wick {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 8px;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        .flame {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 20px;
+            background: linear-gradient(to bottom, 
+                #ffff00 0%, 
+                #ff9900 50%, 
+                #ff3300 100%);
+            border-radius: 50% 50% 30% 30%;
+            opacity: 0;
+            filter: blur(1px);
+            box-shadow: 
+                0 0 15px #ff9900,
+                0 0 30px #ff5500,
+                0 0 45px #ff3300;
+            animation: flicker 1.2s infinite alternate ease-in-out;
+            z-index: 2;
+        }
+
+        .flame::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: #ffffcc;
+            border-radius: 50%;
+            filter: blur(0.5px);
+        }
+
+        .candle.lit .flame {
+            opacity: 1;
+        }
+
+        .candle.lit .candle-body::before {
+            background: linear-gradient(to bottom, #ff6b00 0%, #ff3300 100%);
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(255,107,0,0.5);
+        }
+
+        @keyframes flicker {
+            0%, 100% { 
+                transform: translateX(-50%) scale(1, 1);
+                height: 20px;
+            }
+            25% { 
+                transform: translateX(-50%) scale(1.1, 0.95);
+                height: 18px;
+            }
+            50% { 
+                transform: translateX(-50%) scale(0.95, 1.15);
+                height: 22px;
+            }
+            75% { 
+                transform: translateX(-50%) scale(1.05, 0.9);
+                height: 17px;
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.0em;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            line-height: 1.2;
+        }
+
+        .progress-container {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 15px;
+            margin: 12px 0;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 8px 0 5px 0;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4ecdc4, #44a08d);
+            border-radius: 14px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            z-index: 2;
+            white-space: nowrap;
+            letter-spacing: -0.3px;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            font-size: 1em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .current-progress {
+            background: #e8f5e9;
+            padding: 8px 10px;
+            border-radius: 10px;
+            margin-top: 8px;
+            font-size: 1em;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            margin: 15px 0;
+        }
+
+        .time-unit {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 10px 5px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255,107,107,0.25);
+        }
+
+        .number {
+            font-size: 1.5em;
+            font-weight: 800;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .label {
+            font-size: 0.7em;
+            opacity: 0.95;
+            margin-top: 2px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .target-date {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 2px dashed #2196f3;
+            font-size: 0.9em;
+        }
+
+        .emoji {
+            font-size: 2.2em;
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: #ee5a24;
+            font-weight: 800;
+            font-size: 1.1em;
+        }
+
+        .date-big {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #2196f3;
+            display: block;
+            margin-top: 3px;
+            line-height: 1.3;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        /* Konfetti effektus */
+        .confetti {
+            position: fixed;
+            top: -20px;
+            z-index: 1000;
+            pointer-events: none;
+            /* animation: fall linear forwards; - JS állítja be */
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Samsung Galaxy S21 FE optimalizálás */
+        @media (max-height: 780px) {
+            body {
+                padding: 8px;
+            }
+            
+            .container {
+                padding: 16px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+                margin-bottom: 6px;
+            }
+            
+            .subtitle {
+                font-size: 0.85em;
+                margin-bottom: 12px;
+            }
+            
+            .progress-container {
+                padding: 10px;
+                margin: 8px 0;
+            }
+            
+            .progress-bar {
+                height: 24px;
+                margin: 6px 0 4px 0;
+            }
+            
+            .progress-percent {
+                font-size: 11px;
+            }
+            
+            .countdown {
+                gap: 4px;
+                margin: 12px 0;
+            }
+            
+            .time-unit {
+                padding: 8px 4px;
+            }
+            
+            .number {
+                font-size: 1.3em;
+            }
+            
+            .label {
+                font-size: 0.65em;
+            }
+            
+            .target-date {
+                padding: 10px;
+                margin: 12px 0;
+            }
+            
+            .message {
+                padding: 10px;
+                margin-top: 12px;
+            }
+            
+            /* Gyertyák kisebbek */
+            .advent-candles {
+                top: 12px;
+                right: 12px;
+                gap: 5px;
+            }
+            
+            .candle {
+                width: 16px;
+                height: 32px;
+            }
+            
+            .flame {
+                top: -20px;
+                width: 8px;
+                height: 16px;
+            }
+            
+        }
+
+        @media (max-width: 380px) {
+            .advent-candles {
+                top: 10px;
+                right: 10px;
+                gap: 4px;
+            }
+            
+            .candle {
+                width: 14px;
+                height: 28px;
+            }
+        }
+
+        /* Évfordulós felugró ablak */
+        .anniversary-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .anniversary-content {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 3px solid #ff69b4;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .flower-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 3em;
+        }
+
+        .flower-anim {
+            display: inline-block;
+            animation: flowerSway 3s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        .flower-anim:nth-child(2) { animation-delay: 0.2s; }
+        .flower-anim:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes flowerSway {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+
+        .anniversary-title {
+            color: #c2185b;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .anniversary-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+            transition: transform 0.2s;
+            margin-top: 10px;
+        }
+
+        .anniversary-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Születésnapi gyertya stílusok */
+        .candle-container {
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-bottom: 20px;
+            cursor: pointer;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .modal-candle {
+            width: 40px;
+            height: 100px;
+            position: relative;
+        }
+
+        .modal-candle-body {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            border-radius: 4px;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .modal-candle-wick {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 15px;
+            background: #333;
+            z-index: 1;
+        }
+
+        .modal-flame {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 40px;
+            background: radial-gradient(ellipse at bottom, #ffff00 0%, #ff9900 50%, #ff0000 100%);
+            border-radius: 50% 50% 20% 20%;
+            filter: blur(1px);
+            animation: flicker 1s infinite alternate;
+            transition: opacity 0.5s;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        .modal-smoke {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background: rgba(150,150,150,0.6);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .modal-smoke.animate {
+            animation: smokeRise 2s forwards;
+        }
+
+        @keyframes smokeRise {
+            0% { opacity: 0.8; transform: translateX(-50%) translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateX(-20%) translateY(-80px) scale(4); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Adventi gyertyák a container jobb felső sarkában -->
+        <div class="advent-candles">
+            <div class="candle" id="candle1">
+                <div class="candle-body"></div>
+                <div class="candle-wick"></div>
+                <div class="flame"></div>
+            </div>
+            <div class="candle" id="candle2">
+                <div class="candle-body"></div>
+                <div class="candle-wick"></div>
+                <div class="flame"></div>
+            </div>
+            <div class="candle" id="candle3">
+                <div class="candle-body"></div>
+                <div class="candle-wick"></div>
+                <div class="flame"></div>
+            </div>
+            <div class="candle" id="candle4">
+                <div class="candle-body"></div>
+                <div class="candle-wick"></div>
+                <div class="flame"></div>
+            </div>
+        </div>
+
+        <div class="emoji">🎯</div>
+        
+        <div class="progress-container">
+            <h3>📊 Eddig teljesítve:</h3>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+                <div class="progress-percent" id="progress-percent">0.00000000%</div>
+            </div>
+            <div class="progress-text">
+                <span>0 év</span>
+                <span>40 év</span>
+            </div>
+            <div class="current-progress">
+                Jelenleg: <span id="current-progress">0 év 0 nap</span>
+            </div>
+        </div>
+
+        <div class="countdown">
+            <div class="time-unit">
+                <span class="number" id="years">0</span>
+                <span class="label">ÉV</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="days">0</span>
+                <span class="label">NAP</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="hours">0</span>
+                <span class="label">ÓRA</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="minutes">0</span>
+                <span class="label">PERC</span>
+            </div>
+            <div class="time-unit">
+                <span class="number" id="seconds">0</span>
+                <span class="label">MP</span>
+            </div>
+        </div>
+
+        <div class="target-date">
+            <p>🎉 <strong>Becsült nyugdíjba vonulás:</strong></p>
+            <span class="date-big" id="target-date">-</span>
+        </div>
+
+        <div class="message">
+            <p>Már csak <span class="highlight" id="total-days">0</span> nap van hátra!</p>
+            <p><strong>Már majdnem ott vagy!</strong> 💚</p>
+        </div>
+    </div>
+
+    <!-- Évfordulós Modal -->
+    <div id="anniversary-modal" class="anniversary-modal">
+        <div class="anniversary-content">
+            <div class="flower-container">
+                <div class="flower-anim">🌹</div>
+                <div class="flower-anim">🌸</div>
+                <div class="flower-anim">🌺</div>
+            </div>
+            <h2 class="anniversary-title">Boldog <span id="anniversary-years"></span>. Házassági Évfordulót Kívánok! ❤️</h2>
+            <button class="anniversary-btn" onclick="closeAnniversary()">Köszönöm! 🥰</button>
+        </div>
+    </div>
+
+    <!-- Névnap Modal -->
+    <div id="nameday-modal" class="anniversary-modal">
+        <div class="anniversary-content">
+            <div class="flower-container">
+                <div class="flower-anim">🌷</div>
+                <div class="flower-anim">✨</div>
+                <div class="flower-anim">🌷</div>
+            </div>
+            <h2 class="anniversary-title">Boldog Névnapot Kívánok Csilla! ❤️</h2>
+            <button class="anniversary-btn" onclick="closeNameDay()">Köszönöm! 🥰</button>
+        </div>
+    </div>
+
+    <!-- Havi Évforduló Modal -->
+    <div id="monthly-anniversary-modal" class="anniversary-modal">
+        <div class="anniversary-content">
+            <div class="flower-container">
+                <div class="flower-anim">💑</div>
+                <div class="flower-anim">💖</div>
+                <div class="flower-anim">🥂</div>
+            </div>
+            <h2 class="anniversary-title">Boldog <span id="monthly-anniversary-count"></span>. Havi Évfordulót! ❤️</h2>
+            <p style="margin-bottom: 15px; color: #c2185b; font-weight: 500;">(Megismerkedésünk óta)</p>
+            <button class="anniversary-btn" onclick="closeMonthlyAnniversary()">Köszönöm! 🥰</button>
+        </div>
+    </div>
+
+    <!-- Születésnap Modal -->
+    <div id="birthday-modal" class="anniversary-modal">
+        <div class="anniversary-content">
+            <div class="candle-container" onclick="blowCandle()">
+                <div class="modal-candle">
+                    <div class="modal-candle-wick"></div>
+                    <div class="modal-candle-body"></div>
+                    <div class="modal-flame" id="modal-flame"></div>
+                    <div class="modal-smoke" id="modal-smoke"></div>
+                </div>
+            </div>
+            <h2 class="anniversary-title">Boldog Születésnapot Kívánok! 🎂</h2>
+            <p style="margin-bottom: 15px; color: #c2185b; font-weight: 500;">(Fújd el a gyertyát!)</p>
+            <button class="anniversary-btn" onclick="closeBirthday()">Köszönöm! 🥳</button>
+        </div>
+    </div>
+
+    <script>
+        // ===========================================
+        // HELYES LOGIKA - JAVÍTOTT VÁLTOZAT
+        // ===========================================
+        
+        // TESZT MÓD KONFIGURÁCIÓ
+        const isTestMode = false; // Ha true, a testDate az érvényes
+        const testDate = new Date(); // Teszt dátum
+        
+        let timeOffset = 0;
+        if (isTestMode) {
+            timeOffset = testDate.getTime() - new Date().getTime();
+        }
+
+        function getNow() {
+            if (isTestMode) {
+                return new Date(new Date().getTime() + timeOffset);
+            }
+            return new Date();
+        }
+
+        // 1. ALAPADATOK
+        const startDate = new Date('2023-12-31T00:00:00'); // Amikor 36 év 118 nap volt meg
+        const startDaysCompleted = (36 * 365) + 118; // 36 év + 118 nap = 13,258 nap
+        const totalDaysRequired = 40 * 365; // 40 év = 14,600 nap
+        
+        // 2. HÁTRALÉVŐ NAPOK A 40 ÉVHEZ (2023.12.31-től számolva)
+        const daysNeededFrom2023 = totalDaysRequired - startDaysCompleted; // 14,600 - 13,258 = 1,342 nap
+        
+        // 3. CÉLDÁTUM: 2023.12.31 + 1,342 nap
+        function calculateTargetDate() {
+            const targetDate = new Date(startDate);
+            // 1,342 nap = 3 év + 247 nap (365*3 + 247 = 1,342)
+            targetDate.setDate(targetDate.getDate() + daysNeededFrom2023);
+            return targetDate;
+        }
+
+        // 4. JELENLEGI ÁLLAPOT SZÁMÍTÁSA
+        function calculateCurrentProgress() {
+            const now = getNow();
+            
+            // Mennyi idő telt el 2023.12.31 óta (napokban, tizedesjegy pontosan!)
+            const elapsedMs = now - startDate;
+            const elapsedDays = elapsedMs / (1000 * 60 * 60 * 24); // TIZEDES szám!
+            
+            // Jelenleg teljesített napok (pontosan)
+            const currentTotalDays = startDaysCompleted + elapsedDays;
+            
+            // Százalék számítás 8 tizedesjegyre
+            const progressPercent = (currentTotalDays / totalDaysRequired) * 100;
+            
+            // Évek és napok számítása a teljesítményhez
+            const currentYears = Math.floor(currentTotalDays / 365);
+            const currentRemainingDays = Math.floor(currentTotalDays % 365);
+            
+            return {
+                percent: progressPercent,
+                totalDays: currentTotalDays,
+                years: currentYears,
+                days: currentRemainingDays,
+                elapsedDays: elapsedDays
+            };
+        }
+
+        // 5. VISSZASZÁMLÁLÓ A CÉLDÁTUMIG
+        function calculateTimeLeft() {
+            const targetDate = calculateTargetDate();
+            const now = getNow();
+            const timeLeftMs = targetDate - now;
+            
+            if (timeLeftMs <= 0) {
+                return { 
+                    years: 0, 
+                    days: 0, 
+                    hours: 0, 
+                    minutes: 0, 
+                    seconds: 0, 
+                    totalDays: 0
+                };
+            }
+            
+            // Teljes napok
+            const totalDays = Math.floor(timeLeftMs / (1000 * 60 * 60 * 24));
+            
+            // Évek és napok
+            const years = Math.floor(totalDays / 365);
+            const days = totalDays % 365;
+            
+            // Órák, percek, másodpercek
+            const hours = Math.floor((timeLeftMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeftMs % (1000 * 60)) / 1000);
+            
+            return {
+                years: years,
+                days: days,
+                hours: hours,
+                minutes: minutes,
+                seconds: seconds,
+                totalDays: totalDays
+            };
+        }
+
+        // 6. ADVENTI GYERTYÁK SZÁMÍTÁSA
+        function updateAdventCandles() {
+            const now = getNow();
+            const currentYear = now.getFullYear();
+            const month = now.getMonth(); // 0 = Január
+            const day = now.getDate();
+            
+            // Segédfüggvény: Adventi vasárnapok kiszámítása adott évre
+            function getAdventDates(year) {
+                const christmas = new Date(year, 11, 25); // Dec 25
+                const dayOfWeek = christmas.getDay(); // 0 = Vasárnap
+                // Ha vasárnap van karácsony, akkor a 4. adventi vasárnap egy héttel előtte van (offset 7)
+                // Ha hétfő (1), akkor 1 nappal előtte (offset 1), stb.
+                const offset = dayOfWeek === 0 ? 7 : dayOfWeek;
+                
+                const fourthAdvent = new Date(year, 11, 25 - offset);
+                const thirdAdvent = new Date(year, 11, 25 - offset - 7);
+                const secondAdvent = new Date(year, 11, 25 - offset - 14);
+                const firstAdvent = new Date(year, 11, 25 - offset - 21);
+                
+                return [firstAdvent, secondAdvent, thirdAdvent, fourthAdvent];
+            }
+
+            // Megjelenítési logika:
+            // 1. Január 1-6 között: Látható, minden gyertya ég (előző évi szezon vége)
+            // 2. Advent kezdetétől év végéig: Látható, aktuális gyertyák égnek
+            // 3. Egyébként: Rejtett
+            
+            const candlesContainer = document.querySelector('.advent-candles');
+            const isEarlyYearWindow = (month === 0 && day <= 6);
+            
+            // Aktuális évi advent kezdete
+            const adventDatesCurrentYear = getAdventDates(currentYear);
+            const startOfAdventCurrentYear = adventDatesCurrentYear[0];
+            const isLateYearWindow = (now >= startOfAdventCurrentYear);
+
+            if (!isEarlyYearWindow && !isLateYearWindow) {
+                candlesContainer.style.display = 'none';
+                return;
+            }
+
+            // Ha látható, akkor display: flex
+            candlesContainer.style.display = 'flex';
+
+            let litCandles = 0;
+
+            if (isEarlyYearWindow) {
+                // Január 1-6 között láthatóak, de már nem égnek
+                litCandles = 0;
+            } else {
+                // Adventi időszakban számoljuk
+                for (let i = 0; i < adventDatesCurrentYear.length; i++) {
+                    if (now >= adventDatesCurrentYear[i]) {
+                        litCandles = i + 1;
+                    }
+                }
+            }
+            
+            // Gyertyák frissítése
+            for (let i = 1; i <= 4; i++) {
+                const candle = document.getElementById(`candle${i}`);
+                if (i <= litCandles) {
+                    candle.classList.add('lit');
+                } else {
+                    candle.classList.remove('lit');
+                }
+            }
+        }
+
+        // KONFETTI EFFEKTUS
+        let isConfettiRunning = false;
+        let confettiInterval;
+
+        function startConfetti(intensity = 'normal', type = 'standard') {
+            if (isConfettiRunning) return;
+            isConfettiRunning = true;
+
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4', '#ffffff', '#FFD700'];
+            
+            let batchSize = 3;
+            let intervalTime = 40;
+            let opacity = 1;
+
+            if (intensity === 'intense') {
+                batchSize = 12; // Sokkal intenzívebb a nagy napon
+                intervalTime = 30;
+            } else if (intensity === 'ambient') {
+                batchSize = 1; // Ritka
+                intervalTime = 600; // Lassú generálás
+                opacity = 0.4; // Átlátszó
+            }
+
+            confettiInterval = setInterval(() => {
+                // Egyszerre több konfetti a sűrűbb hatáshoz
+                for (let i = 0; i < batchSize; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.opacity = opacity;
+                    
+                    // Véletlenszerű tulajdonságok
+                    if (intensity === 'ambient') {
+                        const container = document.querySelector('.container');
+                        const rect = container.getBoundingClientRect();
+                        const randomX = rect.left + (Math.random() * rect.width);
+                        confetti.style.left = randomX + 'px';
+                    } else {
+                        confetti.style.left = Math.random() * 100 + 'vw';
+                    }
+                    
+                    let duration = Math.random() * 2 + 2; // Alapértelmezett: 2-4 másodperc
+                    
+                    if (type === 'hearts') {
+                        const hearts = ['❤️', '💖', '💗', '💓', '💕'];
+                        confetti.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                        confetti.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                        confetti.style.display = 'flex';
+                        confetti.style.justifyContent = 'center';
+                        confetti.style.alignItems = 'center';
+                        duration = Math.random() * 3 + 4; // Lassabb: 4-7 másodperc
+                    } else if (type === 'snow') {
+                        confetti.textContent = '❄️';
+                        confetti.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                        confetti.style.display = 'flex';
+                        confetti.style.justifyContent = 'center';
+                        confetti.style.alignItems = 'center';
+                        duration = Math.random() * 5 + 5; // Lassú hullás
+                    } else if (type === 'sun') {
+                        confetti.textContent = '☀️';
+                        confetti.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                        confetti.style.display = 'flex';
+                        confetti.style.justifyContent = 'center';
+                        confetti.style.alignItems = 'center';
+                        duration = Math.random() * 5 + 5;
+                    } else if (type === 'flower') {
+                        confetti.textContent = '🌸';
+                        confetti.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                        confetti.style.display = 'flex';
+                        confetti.style.justifyContent = 'center';
+                        confetti.style.alignItems = 'center';
+                        duration = Math.random() * 5 + 5;
+                    } else if (type === 'leaf') {
+                        confetti.textContent = '🍂';
+                        confetti.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                        confetti.style.display = 'flex';
+                        confetti.style.justifyContent = 'center';
+                        confetti.style.alignItems = 'center';
+                        duration = Math.random() * 5 + 5;
+                    } else {
+                        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        
+                        const size = Math.random() * 10 + 6;
+                        confetti.style.width = size + 'px';
+                        confetti.style.height = size + 'px';
+                        if (Math.random() > 0.5) confetti.style.borderRadius = '50%'; // Kör alakúak is
+                    }
+                    
+                    confetti.style.animation = `fall ${duration}s linear forwards`;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Törlés az animáció végén
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, duration * 1000);
+                }
+            }, intervalTime); // Gyorsabb generálás
+        }
+
+        function stopConfetti() {
+            if (confettiInterval) {
+                clearInterval(confettiInterval);
+                confettiInterval = null;
+                isConfettiRunning = false;
+            }
+        }
+
+        // SZEZONÁLIS HÁTTÉR MEGHATÁROZÁSA
+        function getSeasonalBackground() {
+            const now = getNow();
+            const month = now.getMonth(); // 0 = Január, 11 = December
+
+            // Tél: December, Január, Február
+            if (month === 11 || month === 0 || month === 1) {
+                return 'linear-gradient(135deg, #141E30 0%, #243B55 100%)'; // Hideg, sötétkék
+            }
+            // Tavasz: Március, Április, Május
+            else if (month >= 2 && month <= 4) {
+                return 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)'; // Üde zöld
+            }
+            // Nyár: Június, Július, Augusztus
+            else if (month >= 5 && month <= 7) {
+                return 'linear-gradient(135deg, #2980b9 0%, #6dd5fa 100%)'; // Ragyogó kék ég
+            }
+            // Ősz: Szeptember, Október, November
+            else {
+                return 'linear-gradient(135deg, #d38312 0%, #a83279 100%)'; // Őszi színek
+            }
+        }
+
+        // 8. MINDEN FRISSÍTÉSE
+        function updateAllDisplays() {
+            // Progress frissítése
+            const progress = calculateCurrentProgress();
+            const progressPercentValue = Math.min(progress.percent, 100);
+            
+            // Progress bar
+            document.getElementById('progress-bar').style.width = progressPercentValue + '%';
+            
+            // Százalék 8 tizedesjeggyel a progress bar közepén
+            document.getElementById('progress-percent').textContent = 
+                progressPercentValue.toFixed(7) + '%';
+            
+            // Jelenlegi állapot szövegesen
+            document.getElementById('current-progress').textContent = 
+                `${progress.years} év ${progress.days} nap`;
+            
+            // Visszaszámláló frissítése
+            const timeLeft = calculateTimeLeft();
+            
+            document.getElementById('years').textContent = timeLeft.years;
+            document.getElementById('days').textContent = timeLeft.days;
+            document.getElementById('hours').textContent = timeLeft.hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = timeLeft.minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = timeLeft.seconds.toString().padStart(2, '0');
+            
+            // Adventi gyertyák frissítése
+            updateAdventCandles();
+            
+            const messageDiv = document.querySelector('.message');
+
+            // Ha már nyugdíjas
+            if (timeLeft.totalDays <= 0) {
+                document.body.style.background = 'linear-gradient(135deg, #FFD700 0%, #FF8C00 100%)';
+                document.getElementById('target-date').textContent = 'Már nyugdíjas! 🎉';
+                document.getElementById('progress-bar').style.width = '100%';
+                document.getElementById('progress-percent').textContent = '100.00000000%';
+                
+                // Üzenet frissítése
+                messageDiv.innerHTML = '<p class="highlight" style="font-size: 1.3em; color: #2e7d32;">Gratulálok! Elérted a nyugdíjat! 🥂</p>';
+                
+                startConfetti('intense');
+            } else {
+                document.body.style.background = getSeasonalBackground();
+                // Ha még nem nyugdíjas (vagy visszaváltottunk teszt módból)
+                if (!document.getElementById('total-days')) {
+                    messageDiv.innerHTML = `
+                        <p>Már csak <span class="highlight" id="total-days"></span> nap van hátra!</p>
+                        <p><strong>Már majdnem ott vagy!</strong> 💚</p>
+                    `;
+                }
+                
+                document.getElementById('total-days').textContent = timeLeft.totalDays.toLocaleString();
+                
+                // Céldátum megjelenítése
+                const targetDate = calculateTargetDate();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                document.getElementById('target-date').textContent = targetDate.toLocaleDateString('hu-HU', options);
+
+                // Szezonális animáció (ha nincs más ablak nyitva)
+                const modals = document.querySelectorAll('.anniversary-modal');
+                const isAnyModalVisible = Array.from(modals).some(m => m.style.display === 'flex');
+
+                if (!isAnyModalVisible) {
+                    const now = getNow();
+                    const month = now.getMonth();
+                    let ambientType = 'leaf'; // Ősz alapértelmezett
+                    
+                    if (month === 11 || month === 0 || month === 1) ambientType = 'snow';
+                    else if (month >= 2 && month <= 4) ambientType = 'flower';
+                    else if (month >= 5 && month <= 7) ambientType = 'sun';
+                    
+                    startConfetti('ambient', ambientType);
+                }
+            }
+        }
+
+        // 9. INICIALIZÁLÁS ÉS FRISSÍTÉS
+        updateAllDisplays(); // Azonnali frissítés
+        setInterval(updateAllDisplays, 1000); // Másodpercenkénti frissítés
+
+        // 11. HÁZASSÁGI ÉVFORDULÓ KEZELÉSE
+        function checkAnniversary() {
+            const now = getNow();
+            const month = now.getMonth(); // 0 = Január
+            const day = now.getDate();
+            
+            // Esküvő dátuma: 2025.01.18
+            if (month === 0 && day === 18) {
+                const weddingYear = 2025;
+                const currentYear = now.getFullYear();
+                const years = currentYear - weddingYear;
+                
+                if (years >= 0) {
+                    document.getElementById('anniversary-years').textContent = years;
+                    document.getElementById('anniversary-modal').style.display = 'flex';
+                    stopConfetti();
+                    startConfetti();
+                }
+            }
+        }
+
+        function closeAnniversary() {
+            document.getElementById('anniversary-modal').style.display = 'none';
+            stopConfetti();
+        }
+
+        checkAnniversary();
+
+        // 12. NÉVNAP KEZELÉSE (Csilla - 04.22)
+        function checkNameDay() {
+            const now = getNow();
+            const month = now.getMonth(); // 0 = Január, 3 = Április
+            const day = now.getDate();
+            
+            if (month === 3 && day === 22) {
+                document.getElementById('nameday-modal').style.display = 'flex';
+                stopConfetti();
+                startConfetti();
+            }
+        }
+
+        function closeNameDay() {
+            document.getElementById('nameday-modal').style.display = 'none';
+            stopConfetti();
+        }
+
+        checkNameDay();
+
+        // 13. HAVI ÉVFORDULÓ KEZELÉSE (Minden hónap 3-án - Megismerkedés: 2017.04.03)
+        function checkMonthlyAnniversary() {
+            const now = getNow();
+            const day = now.getDate();
+            
+            if (day === 3) {
+                const startYear = 2017;
+                const startMonth = 3; // Április (0-indexelt: 3)
+                
+                const currentYear = now.getFullYear();
+                const currentMonth = now.getMonth();
+                
+                // Hónapok számítása
+                const monthsPassed = (currentYear - startYear) * 12 + (currentMonth - startMonth);
+                
+                if (monthsPassed > 0) {
+                    document.getElementById('monthly-anniversary-count').textContent = monthsPassed;
+                    document.getElementById('monthly-anniversary-modal').style.display = 'flex';
+                    stopConfetti();
+                    startConfetti('normal', 'hearts');
+                }
+            }
+        }
+
+        function closeMonthlyAnniversary() {
+            document.getElementById('monthly-anniversary-modal').style.display = 'none';
+            stopConfetti();
+        }
+
+        checkMonthlyAnniversary();
+
+        // 14. SZÜLETÉSNAP KEZELÉSE (11.19)
+        function checkBirthday() {
+            const now = getNow();
+            const month = now.getMonth(); // 0 = Január, 10 = November
+            const day = now.getDate();
+            
+            if (month === 10 && day === 19) {
+                document.getElementById('birthday-modal').style.display = 'flex';
+                stopConfetti();
+                startConfetti('normal', 'rainbow');
+            }
+        }
+
+        function blowCandle() {
+            const flame = document.getElementById('modal-flame');
+            const smoke = document.getElementById('modal-smoke');
+            
+            if (flame.style.opacity !== '0') {
+                flame.style.opacity = '0';
+                smoke.classList.add('animate');
+            }
+        }
+
+        function closeBirthday() {
+            document.getElementById('birthday-modal').style.display = 'none';
+            stopConfetti();
+            // Visszaállítás következő alkalomra
+            setTimeout(() => {
+                document.getElementById('modal-flame').style.opacity = '1';
+                document.getElementById('modal-smoke').classList.remove('animate');
+            }, 1000);
+        }
+
+        checkBirthday();
+
+        // 10. MOBIL OPTIMALIZÁLÁS
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('touchstart', function() {}, {passive: true});
+    </script>
+</body>
+</html>
