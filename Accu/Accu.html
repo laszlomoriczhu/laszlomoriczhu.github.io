@@ -64,7 +64,11 @@
 
         <div class="bg-gray-800 p-4 md:p-6 rounded-lg shadow-lg mb-8">
             <h3 class="text-xl font-semibold text-white mb-4">Select Period</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-4 items-end">
+                <div class="col-span-1">
+                    <label for="filter-period" class="block text-sm font-medium text-gray-300 mb-1">Period</label>
+                    <select id="filter-period" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500"></select>
+                </div>
                 <div class="col-span-1">
                     <label for="filter-start-date" class="block text-sm font-medium text-gray-300 mb-1">Start Date</label>
                     <input type="date" id="filter-start-date" class="w-full bg-gray-700 text-white p-2 rounded-lg border border-gray-600 focus:ring-blue-500 focus:border-blue-500">
@@ -142,12 +146,20 @@
             </div>
         </main>
 
-        <section class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-6">Daily Average Glucose (mmol/L)</h2>
-            <div class="chart-container">
-                <canvas id="dailyAvgChart"></canvas>
-            </div>
-        </section>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <section class="lg:col-span-2 bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-white mb-6">Daily Average Glucose (mmol/L)</h2>
+                <div class="chart-container">
+                    <canvas id="dailyAvgChart"></canvas>
+                </div>
+            </section>
+            <section class="lg:col-span-1 bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold text-white mb-6">Time in Range</h2>
+                <div class="chart-container relative">
+                    <canvas id="tirChart"></canvas>
+                </div>
+            </section>
+        </div>
 
         <section class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg">
             <div class="flex justify-between items-center mb-6">
@@ -212,13 +224,18 @@
         // --- Medication Dose Change Definitions (FIXED for gap-less display) ---
         const doseChanges = [
             // Period 1: Start 2025-10-25, Ends 2025-11-03
-            { startDate: '2025-10-25', exclusiveEndDate: '2025-11-04', color: 'rgba(255, 165, 0, 0.15)' },
+            { name: 'Kórház', startDate: '2025-10-25', exclusiveEndDate: '2025-11-04', color: 'rgba(255, 165, 0, 0.15)' },
             // Period 2: Start 2025-11-04, Ends 2025-12-07
-            { startDate: '2025-11-04', exclusiveEndDate: '2025-12-08', color: 'rgba(54, 162, 235, 0.15)' },
+            { name: 'I. 2000', startDate: '2025-11-04', exclusiveEndDate: '2025-12-08', color: 'rgba(54, 162, 235, 0.15)' },
             // Period 3: Start 2025-12-08, Ends 2025-12-20
-            { startDate: '2025-12-08', exclusiveEndDate: '2025-12-21', color: 'rgba(153, 102, 255, 0.15)' },
+            { name: 'I. 1500', startDate: '2025-12-08', exclusiveEndDate: '2025-12-21', color: 'rgba(153, 102, 255, 0.15)' },
             // Period 4: Start 2025-12-21, Ends now/future
-            { startDate: '2025-12-21', exclusiveEndDate: '2050-12-31', color: 'rgba(75, 192, 192, 0.15)' }
+            { name: 'I. 1000', startDate: '2025-12-21', exclusiveEndDate: '2026-01-20', color: 'rgba(75, 192, 192, 0.15)' },
+            // Period 5: Start 2026-12-21, Ends now/future
+            { name: 'II. 1500', startDate: '2026-01-20', exclusiveEndDate: '2026-01-22', color: 'rgba(255, 99, 132, 0.15)' },
+            // Period 6: Start 2026-01-22, Ends now/future
+            { name: 'II. 2000', startDate: '2026-01-22', exclusiveEndDate: '2050-12-31', color: 'rgba(255, 205, 86, 0.15)' }
+
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -647,6 +664,83 @@ Date|Time|Gl
 2026.01.03|19:57|8.2
 2026.01.03|21:42|5.0
 2026.01.04|07:18|6.1
+2026.01.04|12:01|5.0
+2026.01.04|16:17|5.8
+2026.01.04|19:33|6.2
+2026.01.05|10:43|5.7
+2026.01.05|14:47|7.6
+2026.01.05|20:08|6.2
+2026.01.06|09:31|6.5
+2026.01.06|15:51|8.1
+2026.01.06|16:37|6.7
+2026.01.06|17:36|5.7
+2026.01.06|20:36|5.7
+2026.01.07|09:28|8.2
+2026.01.07|15:25|8.4
+2026.01.07|16:36|5.4
+2026.01.07|18:44|4.3
+2026.01.07|19:58|9.5
+2026.01.08|05:46|5.3
+2026.01.08|09:27|8.1
+2026.01.08|10:18|7.5
+2026.01.08|12:28|5.0
+2026.01.09|18:24|5.6
+2026.01.09|20:00|5.7
+2026.01.10|14:51|8.0
+2026.01.10|15:43|8.1
+2026.01.10|18:25|5.5
+2026.01.10|22:47|7.8
+2026.01.11|14:28|6.4
+2026.01.11|16:31|6.0
+2026.01.11|18:59|6.0
+2026.01.12|05:55|6.9
+2026.01.12|10:12|8.6
+2026.01.12|12:58|5.6
+2026.01.12|19:41|8.3
+2026.01.13|14:19|5.9
+2026.01.13|20:31|7.7
+2026.01.14|20:05|7.3
+2026.01.15|14:57|6.3
+2026.01.15|16:34|6.9
+2026.01.15|19:52|10.0
+2026.01.16|19:06|5.7
+2026.01.16|20:27|7.2
+2026.01.17|10:35|6.8
+2026.01.17|11:35|6.3
+2026.01.17|14:42|10.4
+2026.01.17|16:28|6.3
+2026.01.17|18:29|5.3
+2026.01.17|21:24|8.7
+2026.01.17|23:05|5.5
+2026.01.18|07:35|6.4
+2026.01.19|07:00|6.3
+2026.01.19|11:52|6.2
+2026.01.19|14:32|7.3
+2026.01.19|16:05|6.2
+2026.01.19|21:12|6.4
+2026.01.20|16:33|6.3
+2026.01.20|19:41|8.2
+2026.01.21|06:21|6.4
+2026.01.21|11:12|5.9
+2026.01.21|15:00|10.3
+2026.01.21|16:45|9.7
+2026.01.21|20:18|6.1
+2026.01.21|22:58|5.4
+2026.01.22|04:41|6.5
+2026.01.22|11:33|5.4
+2026.01.22|14:56|7.4
+2026.01.22|16:22|5.7
+2026.01.22|18:43|7.0
+2026.01.22|20:10|5.9
+2026.01.23|06:08|6.1
+2026.01.23|09:04|8.0
+2026.01.23|10:16|6.5
+2026.01.23|11:18|5.1
+2026.01.23|13:40|6.7
+2026.01.23|14:36|7.9
+2026.01.23|15:45|6.5
+2026.01.23|16:56|5.4
+2026.01.23|18:03|6.3
 `.trim();
 
             const loadingSpinner = document.getElementById('loading-spinner');
@@ -656,6 +750,7 @@ Date|Time|Gl
             const filterEndDateInput = document.getElementById('filter-end-date');
             const filterStartTimeInput = document.getElementById('filter-start-time');
             const filterEndTimeInput = document.getElementById('filter-end-time');
+            const filterPeriodSelect = document.getElementById('filter-period');
             const filterButton = document.getElementById('filter-button');
             const resetButton = document.getElementById('reset-button');
             const hba1cWindowInput = document.getElementById('hba1c-window');
@@ -665,6 +760,7 @@ Date|Time|Gl
 
             let bgChartInstance = null; // To store the chart instance
             let dailyChartInstance = null; // To store the daily average chart instance
+            let tirChartInstance = null; // To store the TIR chart instance
             let hba1cChartInstance = null; // To store the HbA1c chart instance
             let allChartData = []; // To store all read data
             let targetRangeFrom = 3.9;
@@ -732,6 +828,15 @@ Date|Time|Gl
                     // 6. Initialize HbA1c Chart
                     updateHbA1cChart();
 
+                    // Populate Period Filter
+                    filterPeriodSelect.innerHTML = '<option value="">Custom / All</option>';
+                    doseChanges.forEach((change, index) => {
+                        const option = document.createElement('option');
+                        option.value = index;
+                        option.textContent = change.name;
+                        filterPeriodSelect.appendChild(option);
+                    });
+
                     // 7. Add event handlers to buttons
                     filterButton.addEventListener('click', handleFilter);
                     resetButton.addEventListener('click', handleReset);
@@ -740,6 +845,30 @@ Date|Time|Gl
                     btn30.addEventListener('click', () => { hba1cWindowInput.value = 30; updateHbA1cChart(); });
                     btn60.addEventListener('click', () => { hba1cWindowInput.value = 60; updateHbA1cChart(); });
                     btn90.addEventListener('click', () => { hba1cWindowInput.value = 90; updateHbA1cChart(); });
+
+                    // Period Filter Event Listener
+                    filterPeriodSelect.addEventListener('change', () => {
+                        const index = filterPeriodSelect.value;
+                        if (index === "") {
+                            handleReset();
+                        } else {
+                            const change = doseChanges[index];
+                            if (change) {
+                                filterStartDateInput.value = change.startDate;
+                                let endDate = new Date(`${change.exclusiveEndDate}T00:00:00`);
+                                endDate.setDate(endDate.getDate() - 1);
+
+                                // Ha a periódus vége a jövőbe mutat (túl az utolsó adaton), akkor vágjuk le az utolsó adatnál.
+                                if (maxTimestamp && endDate > maxTimestamp) {
+                                    endDate = maxTimestamp;
+                                }
+                                filterEndDateInput.value = formatDateToInput(endDate);
+                                filterStartTimeInput.value = '';
+                                filterEndTimeInput.value = '';
+                                handleFilter();
+                            }
+                        }
+                    });
 
                 } catch (error) {
                     console.error("Error during data processing:", error);
@@ -781,7 +910,7 @@ Date|Time|Gl
             }
 
             // New function to update statistics and chart
-            function updateDashboard(data) {
+            function updateDashboard(data, minX = null, maxX = null) {
                 let sum = 0;
                 let min = Infinity;
                 let max = -Infinity;
@@ -865,8 +994,11 @@ Date|Time|Gl
                 }
 
                 // Determine the visible range for the chart's X-axis
-                let chartMinX = data.length > 0 ? data[0].x : null;
-                let chartMaxX = data.length > 0 ? data[data.length - 1].x : null;
+                let chartMinX = minX;
+                let chartMaxX = maxX;
+
+                if (!chartMinX && data.length > 0) chartMinX = data[0].x;
+                if (!chartMaxX && data.length > 0) chartMaxX = data[data.length - 1].x;
 
                 renderChart(data, targetRangeFrom, targetRangeTo, hypoLimit, chartMinX, chartMaxX);
 
@@ -892,11 +1024,15 @@ Date|Time|Gl
                 })).sort((a, b) => new Date(a.x) - new Date(b.x));
 
                 renderDailyAvgChart(dailyData, targetRangeFrom, targetRangeTo, hypoLimit);
+                renderTIRChart(data, targetRangeFrom, targetRangeTo);
             }
 
             // Filter event handler
             function handleFilter() {
-                // T00:00:00 and T23:59:59 ensures the full day is included
+                const startTimeVal = filterStartTimeInput.value;
+                const endTimeVal = filterEndTimeInput.value;
+
+                // --- Filtering by date/time inputs ---
                 const startDate = new Date(`${filterStartDateInput.value}T00:00:00`);
                 const endDate = new Date(`${filterEndDateInput.value}T23:59:59`);
                 
@@ -905,14 +1041,9 @@ Date|Time|Gl
                     return;
                 }
 
-                const startTimeVal = filterStartTimeInput.value;
-                const endTimeVal = filterEndTimeInput.value;
-
                 const filteredData = allChartData.filter(item => {
-                    // Date check
                     if (item.x < startDate || item.x > endDate) return false;
 
-                    // Time check
                     if (startTimeVal && endTimeVal) {
                         const itemMinutes = item.x.getHours() * 60 + item.x.getMinutes();
                         const [sh, sm] = startTimeVal.split(':').map(Number);
@@ -929,21 +1060,19 @@ Date|Time|Gl
                     return true;
                 });
 
-                updateDashboard(filteredData);
+                updateDashboard(filteredData, startDate, endDate);
             }
 
             // Reset event handler
             function handleReset() {
-                // Reset to full data range
-                updateDashboard(allChartData);
-                
-                // Reset the date pickers
-                if (allChartData.length > 0) {
+                updateDashboard(allChartData, minTimestamp, maxTimestamp); // Reset to full data range
+                if (allChartData.length > 0) { // Reset the date pickers
                     filterStartDateInput.value = formatDateToInput(minTimestamp);
                     filterEndDateInput.value = formatDateToInput(maxTimestamp);
                 }
                 filterStartTimeInput.value = '';
                 filterEndTimeInput.value = '';
+                filterPeriodSelect.value = '';
             }
 
             // Updated renderChart function with X-axis range and Y-axis fix
@@ -967,7 +1096,7 @@ Date|Time|Gl
                     const pEnd = new Date(`${change.exclusiveEndDate}T00:00:00`);
                     const periodData = allChartData.filter(d => d.x >= pStart && d.x < pEnd);
                     
-                    let labelContent = [`Period ${index + 1}`];
+                    let labelContent = [change.name || `Period ${index + 1}`];
                     
                     if (periodData.length > 0) {
                         const values = periodData.map(d => d.y);
@@ -1242,6 +1371,65 @@ Date|Time|Gl
                                             color: 'white',
                                             font: { size: 10 }
                                         }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function renderTIRChart(data, targetFrom, targetTo) {
+                const ctx = document.getElementById('tirChart').getContext('2d');
+                
+                if (tirChartInstance) {
+                    tirChartInstance.destroy();
+                }
+
+                let veryLow = 0, low = 0, target = 0, high = 0, veryHigh = 0;
+                const total = data.length;
+
+                if (total === 0) return;
+
+                data.forEach(d => {
+                    if (d.y < 3.0) veryLow++;
+                    else if (d.y < targetFrom) low++;
+                    else if (d.y <= targetTo) target++;
+                    else if (d.y <= 13.9) high++;
+                    else veryHigh++;
+                });
+
+                tirChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Very Low (<3.0)', `Low (${targetFrom}-)`, `Target (${targetFrom}-${targetTo})`, `High (-13.9)`, 'Very High (>13.9)'],
+                        datasets: [{
+                            data: [veryLow, low, target, high, veryHigh],
+                            backgroundColor: [
+                                '#7f1d1d', // Very Low (Dark Red)
+                                '#ef4444', // Low (Red)
+                                '#22c55e', // Target (Green)
+                                '#eab308', // High (Yellow)
+                                '#f97316'  // Very High (Orange)
+                            ],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#d1d5db', boxWidth: 12, font: { size: 10 } }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => {
+                                        const value = context.raw;
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return ` ${context.label}: ${percentage}% (${value})`;
                                     }
                                 }
                             }
