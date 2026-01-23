@@ -127,7 +127,15 @@
         </div>
 
         <main class="bg-gray-800 p-4 md:p-8 rounded-lg shadow-lg mb-8">
-            <h2 class="text-2xl font-semibold text-white mb-6">Blood Glucose Level (mmol/L) - Timeline</h2>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-white">Blood Glucose Level (mmol/L) - Timeline</h2>
+                <button id="info-button" class="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700" title="Jelmagyarázat">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                    </svg>
+                </button>
+            </div>
+
             <div id="loading-spinner" class="flex justify-center items-center h-64">
                 <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -218,6 +226,55 @@
         <footer class="text-center text-gray-500 mt-8">
             <p>Accu Project - Modern Web Application</p>
         </footer>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="bg-gray-800 p-6 md:p-8 rounded-xl shadow-2xl max-w-3xl w-full m-4 relative border border-gray-700">
+            <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-2">Statisztikai Mutatók Magyarázata</h3>
+            <div class="space-y-6 text-gray-300 overflow-y-auto max-h-[70vh] pr-2">
+                
+                <div>
+                    <h4 class="text-lg font-semibold text-blue-400 mb-1">Avg (Average Glucose) – Átlagos vércukorszint</h4>
+                    <p class="text-sm leading-relaxed">
+                        <span class="font-medium text-white">Jelentés:</span> Az adott időszakban mért összes vércukorérték számtani átlaga (mmol/L).<br>
+                        <span class="font-medium text-white">Miért fontos?</span> Általános képet ad a vércukorszint magasságáról, de önmagában nem mutatja meg az ingadozásokat.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-green-400 mb-1">TIR (Time in Range) – Céltartományban töltött idő</h4>
+                    <p class="text-sm leading-relaxed">
+                        <span class="font-medium text-white">Jelentés:</span> Azt mutatja meg százalékban, hogy a mérések mekkora része esett a beállított céltartományba (3.9 – 8.9 mmol/L).<br>
+                        <span class="font-medium text-white">Cél:</span> A nemzetközi ajánlások szerint általában <span class="text-green-400 font-bold">70% felett</span>.<br>
+                        <span class="font-medium text-white">Miért fontos?</span> Ez a legfontosabb mutató a vércukor-kontroll minőségére.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-purple-400 mb-1">GMI (Glucose Management Indicator) – Glükóz Menedzsment Indikátor</h4>
+                    <p class="text-sm leading-relaxed">
+                        <span class="font-medium text-white">Jelentés:</span> Ez egy <span class="font-medium text-white">becsült HbA1c érték</span> (%). A mért vércukorátlagból számolják.<br>
+                        <span class="font-medium text-white">Miért fontos?</span> Megjósolja, hogy várhatóan mennyi lenne a laboratóriumi HbA1c eredményed az adott időszak átlaga alapján.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold text-yellow-400 mb-1">CV (Coefficient of Variation) – Variációs Együttható</h4>
+                    <p class="text-sm leading-relaxed">
+                        <span class="font-medium text-white">Jelentés:</span> A vércukorszint <span class="font-medium text-white">ingadozásának</span> mértéke százalékban.<br>
+                        <span class="font-medium text-white">Cél:</span> <span class="text-green-400 font-bold">36% alatt</span> (stabil).<br>
+                        <span class="font-medium text-white">Miért fontos?</span> A magas CV (>36%) instabil vércukrot és nagyobb hipoglikémia kockázatot jelez.
+                    </p>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <script>
@@ -757,6 +814,9 @@ Date|Time|Gl
             const btn30 = document.getElementById('btn-30');
             const btn60 = document.getElementById('btn-60');
             const btn90 = document.getElementById('btn-90');
+            const infoButton = document.getElementById('info-button');
+            const infoModal = document.getElementById('info-modal');
+            const closeModal = document.getElementById('close-modal');
 
             let bgChartInstance = null; // To store the chart instance
             let dailyChartInstance = null; // To store the daily average chart instance
@@ -845,6 +905,21 @@ Date|Time|Gl
                     btn30.addEventListener('click', () => { hba1cWindowInput.value = 30; updateHbA1cChart(); });
                     btn60.addEventListener('click', () => { hba1cWindowInput.value = 60; updateHbA1cChart(); });
                     btn90.addEventListener('click', () => { hba1cWindowInput.value = 90; updateHbA1cChart(); });
+
+                    // Info Modal Event Listeners
+                    if (infoButton && infoModal && closeModal) {
+                        infoButton.addEventListener('click', () => {
+                            infoModal.classList.remove('hidden');
+                        });
+                        closeModal.addEventListener('click', () => {
+                            infoModal.classList.add('hidden');
+                        });
+                        infoModal.addEventListener('click', (e) => {
+                            if (e.target === infoModal) {
+                                infoModal.classList.add('hidden');
+                            }
+                        });
+                    }
 
                     // Period Filter Event Listener
                     filterPeriodSelect.addEventListener('change', () => {
