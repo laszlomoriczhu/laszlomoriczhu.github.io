@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmaizingAIPres - Ultra Modern Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #f8fafc;
+            --secondary-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --sidebar-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --transition-smooth: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            --glow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        [data-theme="dark"] {
+            --primary-bg: #030712;
+            --secondary-bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #818cf8;
+            --accent-hover: #a5b4fc;
+            --sidebar-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --glow: 0 0 30px rgba(129, 140, 248, 0.4);
+        }
+
+        /* WOW: Cinematic Noise Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3BaseFilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-main);
+            transition: background-color 0.5s ease;
+            overflow: hidden;
+            height: 100vh;
+            perspective: 2000px;
+        }
+
+        #cursor-glow {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            position: fixed;
+            top: 0; left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            filter: blur(40px);
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, var(--accent), #ec4899);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            opacity: 0.1;
+            z-index: -1;
+            animation: drift 20s infinite alternate ease-in-out;
+        }
+
+        @keyframes drift {
+            from { transform: translate(0, 0) rotate(0deg); }
+            to { transform: translate(10%, 10%) rotate(360deg); }
+        }
+
+        header {
+            position: fixed;
+            top: 0; width: 100%; height: 80px;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 3rem;
+            z-index: 100;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            background-image: linear-gradient(90deg, var(--accent), #ec4899, var(--accent));
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: text-flow 5s infinite linear;
+            cursor: pointer;
+        }
+
+        @keyframes text-flow { to { background-position: 200%; } }
+
+        .btn-premium {
+            background: var(--secondary-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            color: var(--text-main);
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            display: flex; align-items: center; gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-premium:hover {
+            box-shadow: var(--glow);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* Language Menu */
+        .lang-menu {
+            position: relative;
+        }
+        .lang-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.3rem;
+            min-width: 120px;
+            box-shadow: var(--card-shadow);
+            z-index: 110;
+        }
+        .lang-dropdown.show { display: flex; animation: slide-down 0.3s ease; }
+        @keyframes slide-down { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .lang-option {
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .lang-option:hover { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
+
+        /* Sidebar */
+        #sidebar {
+            position: fixed; left: 0; top: 80px; bottom: 0; width: 300px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            padding: 2.5rem 1.5rem;
+            transition: var(--transition-smooth);
+            z-index: 90;
+        }
+        #sidebar.collapsed { transform: translateX(-100%); }
+
+        .menu-item {
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 0.8rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex; align-items: center; gap: 1rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+        .menu-item:hover { background: rgba(99, 102, 241, 0.08); border-color: var(--glass-border); }
+        .menu-item.active { background: var(--accent); color: white; box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.4); }
+
+        /* Navigation HUD (Bottom Right) */
+        .nav-hud {
+            position: fixed;
+            bottom: 3rem;
+            right: 3rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+        .nav-btn {
+            width: 55px; height: 55px;
+            border-radius: 50%;
+            background: var(--secondary-bg);
+            border: 1px solid var(--glass-border);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: var(--transition-smooth);
+            box-shadow: var(--card-shadow);
+        }
+        .nav-btn:hover {
+            transform: scale(1.15) translateY(-5px);
+            background: var(--accent);
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        /* Main Area */
+        main {
+            margin-top: 80px; margin-left: 300px;
+            height: calc(100vh - 80px);
+            transition: var(--transition-smooth);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        main.expanded { margin-left: 0; }
+
+        .slide-container {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            position: absolute; top: 0; left: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s ease;
+            transform: translateZ(-200px) rotateY(45deg);
+        }
+        .slide-container.active { opacity: 1; pointer-events: all; transform: translateZ(0) rotateY(0deg); }
+
+        .card-perspective { perspective: 1000px; width: 100%; max-width: 900px; padding: 2rem; }
+        .slide-card {
+            background: var(--secondary-bg);
+            padding: 4rem;
+            border-radius: 36px;
+            position: relative;
+            box-shadow: var(--card-shadow);
+            display: flex; flex-direction: column; gap: 2.5rem;
+            transform-style: preserve-3d;
+            border: 1px solid var(--glass-border);
+        }
+
+        .slide-card::after {
+            content: ''; position: absolute; inset: -2px; z-index: -1;
+            background: linear-gradient(45deg, var(--accent), #ec4899, #06b6d4, var(--accent));
+            background-size: 400%;
+            border-radius: 38px;
+            opacity: 0; transition: opacity 0.3s;
+            animation: border-rotate 8s linear infinite;
+        }
+        .slide-card:hover::after { opacity: 0.3; }
+        @keyframes border-rotate { to { background-position: 400%; } }
+
+        .slide-container.active h2 { animation: slide-in 0.8s 0.2s both; }
+        .slide-container.active p { animation: slide-in 0.8s 0.4s both; }
+        .slide-container.active .link-preview { animation: slide-in 0.8s 0.6s both; }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateY(30px) translateZ(50px); }
+            to { opacity: 1; transform: translateY(0) translateZ(0); }
+        }
+
+        h2::after { content: '|'; animation: blink 0.8s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .magnetic-wrap { display: inline-block; transition: transform 0.2s ease-out; }
+
+        #progress-ring { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: rgba(99, 102, 241, 0.1); z-index: 1001; }
+        #progress-bar { height: 100%; background: linear-gradient(to right, var(--accent), #ec4899); width: 0%; transition: width 0.4s ease; }
+
+        #fab {
+            position: fixed; bottom: 3rem; left: 3rem;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: var(--accent); color: white;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: var(--glow);
+            z-index: 101; transition: var(--transition-smooth);
+        }
+        #fab:hover { transform: scale(1.1) rotate(90deg); }
+
+        /* Priority Menu Item & Hero Button */
+        .menu-item.priority {
+            position: relative;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            font-weight: 800;
+            overflow: hidden;
+            animation: menu-priority-glow 2s infinite alternate ease-in-out;
+        }
+        @keyframes menu-priority-glow {
+            0% { box-shadow: inset 0 0 0 rgba(99, 102, 241, 0); background: rgba(99, 102, 241, 0.1); }
+            100% { box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.2); }
+        }
+        .menu-item.priority::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            animation: menu-shimmer 2s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes menu-shimmer {
+            0% { transform: translateX(-100%) skewX(-20deg); }
+            100% { transform: translateX(100%) skewX(-20deg); }
+        }
+        .menu-item.priority::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+        .menu-item.priority .menu-badge {
+            background: var(--accent);
+            animation: pulse-badge 1.5s infinite;
+        }
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 rgba(99, 102, 241, 0); }
+            50% { transform: scale(1.2); box-shadow: 0 0 10px var(--accent); }
+        }
+
+        .btn-hero {
+            padding: 1.5rem 3rem;
+            font-size: 1.4rem;
+            background: linear-gradient(90deg, #6366f1, #ec4899, #8b5cf6, #6366f1);
+            background-size: 300% 100%;
+            color: white;
+            border-radius: 20px;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+            animation: hero-flow 3s infinite linear, hero-pulse 2s infinite ease-in-out;
+            transition: var(--transition-smooth);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-hero:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 15px 50px rgba(99, 102, 241, 0.6);
+        }
+        @keyframes hero-flow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @keyframes hero-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .sarcasm-note {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            display: block;
+            margin-top: 1rem;
+            opacity: 0.8;
+            -webkit-text-fill-color: var(--text);
+            background: none;
+            animation: none;
+        }
+
+        /* New Slide Layouts */
+        .bio-layout {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            animation: slide-in 0.8s 0.3s both;
+        }
+        .bio-icon {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--accent), #ec4899);
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            color: white;
+            font-weight: 900;
+            box-shadow: var(--glow);
+            transform: rotate(-5deg);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+        .bio-icon::after {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border: 2px dashed var(--accent);
+            border-radius: 55px;
+            animation: border-rotate 20s linear infinite;
+        }
+        .bio-icon:hover { transform: rotate(0deg) scale(1.05); }
+
+        .ai-journey p, .tech-stack p {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        
+        .vibe-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(90deg, var(--accent), #ec4899);
+            color: white;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            box-shadow: var(--glow);
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.4); }
+        }
+
+        .thanks-wrap {
+            margin-top: 2rem;
+            perspective: 1000px;
+        }
+        .thanks-wrap h1 {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Funny Notifications */
+        #toast-container {
+            position: fixed;
+            top: 100px;
+            right: -400px;
+            width: 350px;
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            z-index: 2000;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            overflow: hidden;
+        }
+        #toast-container.show { transform: translateX(-430px); }
+        
+        .toast-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+        .toast-msg {
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent);
+            width: 100%;
+            transform-origin: left;
+        }
+        @keyframes toast-progress-anim {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+        .toast-progress.active { animation: toast-progress-anim 10s linear forwards; }
+
+        @media (max-width: 1024px) {
+            #sidebar { width: 100%; height: calc(100vh - 80px); top: 80px; }
+            main { margin-left: 0; }
+            .slide-card { padding: 2rem; }
+            .nav-hud { bottom: 2rem; right: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="cursor-glow"></div>
+    <div id="progress-ring"><div id="progress-bar"></div></div>
+
+    <div id="toast-container">
+        <div class="toast-title" data-key="notification">Értesítés</div>
+        <div class="toast-msg" id="toast-msg">...</div>
+        <div class="toast-progress" id="toast-progress"></div>
+    </div>
+
+    <div class="shape" style="top: 10%; right: 5%; width: 200px; height: 200px;"></div>
+    <div class="shape" style="bottom: 10%; left: 5%; width: 150px; height: 150px; animation-delay: -5s;"></div>
+
+    <header>
+        <div class="logo" onclick="goToSlide(0)">AmaizingAIPres</div>
+        <div style="display: flex; gap: 1.5rem;">
+            <div class="magnetic-wrap lang-menu">
+                <button class="btn-premium" onclick="toggleLangMenu()" id="lang-btn">
+                    <span id="lang-text" style="text-transform: uppercase;">HU</span>
+                </button>
+                <div class="lang-dropdown" id="lang-dropdown">
+                    <div class="lang-option" onclick="changeLang('hu')">Magyar (HU)</div>
+                    <div class="lang-option" onclick="changeLang('en')">English (EN)</div>
+                    <div class="lang-option" onclick="changeLang('de')">Deutsch (DE)</div>
+                    <div class="lang-option" onclick="changeLang('es')">Español (ES)</div>
+                    <div class="lang-option" onclick="changeLang('ru')">Русский (RU)</div>
+                </div>
+            </div>
+            <div class="magnetic-wrap">
+                <button class="btn-premium" onclick="toggleTheme()">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div id="fab" onclick="toggleSidebar()">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </div>
+
+
+    <!-- Navigation HUD -->
+    <div class="nav-hud">
+        <div class="nav-btn" onclick="prevSlide()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </div>
+        <div class="nav-btn" onclick="nextSlide()">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </div>
+    </div>
+
+    <nav id="sidebar">
+        <div class="menu-item active" onclick="goToSlide(0)">
+            <span>01</span> <span data-type="nav" data-key="nav_s1">Hirdetés</span>
+        </div>
+        <div class="menu-item priority" onclick="goToSlide(1)">
+            <span>02</span> <span data-type="nav" data-key="nav_s2">Válasz</span>
+        </div>
+        <div class="menu-item" onclick="goToSlide(2)">
+            <span>03</span> <span data-type="nav" data-key="nav_s3">Magamról</span>
+        </div>
+        <div class="menu-item" onclick="goToSlide(3)">
+            <span>04</span> <span data-type="nav" data-key="nav_s4">AI Kapcsolat</span>
+        </div>
+        <div class="menu-item" onclick="goToSlide(4)">
+            <span>05</span> <span data-type="nav" data-key="nav_s5">Vibe Coding</span>
+        </div>
+        <div class="menu-item" onclick="goToSlide(5)">
+            <span>06</span> <span data-type="nav" data-key="nav_s6">Hogy készült?</span>
+        </div>
+        <div class="menu-item" onclick="goToSlide(6)">
+            <span>07</span> <span data-type="nav" data-key="nav_s7">Végszó</span>
+        </div>
+    </nav>
+
+    <main>
+        <div class="slide-container active" id="slide-0">
+            <div class="card-perspective">
+                <div class="slide-card">
+                    <h2 data-type="title" data-key="s1_title">A ti ajánlatotok egy adminisztratív munkára</h2>
+                    <p data-key="s1_desc">A hirdetés részletes leírása az Amazing AI oldalán. Adminisztratív és ügyfélszolgálati munkatárs keresése.</p>
+                    <div class="link-preview">
+                        <a href="https://amazingai.hu/adminisztrativ-es-ugyfelszolgalati-munkatarsat-keresunk/" target="_blank" class="btn-premium" style="width: fit-content;">
+                            <span data-key="visit">Megtekintés</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slide-1">
+            <div class="card-perspective">
+                <div class="slide-card">
+                    <h2 data-type="title" data-key="s2_title">Az én ajánlatom/válaszom :)</h2>
+                    <p data-key="s2_desc">Személyre szabott megoldásaim és szakmai tapasztalatom bemutatása az Önök számára.</p>
+                    <div class="link-preview" style="margin-top: 2rem;">
+                        <a href="https://laszlomoriczhu.github.io/amazingai/amazingai.html" target="_blank" class="btn-hero">
+                            <span data-key="visit" style="text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Megtekintés</span>
+                            <span style="font-size: 1.6rem;">🚀</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slide-2">
+            <div class="card-perspective">
+                <div class="slide-card">
+                    <h2 data-type="title" data-key="s3_title">Magamról</h2>
+                    <div class="bio-layout">
+                        <div class="bio-icon">LM</div>
+                        <div class="bio-text">
+                            <h3 style="font-size: 2rem; margin-bottom: 0.5rem; font-family: 'Poppins';">Móricz László</h3>
+                            <p data-key="s3_text" style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;">
+                                Móricz László, IT specialista<br>1978-as születésű<br>Végzettségem pályát elhagyó - soha el nem kezdő - informatika tanár<br>25 éve dolgozom informatikai területen
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slide-3">
+            <div class="card-perspective">
+                <div class="slide-card">
+                    <h2 data-type="title" data-key="s4_title">AI kapcsolatom</h2>
+                    <div class="ai-journey">
+                        <p data-key="s4_text" style="font-size: 1.1rem; line-height: 1.8;">
+                            2024 téli szünetében ismerkedtem meg részletesebben a nagy nyelvi modellekkel.<br>
+                            Hamarosan Gemini és DeepSeek fan lettem.<br>
+                            2025 téli szünetében rácsodálkoztam mennyire jól tudnak kódolni.<br>
+                            Munkahelyemen inkább már kollégaként tekintek rá, mint eszközre<br>
+                            Manapság Claude és Gemini fan vagyok, de ez napról-napra változik :)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slide-4">
+            <div class="card-perspective">
+                <div class="slide-card">
+                    <h2 data-type="title" data-key="s5_title">Vibe coding</h2>
+                    <div class="vibe-coding">
+                        <div class="vibe-badge">1 YEAR EXPERIENCE</div>
+                        <p data-key="s5_text" style="font-size: 1.2rem; line-height: 1.8; margin-top: 1rem;">
+                            Lassan egy éve használom, tapasztalom.<br>
+                            Messze nem hibátlan, de több mint hasznos.<br>
+                            Csak és kizárólag ingyen elérhető eszközöket használok.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slide-5">
+            <div class="card-perspective">
+                <div class="slide-card">
+                    <h2 data-type="title" data-key="s6_title">Hogy készítettem ezeket?</h2>
+                    <div class="tech-stack">
+                        <p data-key="s6_text" style="font-size: 1rem; line-height: 1.6;">
+                            Az oldalatokat letöltöttem, mivel AI-al készült, gondoltam én is azzal válaszolok.<br>
+                            A képet ti Gemini-vel készítettétek én ChatGPT-vel.<br>
+                            Google Antigravity-vel kezdtem. Hamar elfogyott a Claude Sonnet 4.6 kredit, aztán a Gemini Pro is.<br>
+                            Maradt a Gemini Flash ami törölt sok mindent:(<br>
+                            Visszaálltam mentésből.<br>
+                            Ezután Visual Studio Code-ot használtam Gemini-vel, ahol többször csak a 2.5-öt használhattam.<br>
+                            Ez a prezentáció egy md file-ban megfogalmazottak szerint készült: Antigravity + Gemini Flash.<br>
+                            Könnyen boldogult mert zöld mezős beruházás volt :)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-container" id="slide-6">
+            <div class="card-perspective">
+                <div class="slide-card" style="text-align: center; justify-content: center; align-items: center; border: 2px solid var(--accent);">
+                    <h2 data-type="title" data-key="s7_title">Végszó</h2>
+                    <p data-key="s7_text" style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 2rem;">
+                        Remélem nem bántottam meg senkit, hogy belefirkáltam az eredeti felhívásotokba!<br>
+                        "Kérdések válaszok élőben:)"<br>
+                        Remélem megismerjük egymást!<br>
+                        Laci
+                    </p>
+                    <div class="thanks-wrap">
+                        <h1 data-key="s7_thanks_main" class="logo" style="font-size: 3rem; animation: text-flow 3s infinite linear;">KÖSZÖNÖM FIGYELMETEKET!</h1>
+                        <span data-key="s7_thanks_note" class="sarcasm-note">(Nyugodtan tekinthetjük ezt szarkazmusnak... 😉)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const translations = {
+            hu: {
+                nav_s1: "Hirdetés", nav_s2: "Válasz", nav_s3: "Magamról", nav_s4: "AI Kapcsolat", nav_s5: "Vibe Coding", nav_s6: "Hogy készült?", nav_s7: "Végszó",
+                s1_title: "A ti ajánlatotok egy adminisztratív munkára",
+                s1_desc: "A hirdetés részletes leírása az Amazing AI oldalán. Adminisztratív és ügyfélszolgálati munkatárs keresése.",
+                s2_title: "Az én ajánlatom/válaszom :)",
+                s2_desc: "Személyre szabott megoldásaim és szakmai tapasztalatom bemutatása az Önök számára.",
+                s3_title: "Magamról",
+                s3_text: "Móricz László, IT specialista<br>1978-as születésű<br>Végzettségem pályát elhagyó - soha el nem kezdő - informatika tanár<br>25 éve dolgozom informatikai területen",
+                s4_title: "AI kapcsolatom",
+                s4_text: "2024 téli szünetében ismerkedtem meg részletesebben a nagy nyelvi modellekkel.<br>Hamarosan Gemini és DeepSeek fan lettem.<br>2025 téli szünetében rácsodálkoztam mennyire jól tudnak kódolni.<br>Munkahelyemen inkább már kollégaként tekintek rá, mint eszközre<br>Manapság Claude és Gemini fan vagyok, de ez napról-napra változik :)",
+                s5_title: "Vibe coding",
+                s5_text: "Lassan egy éve használom, tapasztalom<br>Messze nem hibátlan, de több mint hasznos.<br>Csak és kizárólag ingyen elérhető eszközöket használok.",
+                s6_title: "Hogy készítettem ezeket?",
+                s6_text: "Az oldalatokat letöltöttem, mivel AI-al készült, gondoltam én is azzal válaszolok.<br>A képet ti Gemini-vel készítettétek én ChatGPT-vel.<br>Google Antigravity-vel kezdtem. Hamar elfogyott a Claude Sonnet 4.6 kredit, aztán a Gemini Pro is.<br>Maradt a Gemini Flash ami törölt sok mindent:(<br>Visszaálltam mentésből.<br>Ezután Visual Studio Code-ot használtam Gemini-vel, ahol többször csak a 2.5-öt használhattam.<br>Ez a prezentáció egy md file-ban megfogalmazottak szerint készült: Antigravity + Gemini Flash.<br>Könnyen boldogult mert zöld mezős beruházás volt :)",
+                s7_title: "Végszó",
+                s7_text: "Remélem nem bántottam meg senkit, hogy belefirkáltam az eredeti felhívásotokba!<br>\"Kérdések válaszok élőben:)\"<br>Remélem megismerjük egymást!<br>Laci",
+                s7_thanks_main: "KÖSZÖNÖM FIGYELMETEKET!",
+                s7_thanks_note: "(Nyugodtan tekinthetjük ezt szarkazmusnak... 😉)",
+                notification: "Értesítés",
+                funny_1: "Felhívtátok már a jelöltet?",
+                funny_2: "Türelmetlen lehet már az új kollégátok....",
+                funny_3: "Érdemes megváratni?",
+                funny_4: "Lassan vége a napnak és lehet nem kapott még üzenetet...",
+                visit: "Megtekintés"
+            },
+            en: {
+                nav_s1: "Ad", nav_s2: "Answer", nav_s3: "About Me", nav_s4: "AI Journey", nav_s5: "Vibe Coding", nav_s6: "How it's made", nav_s7: "Final",
+                s1_title: "Your offer for administrative work",
+                s1_desc: "Detailed job description on the Amazing AI website. Recruitment for administrative and customer service assistant.",
+                s2_title: "My offer/answer :)",
+                s2_desc: "Presentation of my personalized solutions and professional experience for you.",
+                s3_title: "About Me",
+                s3_text: "László Móricz, IT specialist<br>Born in 1978<br>Qualified IT teacher who never started teaching<br>25 years of experience in the IT field",
+                s4_title: "My Relationship with AI",
+                s4_text: "In the 2024 winter break, I became more closely acquainted with LLMs.<br>I soon became a fan of Gemini and DeepSeek.<br>In the 2025 winter break, I was amazed at how well they can code.<br>At my workplace, I view it more as a colleague than a tool.<br>Nowadays, I'm a Claude and Gemini fan, but it changes day by day :)",
+                s5_title: "Vibe Coding",
+                s5_text: "I've been using and experiencing it for nearly a year.<br>Far from perfect, but more than useful.<br>I use only and exclusively free tools.",
+                s6_title: "How did I create these?",
+                s6_text: "I downloaded your site, and since it was made with AI, I thought I'd respond with AI too.<br>You made the image with Gemini, I made mine with ChatGPT.<br>I started with Google Antigravity. Claude Sonnet 4.6 credits ran out quickly, then Gemini Pro did too.<br>Only Gemini Flash remained, which deleted a lot of things :(<br>I restored from backup.<br>Then I used VS Code with Gemini, where often I could only use the 2.5 model.<br>This presentation was created according to instructions in an .md file: Antigravity + Gemini Flash.<br>It succeeded easily because it was a greenfield project :)",
+                s7_title: "Final Word",
+                s7_text: "I hope I haven't offended anyone by doodling into your original call!<br>\"Q&A live:)\"<br>I hope we get to know each other!<br>Laci",
+                s7_thanks_main: "THANK YOU FOR YOUR ATTENTION!",
+                s7_thanks_note: "(Feel free to consider this sarcasm... 😉)",
+                notification: "Notification",
+                funny_1: "Have you called the candidate yet?",
+                funny_2: "Your new colleague might be getting impatient...",
+                funny_3: "Is it worth making them wait?",
+                funny_4: "The day is almost over, and they might not have received a message yet...",
+                visit: "Visit site"
+            },
+            de: {
+                nav_s1: "Anzeige", nav_s2: "Antwort", nav_s3: "Über mich", nav_s4: "AI Weg", nav_s5: "Vibe Coding", nav_s6: "Erstellung", nav_s7: "Schluss",
+                s1_title: "Ihr Angebot für administrative Arbeit",
+                s1_desc: "Detaillierte Stellenbeschreibung auf der Amazing AI Website. Rekrutierung für administrative Unterstützung und Kundenservice.",
+                s2_title: "Mein Angebot/meine Antwort :)",
+                s2_desc: "Präsentation meiner personalisierten Lösungen und beruflichen Erfahrung für Sie.",
+                s3_title: "Über mich",
+                s3_text: "László Móricz, IT-Spezialist<br>Geboren 1978<br>Diplomierter Informatiklehrer, der nie angefangen hat zu unterrichten<br>25 Jahre Erfahrung im IT-Bereich",
+                s4_title: "Meine Beziehung zu KI",
+                s4_text: "In den Winterferien 2024 lernte ich LLMs näher kennen.<br>Bald wurde ich Fan von Gemini und DeepSeek.<br>In den Winterferien 2025 war ich erstaunt, wie gut sie codieren können.<br>An meinem Arbeitsplatz betrachte ich sie eher als Kollegen denn als Werkzeug.<br>Heutzutage bin ich Fan von Claude und Gemini, aber das ändert sich von Tag zu Tag :)",
+                s5_title: "Vibe Coding",
+                s5_text: "Ich benutze und erlebe es seit fast einem Jahr.<br>Weit davon entfernt, perfekt zu sein, aber mehr als nützlich.<br>Ich verwende ausschließlich kostenlose Tools.",
+                s6_title: "Wie habe ich das erstellt?",
+                s6_text: "Ich habe Ihre Seite heruntergeladen, und da sie mit KI erstellt wurde, dachte ich, ich antworte auch mit KI.<br>Sie haben das Bild mit Gemini erstellt, ich meines mit ChatGPT.<br>Ich habe mit Google Antigravity angefangen. Claude Sonnet 4.6 Credits waren schnell aufgebraucht, dann auch Gemini Pro.<br>Es blieb nur Gemini Flash übrig, das vieles gelöscht hat :(<br>Ich habe aus dem Backup wiederhergestellt.<br>Dann habe ich VS Code mit Gemini benutzt, wobei ich oft nur das 2.5-Modell verwenden konnte.<br>Diese Präsentation wurde nach Anweisungen in einer .md-Datei erstellt: Antigravity + Gemini Flash.<br>Es gelang leicht, da es ein Greenfield-Projekt war :)",
+                s7_title: "Schlusswort",
+                s7_text: "Ich hoffe, ich habe niemanden beleidigt, indem ich in Ihren ursprünglichen Aufruf gekritzelt habe!<br>\"Fragen & Antworten live:)\"<br>Ich hoffe, wir lernen uns kennen!<br>Laci",
+                s7_thanks_main: "VIELEN DANK FÜR IHRE AUFMERKSAMKEIT!",
+                s7_thanks_note: "(Fühlen Sie sich frei, dies als Sarkasmus zu betrachten... 😉)",
+                notification: "Benachrichtigung",
+                funny_1: "Haben Sie den Kandidaten schon angerufen?",
+                funny_2: "Ihr neuer Kollege könnte ungeduldig werden...",
+                funny_3: "Lohnt es sich, sie warten zu lassen?",
+                funny_4: "Der Tag ist fast vorbei, und sie haben vielleicht noch keine Nachricht erhalten...",
+                visit: "Ansehen"
+            },
+            es: {
+                nav_s1: "Anuncio", nav_s2: "Respuesta", nav_s3: "Sobre mí", nav_s4: "Viaje IA", nav_s5: "Vibe Coding", nav_s6: "Creación", nav_s7: "Final",
+                s1_title: "Tu oferta para trabajo administrativo",
+                s1_desc: "Descripción detallada del puesto en el sitio web de Amazing AI. Reclutamiento para asistente administrativo y de servicio al cliente.",
+                s2_title: "Mi oferta/respuesta :)",
+                s2_desc: "Presentación de mis soluciones personalizadas y experiencia profesional para usted.",
+                s3_title: "Sobre mí",
+                s3_text: "László Móricz, especialista en TI<br>Nacido en 1978<br>Profesor de informática titulado que nunca llegó a ejercer<br>25 años de experiencia en el campo de la informática",
+                s4_title: "Mi relación con la IA",
+                s4_text: "En las vacaciones de invierno de 2024, conocí más a fondo los LLM.<br>Pronto me convertí en fan de Gemini y DeepSeek.<br>En las vacaciones de invierno de 2025, me asombró lo bien que pueden programar.<br>En mi lugar de trabajo, lo veo más como un colega que como una herramienta.<br>Hoy en día soy fan de Claude y Gemini, pero eso cambia día a día :)",
+                s5_title: "Vibe coding",
+                s5_text: "Llevo casi un año usándolo y experimentándolo.<br>Lejos de ser perfecto, pero más que útil.<br>Utilizo única y exclusivamente herramientas gratuitas.",
+                s6_title: "¿Cómo creé esto?",
+                s6_text: "Descargué su sitio y, como fue hecho con IA, pensé en responder también con IA.<br>Ustedes hicieron la imagen con Gemini, yo la mía con ChatGPT.<br>Empecé con Google Antigravity. Los créditos de Claude Sonnet 4.6 se agotaron rápido, luego también los de Gemini Pro.<br>Solo quedó Gemini Flash, que borró muchas cosas :(<br>Restauré desde la copia de seguridad.<br>Luego usé VS Code con Gemini, donde a menudo solo podía usar el modelo 2.5.<br>Esta presentación se creó según las instrucciones en un archivo .md: Antigravity + Gemini Flash.<br>Tuvo éxito fácilmente porque era un proyecto desde cero :)",
+                s7_title: "Palabra final",
+                s7_text: "¡Espero no haber ofendido a nadie por garabatear en su convocatoria original!<br>\"Preguntas y respuestas en vivo:)\"<br>¡Espero que nos conozcamos!<br>Laci",
+                s7_thanks_main: "¡GRACIAS POR SU ATENCIÓN!",
+                s7_thanks_note: "(Siéntanse libres de considerar esto como sarcasmo... 😉)",
+                notification: "Notificación",
+                funny_1: "¿Ya llamaste al candidato?",
+                funny_2: "Tu nuevo colega podría estar impacientándose...",
+                funny_3: "¿Vale la pena hacerlos esperar?",
+                funny_4: "El día casi termina y quizás aún no han recibido un mensaje...",
+                visit: "Ver sitio"
+            },
+            ru: {
+                nav_s1: "Объявление", nav_s2: "Ответ", nav_s3: "Обо мне", nav_s4: "Путь ИИ", nav_s5: "Vibe Coding", nav_s6: "Создание", nav_s7: "Финал",
+                s1_title: "Ваше предложение на административную работу",
+                s1_desc: "Подробное описание вакансии на сайте Amazing AI. Набор административного персонала и специалистов по обслуживанию клиентов.",
+                s2_title: "Моё предложение/ответ :)",
+                s2_desc: "Презентация моих персональных решений и профессионального опыта для вас.",
+                s3_title: "Обо мне",
+                s3_text: "Ласло Мориц, ИТ-специалист<br>Родился в 1978 году<br>Дипломированный учитель информатики, который так и не начал преподавать<br>25 лет опыта работы в сфере ИТ",
+                s4_title: "Мои отношения с ИИ",
+                s4_text: "На зимних каникулах 2024 года я поближе познакомился с LLM.<br>Вскоре стал фанатом Gemini и DeepSeek.<br>На зимних каникулах 2025 года я был поражен тем, как хорошо они умеют кодить.<br>На работе я воспринимаю ИИ скорее как коллегу, а не как инструмент.<br>Сегодня я фанат Claude и Gemini, но это меняется день ото дня :)",
+                s5_title: "Vibe coding",
+                s5_text: "Я использую и изучаю это почти год.<br>Далеко не идеально, но более чем полезно.<br>Я использую только и исключительно бесплатные инструменты.",
+                s6_title: "Как я это создал?",
+                s6_text: "Я скачал ваш сайт, и раз он был сделан с помощью ИИ, я решил ответить тем же.<br>Вы создали изображение в Gemini, я — в ChatGPT.<br>Я начал с Google Antigravity. Кредиты Claude Sonnet 4.6 быстро закончились, затем и Gemini Pro.<br>Остался только Gemini Flash, который удалил много всего :(<br>Я восстановил данные из резервной копии.<br>Затем я использовал VS Code с Gemini, где часто мог использовать только модель 2.5.<br>Эта презентация была создана согласно инструкциям в .md файле: Antigravity + Gemini Flash.<br>Все прошло гладко, так как это был проект с нуля :)",
+                s7_title: "Заключительное слово",
+                s7_text: "Надеюсь, я никого не обидел тем, что влез в ваш оригинал!<br>\"Вопросы и ответы в прямом эфире:)\"<br>Надеюсь, мы познакомимся лично!<br>Лаци",
+                s7_thanks_main: "БЛАГОДАРЮ ЗА ВНИМАНИЕ!",
+                s7_thanks_note: "(Считайте это сарказмом... 😉)",
+                notification: "Уведомление",
+                funny_1: "Вы уже позвонили кандидату?",
+                funny_2: "Ваш новый коллега, возможно, уже теряет терпение...",
+                funny_3: "Стоит ли заставлять их ждать?",
+                funny_4: "День почти закончился, а они, возможно, еще не получили сообщение...",
+                visit: "Сайт"
+            }
+        };
+
+        let currentLang = 'hu';
+        let currentTheme = 'light';
+        let currentSlide = 0;
+        const totalSlides = 7;
+
+        const glow = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+            
+            const card = document.querySelector('.slide-container.active .slide-card');
+            if (card) {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `rotateY(${x * 15}deg) rotateX(${-y * 15}deg)`;
+            }
+
+            document.querySelectorAll('.magnetic-wrap').forEach(wrap => {
+                const rect = wrap.getBoundingClientRect();
+                const dx = e.clientX - (rect.left + rect.width/2);
+                const dy = e.clientY - (rect.top + rect.height/2);
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 100) {
+                    wrap.style.transform = `translate(${dx*0.2}px, ${dy*0.2}px)`;
+                } else {
+                    wrap.style.transform = `translate(0,0)`;
+                }
+            });
+        });
+
+        function typeWriter(element, text) {
+            element.innerText = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, 40);
+        }
+
+        function goToSlide(index) {
+            const slides = document.querySelectorAll('.slide-container');
+            const menu = document.querySelectorAll('.menu-item');
+
+            menu[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.remove('active');
+
+            currentSlide = index;
+
+            menu[currentSlide].classList.add('active');
+            slides[currentSlide].classList.add('active');
+
+            const title = slides[currentSlide].querySelector('h2');
+            typeWriter(title, translations[currentLang][title.getAttribute('data-key')]);
+
+            document.getElementById('progress-bar').style.width = ((index + 1) / totalSlides * 100) + '%';
+            
+            // Close mobile sidebar if open
+            if (window.innerWidth < 1024 && !document.getElementById('sidebar').classList.contains('collapsed')) {
+                toggleSidebar();
+            }
+        }
+
+        function nextSlide() { goToSlide((currentSlide + 1) % totalSlides); }
+        function prevSlide() { goToSlide((currentSlide - 1 + totalSlides) % totalSlides); }
+
+        function toggleLangMenu() {
+            document.getElementById('lang-dropdown').classList.toggle('show');
+        }
+
+        function updateContent() {
+            document.querySelectorAll('[data-key]').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (el.getAttribute('data-type') !== 'title') {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        function changeLang(lang) {
+            currentLang = lang;
+            document.getElementById('lang-text').innerText = lang.toUpperCase();
+            document.getElementById('lang-dropdown').classList.remove('show');
+            updateContent();
+            
+            const title = document.querySelector('.slide-container.active h2');
+            typeWriter(title, translations[currentLang][title.getAttribute('data-key')]);
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-menu')) {
+                document.getElementById('lang-dropdown').classList.remove('show');
+            }
+        });
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            document.getElementById('theme-icon').innerText = currentTheme === 'light' ? '🌙' : '☀️';
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.querySelector('main').classList.toggle('expanded');
+        }
+
+        // Funny Notifications Logic
+        const funnyMessages = ['funny_1', 'funny_2', 'funny_3', 'funny_4'];
+        let funnyIdx = 0;
+
+        function showNotification() {
+            const toast = document.getElementById('toast-container');
+            const msgEl = document.getElementById('toast-msg');
+            const progress = document.getElementById('toast-progress');
+
+            msgEl.innerText = translations[currentLang][funnyMessages[funnyIdx]];
+            funnyIdx = (funnyIdx + 1) % funnyMessages.length;
+
+            toast.classList.add('show');
+            progress.classList.add('active');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => progress.classList.remove('active'), 800);
+            }, 10000);
+        }
+
+        window.onload = () => {
+            updateContent();
+            const initialTitle = document.querySelector('.slide-container.active h2');
+            typeWriter(initialTitle, translations.hu.s1_title);
+            document.getElementById('progress-bar').style.width = '14.2%'; // 1/7
+
+            // Start funny notifications after 30s
+            setInterval(showNotification, 30000);
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>
