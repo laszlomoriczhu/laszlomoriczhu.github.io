@@ -58,7 +58,6 @@
             transition: background-color 0.5s ease;
             overflow: hidden;
             height: 100vh;
-            perspective: 2000px;
         }
 
         #cursor-glow {
@@ -226,6 +225,7 @@
             transition: var(--transition-smooth);
             position: relative;
             transform-style: preserve-3d;
+            perspective: 2000px;
         }
         main.expanded { margin-left: 0; }
 
@@ -512,8 +512,7 @@
         }
     </style>
 </head>
-<body>
-    <div id="cursor-glow"></div>
+<body><div id="cursor-glow"></div>
     <div id="progress-ring"><div id="progress-bar"></div></div>
 
     <div id="toast-container">
@@ -524,7 +523,6 @@
 
     <div class="shape" style="top: 10%; right: 5%; width: 200px; height: 200px;"></div>
     <div class="shape" style="bottom: 10%; left: 5%; width: 150px; height: 150px; animation-delay: -5s;"></div>
-
     <header>
         <div class="logo" onclick="goToSlide(0)">AmaizingAIPres</div>
         <div style="display: flex; gap: 1.5rem;">
@@ -551,8 +549,6 @@
     <div id="fab" onclick="toggleSidebar()">
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
     </div>
-
-
     <!-- Navigation HUD -->
     <div class="nav-hud">
         <div class="nav-btn" onclick="prevSlide()">
@@ -592,7 +588,7 @@
             <div class="card-perspective">
                 <div class="slide-card">
                     <h2 data-type="title" data-key="s1_title">A ti ajánlatotok egy adminisztratív munkára</h2>
-                    <p data-key="s1_desc">A hirdetés részletes leírása az Amazing AI oldalán. Adminisztratív és ügyfélszolgálati munkatárs keresése.</p>
+                    <p data-key="s1_desc">A hirdetés részletes leírása az Amazing AI oldalán. Adminisztrativ és ügyfélszolgálati munkatárs keresése.</p>
                     <div class="link-preview">
                         <a href="https://amazingai.hu/adminisztrativ-es-ugyfelszolgalati-munkatarsat-keresunk/" target="_blank" class="btn-premium" style="width: fit-content;">
                             <span data-key="visit">Megtekintés</span>
