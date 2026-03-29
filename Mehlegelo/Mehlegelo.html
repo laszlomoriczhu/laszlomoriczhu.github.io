@@ -27,7 +27,8 @@ body{background:var(--bg);color:var(--tp);transition:var(--tr);overflow-x:hidden
 .sb-head{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center}
 .sb-head h2{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ac);display:flex;align-items:center;gap:.5rem}
 .sb-filters{padding:0 .75rem .75rem; display:flex; flex-direction:column; gap:.5rem; border-bottom:1px solid rgba(255,255,255,.1)}
-.sb-filters select{width:100%; padding:.5rem; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:.4rem; color:#fff; font-size:.8rem; outline:none; cursor:pointer;}
+.sb-filters select{width:100%; padding:.75rem; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:.5rem; color:#fff; font-size:.85rem; outline:none; cursor:pointer; appearance:none; transition:var(--tr)}
+.sb-filters select:focus{border-color:var(--ac); background:rgba(255,255,255,.13)}
 .sb-filters select option{background:var(--sb); color:#fff;}
 .sb-search{padding:.75rem;position:relative}
 .sb-search input{width:100%;padding:.6rem .75rem .6rem 2.2rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:.5rem;color:#fff;outline:none;font-size:.85rem;transition:var(--tr)}
@@ -78,9 +79,9 @@ header{position:sticky;top:.5rem;z-index:100;display:flex;justify-content:space-
 .c-slide{min-width:100%;height:100%}
 .c-slide img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .c-slide img:hover{transform:scale(1.02)}
-.c-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:var(--tr);z-index:10;font-size:.8rem}
+.c-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.45);color:#fff;border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:var(--tr);z-index:10;font-size:1rem}
 .c-btn:hover{background:var(--ac)}
-.c-btn.prev{left:8px}.c-btn.next{right:8px}
+.c-btn.prev{left:12px}.c-btn.next{right:12px}
 .c-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:10}
 .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer;transition:var(--tr)}
 .dot.on{background:var(--ac);transform:scale(1.3)}
@@ -109,6 +110,8 @@ header{position:sticky;top:.5rem;z-index:100;display:flex;justify-content:space-
   #main{margin-left:0}
   #sb{transform:translateX(-100%)}
   #sb.mob-on{transform:translateX(0)}
+  .btn-icon, .c-btn{width:44px;height:44px;font-size:1.1rem}
+  .sb-head .btn-icon{width:40px;height:40px}
 }
 @media(max-width:640px){
   .grid{grid-template-columns:1fr}
@@ -208,8 +211,7 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"A mezei cickafark (Achillea millefolium) fehér vagy halvány rózsaszín, sátorozó virágzatú, aromás illatú évelő vadvirág. Réteken, útszéleken és legelőkön egyaránt közönséges; évszázadok óta ismert gyógynövény és kiváló méhlegelő.",
        de:"Die Gemeine Schafgarbe (Achillea millefolium) ist eine aromatisch duftende Ausdauerpflanze mit weißen bis zartrosa Blütenständen. Auf Wiesen und Wegrändern weit verbreitet; seit Jahrhunderten als Heilpflanze und hervorragende Bienenweide geschätzt.",
-       en:"Common Yarrow (Achillea millefolium) is an aromatic perennial with white to pale-pink flat-topped flower clusters. Common in meadows and roadsides; valued for centuries as a medicinal herb and excellent nectar source for bees."},
- link:"https://mek.oszk.hu/00000/00056/html/145.htm"},
+       en:"Common Yarrow (Achillea millefolium) is an aromatic perennial with white to pale-pink flat-topped flower clusters. Common in meadows and roadsides; valued for centuries as a medicinal herb and excellent nectar source for bees."}},
 
 {short:"festopipiter",sci:"Cota tinctoria",
  images:["images/festopipiter_1.jpg","images/festopipiter_2.jpg","images/festopipiter_3.jpg"],
@@ -221,8 +223,7 @@ const PLANTS = [
  height:{hu:"40-70 cm",de:"40-70 cm",en:"40-70 cm"}, 
  desc:{hu:"A festő pipitér (Cota tinctoria) élénksárga, napraforgószerű virágfejeiről könnyen felismerhető. Száraz réteken, útszéleken él; virágából sárga festéket nyertek a takácsiparban, ma vadvirágos keverékek értékes tagja.",
        de:"Die Färber-Hundskamille (Cota tinctoria) ist an leuchtend gelben, sonnenblumenartigen Blütenköpfen gut erkennbar. Auf trockenen Magerwiesen heimisch; historisch zur Gewinnung gelben Farbstoffs genutzt, heute in Wildblumenmischungen wertvoll.",
-       en:"Dyer's Chamomile (Cota tinctoria) is easily recognised by its bright yellow, daisy-like flower heads. Grows on dry poor meadows; historically used to produce yellow dye, today a valued component of wildflower mixes."},
- link:"http://www.terra.hu/haznov/htm/Anthemis.tinctoria.html"},
+       en:"Dyer's Chamomile (Cota tinctoria) is easily recognised by its bright yellow, daisy-like flower heads. Grows on dry poor meadows; historically used to produce yellow dye, today a valued component of wildflower mixes."}},
 
 {short:"nyulszapuka",sci:"Anthyllis vulneraria",
  images:["images/nyulszapuka_1.jpg","images/nyulszapuka_2.jpg","images/nyulszapuka_3.jpg"],
@@ -234,8 +235,7 @@ const PLANTS = [
  height:{hu:"15-40 cm",de:"15-40 cm",en:"15-40 cm"}, 
  desc:{hu:"A nyúlszapuka (Anthyllis vulneraria) sárga vagy vöröses pillangósvirágait molyhos levelek kísérik. Száraz, meszes lejtők és gyepek jellemző növénye; számos lepkefaj hernyóinak fontos tápnövénye.",
        de:"Der Wundklee (Anthyllis vulneraria) trägt gelbliche bis rötliche Schmetterlingsblüten mit filzigen Blättern. Charakteristisch für trockene Kalkrasen; wichtige Raupenfutterpflanze für viele Schmetterlingsarten.",
-       en:"Kidney Vetch (Anthyllis vulneraria) bears yellowish to reddish pea-flowers with woolly leaves. Typical of dry calcareous grasslands; an important larval food plant for many butterfly species."},
- link:"http://www.terra.hu/haznov/htm/Anthyllis.vulneraria.html"},
+       en:"Kidney Vetch (Anthyllis vulneraria) bears yellowish to reddish pea-flowers with woolly leaves. Typical of dry calcareous grasslands; an important larval food plant for many butterfly species."}},
 
 {short:"orvositisztesfu",sci:"Betonica officinalis",
  images:["images/orvositisztesfu_1.jpg","images/orvositisztesfu_2.jpg","images/orvositisztesfu_3.jpg"],
@@ -247,8 +247,7 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"Az orvosi tisztesfű (Betonica officinalis) bíborlila ajakos virágaival erdőszéleken és száraz réteken tűnik fel. Évelő gyógynövény, amelyet régen számtalan bajra alkalmaztak; beporzói közt a poszméhek vezető helyen állnak.",
        de:"Der Heilziest (Betonica officinalis) fällt mit purpurroten Lippenblüten auf Waldrändern und Trockenwiesen auf. Als ausdauernde Heilpflanze für viele Leiden verwendet; Hummeln sind seine wichtigsten Bestäuber.",
-       en:"Betony (Betonica officinalis) catches the eye with purple lipped flowers on woodland edges and dry meadows. A perennial herb historically used for many complaints; bumblebees are its primary pollinators."},
- link:"https://mek.oszk.hu/00000/00056/html/280.htm"},
+       en:"Betony (Betonica officinalis) catches the eye with purple lipped flowers on woodland edges and dry meadows. A perennial herb historically used for many complaints; bumblebees are its primary pollinators."}},
 
 {short:"okorszem",sci:"Buphthalmum salicifolium",
  images:["images/okorszem_1.jpg","images/okorszem_2.jpg","images/okorszem_3.jpg"],
@@ -260,8 +259,7 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"Az ökörszem (Buphthalmum salicifolium) nagy, sárga fészkes virágaival a hegyvidéki gyepek és mészkőlejtők jellegzetes növénye. Nyárközéptől őszig virágzik, kiváló kertészeti és méhlegelő növény.",
        de:"Das Weidenblättrige Ochsenauge (Buphthalmum salicifolium) ist mit großen gelben Blütenköpfen auf Bergwiesen und Kalkfelsen bei Hause. Blüht von Hochsommer bis Herbst; beliebte Gartenpflanze und Bienenweide.",
-       en:"Yellow Ox-eye (Buphthalmum salicifolium) with large yellow flower heads is characteristic of mountain meadows and limestone slopes. Blooms from midsummer to autumn; an excellent garden and bee-forage plant."},
- link:"http://www.terra.hu/haznov/htm/Buphthalmum.salicifolium.html"},
+       en:"Yellow Ox-eye (Buphthalmum salicifolium) with large yellow flower heads is characteristic of mountain meadows and limestone slopes. Blooms from midsummer to autumn; an excellent garden and bee-forage plant."}},
 
 {short:"koromvirag",sci:"Calendula officinalis",
  images:["images/koromvirag_1.jpg","images/koromvirag_2.jpg","images/koromvirag_3.jpg"],
@@ -273,11 +271,10 @@ const PLANTS = [
  height:{hu:"30-50 cm",de:"30-50 cm",en:"30-50 cm"}, 
  desc:{hu:"A körömvirág (Calendula officinalis) narancssárga vagy sárga virágfejeiről azonnal felismerhető egynyári gyógynövény. Gyulladáscsökkentő és sebgyógyító hatása miatt kozmetikumokban és gyógykenőcsökben ma is szélesen alkalmazzák.",
        de:"Die Ringelblume (Calendula officinalis) ist eine leicht erkennbare einjährige Heilpflanze mit orangen oder gelben Blütenköpfen. Ihre entzündungshemmende und wundheilende Wirkung wird in Kosmetika und Heilsalben bis heute genutzt.",
-       en:"Pot Marigold (Calendula officinalis) is easily recognised by its orange or yellow flower heads. Its anti-inflammatory and wound-healing properties are still widely used in cosmetics and medicinal ointments."},
- link:"https://mek.oszk.hu/00000/00056/html/146.htm"},
+       en:"Pot Marigold (Calendula officinalis) is easily recognised by its orange or yellow flower heads. Its anti-inflammatory and wound-healing properties are still widely used in cosmetics and medicinal ointments."}},
 
 {short:"terebelyesharangvirag",sci:"Campanula patula",
- images:["images/terebelyesharangvirag_1.jpg","https://upload.wikimedia.org/wikipedia/commons/d/d4/CampanulaPatula.jpg","images/terebelyesharangvirag_3.jpg"],
+ images:["images/terebelyesharangvirag_1.jpg","images/terebelyesharangvirag_2.jpg","images/terebelyesharangvirag_3.jpg"],
  name:{hu:"Terebélyes harangvirág",de:"Ausgebreitete Glockenblume",en:"Spreading Bellflower"},
  lifespan:{hu:"Kétnyári",de:"Zweijährig",en:"Biennial"},
  bloom:{hu:"Május – Július",de:"Mai – Juli",en:"May – July"},
@@ -286,11 +283,10 @@ const PLANTS = [
  height:{hu:"30-70 cm",de:"30-70 cm",en:"30-70 cm"}, 
  desc:{hu:"A terebélyes harangvirág (Campanula patula) szétálló, lila harang alakú virágait hosszú kocsány tartja. Kétnyári réti növény, üde gyepekben és erdőszéleken honos; rovaroknak kedvelt nektárforrás.",
        de:"Die Ausgebreitete Glockenblume (Campanula patula) trägt lila Glockenblüten auf langen, sparrig ausgebreiteten Stielen. Zweijährige Wiesenpflanze frischer Mähwiesen und Waldränder; gerne von Insekten besucht.",
-       en:"Spreading Bellflower (Campanula patula) bears violet bell-shaped flowers on long spreading stems. A biennial of fresh meadows and woodland edges; a favoured nectar source for insects."},
- link:"http://www.terra.hu/haznov/htm/Campanula.patula.html"},
+       en:"Spreading Bellflower (Campanula patula) bears violet bell-shaped flowers on long spreading stems. A biennial of fresh meadows and woodland edges; a favoured nectar source for insects."}},
 
 {short:"kekbuzavirag",sci:"Centaurea cyanus",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/20220715_Centaurea_cyanus.jpg/960px-20220715_Centaurea_cyanus.jpg","images/kekbuzavirag_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/CentaureaCyanus-bloem-kl.jpg/960px-CentaureaCyanus-bloem-kl.jpg"],
+ images:["images/kekbuzavirag_1.jpg","images/kekbuzavirag_2.jpg","images/kekbuzavirag_3.jpg"],
  name:{hu:"Kék búzavirág",de:"Kornblume",en:"Cornflower"},
  lifespan:{hu:"Egynyári",de:"Einjährig",en:"Annual"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
@@ -299,11 +295,10 @@ const PLANTS = [
  height:{hu:"40-80 cm",de:"40-80 cm",en:"40-80 cm"}, 
  desc:{hu:"A kék búzavirág (Centaurea cyanus) tüneményes azúrkék virágával az egyik legikonikusabb mezei virágunk. Egynyári, egykori szántóföldi gyomból mára a vadvirágos rétek pótolhatatlan díszévé vált; lepkék és méhek kedvence.",
        de:"Die Kornblume (Centaurea cyanus) mit ihrer strahlend azurblauen Blüte ist eine der bekanntesten Feldblumen. Einjährig; einst Ackerunkraut, heute unverzichtbarer Schmuck der Wildblumenwiesen; bei Schmetterlingen und Bienen sehr beliebt.",
-       en:"Cornflower (Centaurea cyanus) with its stunning azure blue blooms is one of the most iconic wildflowers. An annual; once a cornfield weed, now indispensable in wildflower meadows; a favourite of butterflies and bees."},
- link:"https://mek.oszk.hu/00000/00056/html/143.htm"},
+       en:"Cornflower (Centaurea cyanus) with its stunning azure blue blooms is one of the most iconic wildflowers. An annual; once a cornfield weed, now indispensable in wildflower meadows; a favourite of butterflies and bees."}},
 
 {short:"retiimola",sci:"Centaurea jacea",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Argynnis_adippe_auf_Centaurea_jacea_01.jpg/960px-Argynnis_adippe_auf_Centaurea_jacea_01.jpg","images/retiimola_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Centaurea_jacea_2025-07-23-1.jpg/960px-Centaurea_jacea_2025-07-23-1.jpg"],
+ images:["images/retiimola_1.jpg","images/retiimola_2.jpg","images/retiimola_3.jpg"],
  name:{hu:"Réti imola",de:"Wiesen-Flockenblume",en:"Brown Knapweed"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Szeptember",de:"Juni – September",en:"June – September"},
@@ -312,24 +307,22 @@ const PLANTS = [
  height:{hu:"40-100 cm",de:"40-100 cm",en:"40-100 cm"}, 
  desc:{hu:"A réti imola (Centaurea jacea) bíborlila fészkes virágzatú évelő réti növény. Kaszálókon és útszéleken egyaránt otthonos; kiváló méhlegelő és rengeteg rovarfaj tápláléka.",
        de:"Die Wiesen-Flockenblume (Centaurea jacea) ist eine ausdauernde Wiesenpflanze mit purpurvioletten Köpfchen. Auf Mähwiesen und Wegrändern verbreitet; ausgezeichnete Bienenweide.",
-       en:"Brown Knapweed (Centaurea jacea) is a perennial meadow plant with purple-pink flower heads. Common in hay meadows and roadsides; an excellent nectar source for bees and many insect species."},
- link:"http://www.terra.hu/haznov/htm/Centaurea.jacea.html"},
+       en:"Brown Knapweed (Centaurea jacea) is a perennial meadow plant with purple-pink flower heads. Common in hay meadows and roadsides; an excellent nectar source for bees and many insect species."}},
 
 {short:"feketesimola",sci:"Centaurea nigra",
- images:["images/feketesimola_1.jpg","https://upload.wikimedia.org/wikipedia/commons/4/49/Centaurea_nigra_-_geograph.org.uk_-_2573537.jpg","images/feketesimola_3.jpg"],
+ images:["images/feketesimola_1.jpg","images/feketesimola_2.jpg","images/feketesimola_3.jpg"],
  name:{hu:"Feketés imola",de:"Schwarze Flockenblume",en:"Black Knapweed"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Július – Szeptember",de:"Juli – September",en:"July – September"},
  soil:{hu:"Közepes",de:"Mittelmäßig",en:"Moderate"},
  drought:{hu:"Részben",de:"Teilweise",en:"Partially"},sun:{hu:"Teljes nap",de:"Volsonne",en:"Full sun"},
  height:{hu:"30-80 cm",de:"30-80 cm",en:"30-80 cm"}, 
- desc:{hu:"A feketés imola (Centaurea nigra) sötétbarna pikkelyű virágfészket visel, melyből bíbor szirmok törnek elő. Nedvesebb réteken és útszéleken fordul elő; fontos méhlegelő és pillangók tápnövénye.",
+ desc:{hu:"A feketés imola (Centaurea nigra) sötétbarna pikkelyű virágfészket visel, melyből bíbor szirmok törnek elő. Nedvesebb réteken and útszéleken fordul elő; fontos méhlegelő és pillangók tápnövénye.",
        de:"Die Schwarze Flockenblume (Centaurea nigra) trägt Körbe mit dunkelbraunen Schuppen, aus denen purpurne Blüten brechen. Auf feuchteren Wiesen und Wegrändern; wichtige Bienenweide und Schmetterlingsnährpflanze.",
-       en:"Black Knapweed (Centaurea nigra) bears flower heads with dark-brown scales from which purple florets emerge. Grows in moister meadows and roadsides; an important nectar source for bees and butterflies."},
- link:"https://termeszetvedelem.hu/talalati-oldal/?veg_id=715"},
+       en:"Black Knapweed (Centaurea nigra) bears flower heads with dark-brown scales from which purple florets emerge. Grows in moister meadows and roadsides; an important nectar source for bees and butterflies."}},
 
 {short:"orvosimola",sci:"Centaurea scabiosa",
- images:["images/orvosimola_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Bombus_rupestris_-_Centaurea_scabiosa_-_Keila2.jpg/960px-Bombus_rupestris_-_Centaurea_scabiosa_-_Keila2.jpg","images/orvosimola_3.jpg"],
+ images:["images/orvosimola_1.jpg","images/orvosimola_2.jpg","images/orvosimola_3.jpg"],
  name:{hu:"Örvös imola",de:"Skabiosen-Flockenblume",en:"Greater Knapweed"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Szeptember",de:"Juni – September",en:"June – September"},
@@ -338,11 +331,10 @@ const PLANTS = [
  height:{hu:"40-120 cm",de:"40-120 cm",en:"40-120 cm"}, 
  desc:{hu:"Az örvös imola (Centaurea scabiosa) nagyméretű, sallangos lila virágfészkeivel hívja fel magára a figyelmet. Száraz, meszes gyepek és löszlejtők növénye; méhek és nagy lepkefajok különösen kedvelik.",
        de:"Die Skabiosen-Flockenblume (Centaurea scabiosa) fällt mit großen, gefransten lilafarbenen Körben auf. Typisch für trockene Kalkrasen und Lösshänge; von Bienen und großen Schmetterlingen besonders bevorzugt.",
-       en:"Greater Knapweed (Centaurea scabiosa) draws attention with large fringed purple flower heads. Typical of dry calcareous grasslands and loess slopes; particularly favoured by bees and large butterfly species."},
- link:"http://www.terra.hu/haznov/htm/Centaurea.scabiosa.html"},
+       en:"Greater Knapweed (Centaurea scabiosa) draws attention with large fringed purple flower heads. Typical of dry calcareous grasslands and loess slopes; particularly favoured by bees and large butterfly species."}},
 
 {short:"karthauziszegfu",sci:"Dianthus carthusianorum",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Dianthus_carthusianorum_1.jpg/960px-Dianthus_carthusianorum_1.jpg","images/karthauziszegfu_2.jpg","images/karthauziszegfu_3.jpg"],
+ images:["images/karthauziszegfu_1.jpg","images/karthauziszegfu_2.jpg","images/karthauziszegfu_3.jpg"],
  name:{hu:"Karthauzi szegfű",de:"Karthäuser-Nelke",en:"Carthusian Pink"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
@@ -351,11 +343,10 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"A karthauzi szegfű (Dianthus carthusianorum) sötétbíbor virágai zárt fejecskékben csoportosulnak. Száraz, meszes, sovány gyepek lakója; jellegzetes fűszeres illatát a szegfűkre jellemző aromaanyagok adják.",
        de:"Die Karthäuser-Nelke (Dianthus carthusianorum) zeigt tiefpurpurrote Blüten in dichten Köpfchen. Bewohner trockener, kalkreicher Magerrasen; ihr würziger Duft stammt von für Nelken typischen Aromastoffen.",
-       en:"Carthusian Pink (Dianthus carthusianorum) displays deep purple-crimson flowers packed in dense heads. Inhabits dry calcareous poor grasslands; its distinctive spicy fragrance is characteristic of the pink family."},
- link:"http://www.terra.hu/haznov/htm/Dianthus.carthusianorum.html"},
+       en:"Carthusian Pink (Dianthus carthusianorum) displays deep purple-crimson flowers packed in dense heads. Inhabits dry calcareous poor grasslands; its distinctive spicy fragrance is characteristic of the pink family."}},
 
 {short:"retiszegfu",sci:"Dianthus deltoides",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/0_Dianthus_deltoides_alpinus_-_Yvoire.JPG/960px-0_Dianthus_deltoides_alpinus_-_Yvoire.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Dianthus_deltoides_146121930.jpg/960px-Dianthus_deltoides_146121930.jpg","images/retiszegfu_3.jpg"],
+ images:["images/retiszegfu_1.jpg","images/retiszegfu_2.jpg","images/retiszegfu_3.jpg"],
  name:{hu:"Réti szegfű",de:"Heide-Nelke",en:"Maiden Pink"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
@@ -364,25 +355,23 @@ const PLANTS = [
  height:{hu:"15-30 cm",de:"15-30 cm",en:"15-30 cm"}, 
  desc:{hu:"A réti szegfű (Dianthus deltoides) apró, élénk rózsaszín virágain fehér mintás szimlevelek díszítenek. Homokos, sovány gyepek alacsony növésű évelője; kitűnő talajtakaró és lepkék kedvelt nektárforrása.",
        de:"Die Heide-Nelke (Dianthus deltoides) besitzt kleine leuchtend rosarote Blüten mit weiß gemusterten Petalen. Niedrig wachsend auf sandigen Magerrasen; guter Bodendecker und Nektarquelle für Schmetterlinge.",
-       en:"Maiden Pink (Dianthus deltoides) has small bright-pink flowers with white-patterned petals. A low-growing perennial of sandy poor grasslands; excellent ground cover and favoured nectar source for butterflies."},
- link:"http://www.terra.hu/haznov/htm/Dianthus.deltoides.html"},
+       en:"Maiden Pink (Dianthus deltoides) has small bright-pink flowers with white-patterned petals. A low-growing perennial of sandy poor grasslands; excellent ground cover and favoured nectar source for butterflies."}},
 
 {short:"tejoltogalaj",sci:"Galium verum",
- images:["images/tejoltogalaj_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Galium_verum_139162694.jpg/960px-Galium_verum_139162694.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Galium_verum_145798446.jpg/960px-Galium_verum_145798446.jpg"],
+ images:["images/tejoltogalaj_1.jpg","images/tejoltogalaj_2.jpg","images/tejoltogalaj_3.jpg"],
  name:{hu:"Tejoltó galaj",de:"Echtes Labkraut",en:"Lady's Bedstraw"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
- soil:{hu:"Száraz, meszes",de:"Trocken, kalkig",en:"Dry, calcareous"},
+ soil:{hu:"Száraz, sovány",de:"Trocken, mager",en:"Dry, poor"},
  drought:{hu:"Igen",de:"Ja",en:"Yes"},sun:{hu:"Teljes nap",de:"Volsonne",en:"Full sun"},
- height:{hu:"30-80 cm",de:"30-80 cm",en:"30-80 cm"}, 
- desc:{hu:"A tejoltó galaj (Galium verum) aranysárga virágainak mézes illata nyáron messziről érezhető. Régen a sajtgyártásban tejoltásra használták; száraz réteken és útszéleken él, kiváló poszméhlegelő.",
-       de:"Das Echte Labkraut (Galium verum) verbreitet im Sommer den honigartigen Duft goldgelber Blüten. Früher als Lab in der Käserei genutzt; auf Trockenwiesen und Wegrändern anzutreffen; ausgezeichnete Hummelweide.",
-       en:"Lady's Bedstraw (Galium verum) fills summer air with the honey scent of its golden-yellow flowers. Formerly used as a curdling agent in cheese-making; grows in dry meadows and roadsides, providing excellent bumblebee forage."},
- link:"https://mek.oszk.hu/00000/00056/html/156.htm"},
+ height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
+ desc:{hu:"A tejoltó galaj (Galium verum) apró, aranysárga virágai sűrű bugákban nyílnak, illatuk a mézre emlékeztet. Száraz gyepek, rétek és útszéleken gyakori; nevét onnan kapta, hogy régen a tej megaltatására használták sajtgyártásnál.",
+       de:"Das Echte Labkraut (Galium verum) trägt winzige, goldgelbe Blüten in dichten Rispen, die nach Honig duften. Häufig auf trockenen Wiesen und Wegrändern; wurde früher zur Käseherstellung (Milchgerinnung) verwendet.",
+       en:"Lady's Bedstraw (Galium verum) has tiny, golden-yellow flowers in dense panicles with a honey-like fragrance. Common in dry grasslands and roadsides; its name refers to its historical use in curdling milk for cheese-making."}},
 
 {short:"kozonsegesgalaj",sci:"Galium mollugo",
- images:["images/kozonsegesgalaj_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/20140317Galium_mollugo2.jpg/960px-20140317Galium_mollugo2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/20170313Galium_mollugo1.jpg/960px-20170313Galium_mollugo1.jpg"],
- name:{hu:"Közönséges galaj",de:"Weiches Labkraut",en:"False Baby's Breath"},
+ images:["images/kozonsegesgalaj_1.jpg","images/kozonsegesgalaj_2.jpg","images/kozonsegesgalaj_3.jpg"],
+ name:{hu:"Közönséges galaj",de:"Wiesen-Labkraut",en:"Hedge Bedstraw"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
  soil:{hu:"Közepes, friss",de:"Mittelmäßig, frisch",en:"Moderate, fresh"},
@@ -390,8 +379,7 @@ const PLANTS = [
  height:{hu:"40-120 cm",de:"40-120 cm",en:"40-120 cm"}, 
  desc:{hu:"A közönséges galaj (Galium mollugo) fehér, apró csillag alakú virágai buja fürtben nyílnak. Üde réteken és cserjések szélén él; finom szárával más növényekbe kapaszkodik, rengeteg apró rovart tart el.",
        de:"Das Weiche Labkraut (Galium mollugo) zeigt winzige weiße Sternblüten in üppigen Rispen. Auf frischen Wiesen und Gebüschrändern; klettert mit feinen Stängeln und bietet vielen Insekten Nahrung.",
-       en:"False Baby's Breath (Galium mollugo) produces tiny white star-shaped flowers in abundant clusters. Found in fresh meadows and scrub edges; climbs through vegetation and feeds many small insects."},
- link:"http://www.terra.hu/haznov/htm/Galium.mollugo.html"},
+       en:"False Baby's Breath (Galium mollugo) produces tiny white star-shaped flowers in abundant clusters. Found in fresh meadows and scrub edges; climbs through vegetation and feeds many small insects."}},
 
 {short:"erdeigyombergyoker",sci:"Geum urbanum",
  images:["images/erdeigyombergyoker_1.jpg","images/erdeigyombergyoker_2.jpg","images/erdeigyombergyoker_3.jpg"],
@@ -403,11 +391,10 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"Az erdei gyömbérgyökér (Geum urbanum) apró, sárga virágait árnyékos erdőszéleken nyitja. Gyökere szegfűszegre emlékeztető illatú; évelő, robosztus növény, számos kis rovar és madár tápláléka.",
        de:"Die Echte Nelkenwurz (Geum urbanum) öffnet ihre kleinen gelben Blüten an schattigen Waldrändern. Ihre Wurzel duftet nach Nelken; robuste Ausdauerpflanze, die viele kleine Insekten und Vögel ernährt.",
-       en:"Wood Avens (Geum urbanum) opens small yellow flowers at shaded forest margins. Its root smells of cloves; a robust perennial providing food for many small insects and birds."},
- link:"https://mek.oszk.hu/00000/00056/html/266.htm"},
+       en:"Wood Avens (Geum urbanum) opens small yellow flowers at shaded forest margins. Its root smells of cloves; a robust perennial providing food for many small insects and birds."}},
 
 {short:"mezeivarfu",sci:"Knautia arvensis",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/%28MHNT%29_Knautia_arvensis_-_immature_infrutescence_-_Villeneuve-l%C3%A8s-Bouloc.jpg/960px-%28MHNT%29_Knautia_arvensis_-_immature_infrutescence_-_Villeneuve-l%C3%A8s-Bouloc.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/%28MHNT%29_Valgus_hemipterus_on_Knautia_arvensis_-_Villeneuve-les-Bouloc_France.jpg/960px-%28MHNT%29_Valgus_hemipterus_on_Knautia_arvensis_-_Villeneuve-les-Bouloc_France.jpg","images/mezeivarfu_3.jpg"],
+ images:["images/mezeivarfu_1.jpg","images/mezeivarfu_2.jpg","images/mezeivarfu_3.jpg"],
  name:{hu:"Mezei varfű",de:"Acker-Witwenblume",en:"Field Scabious"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Szeptember",de:"Juni – September",en:"June – September"},
@@ -416,11 +403,10 @@ const PLANTS = [
  height:{hu:"40-100 cm",de:"40-100 cm",en:"40-100 cm"}, 
  desc:{hu:"A mezei varfű (Knautia arvensis) lila, lapított gömb alakú virágfejei a nyári rétek egyik legelőbbvaló tájképi eleme. Kiemelkedő beporzó növény; méhek, poszméhek és nappali lepkék tömegesen látogatják.",
        de:"Die Acker-Witwenblume (Knautia arvensis) mit lilafarbenen Köpfen ist ein prägendes Element der Sommerwiesen. Hervorragende Bestäuberpflanze; von Bienen, Hummeln und Tagfaltern massenhaft besucht.",
-       en:"Field Scabious (Knautia arvensis) with purple domed flower heads is a defining feature of summer meadows. An outstanding pollinator plant attracting masses of bees, bumblebees and butterflies."},
- link:"http://www.terra.hu/haznov/htm/Knautia.arvensis.html"},
+       en:"Field Scabious (Knautia arvensis) with purple domed flower heads is a defining feature of summer meadows. An outstanding pollinator plant attracting masses of bees, bumblebees and butterflies."}},
 
 {short:"oszioroszlanfog",sci:"Scorzoneroides autumnalis",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/20150813Scorzoneroides_autumnalis1.jpg/960px-20150813Scorzoneroides_autumnalis1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/20150813Scorzoneroides_autumnalis2.jpg/960px-20150813Scorzoneroides_autumnalis2.jpg","images/oszioroszlanfog_3.jpg"],
+ images:["images/oszioroszlanfog_1.jpg","images/oszioroszlanfog_2.jpg","images/oszioroszlanfog_3.jpg"],
  name:{hu:"Őszi oroszlánfog",de:"Herbst-Löwenzahn",en:"Autumn Hawkbit"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Október",de:"Juni – Oktober",en:"June – October"},
@@ -429,8 +415,7 @@ const PLANTS = [
  height:{hu:"10-40 cm",de:"10-40 cm",en:"10-40 cm"}, 
  desc:{hu:"Az őszi oroszlánfog (Scorzoneroides autumnalis) pitypanghoz hasonló sárga virágokat nyit, de egészen őszig virágzik. Kaszálókon és gyepekben közönséges; a méhészek számára az egyik legfontosabb őszi nektárforrás.",
        de:"Der Herbst-Löwenzahn (Scorzoneroides autumnalis) öffnet löwenzahnähnliche gelbe Blüten, blüht aber bis weit in den Herbst. Auf Mähwiesen verbreitet; eine der wichtigsten Nektarquellen im Spätherbst für Bienen.",
-       en:"Autumn Hawkbit (Scorzoneroides autumnalis) opens dandelion-like yellow flowers but blooms well into autumn. Common on hay meadows; one of the most important late-season nectar sources for bees."},
- link:"http://www.terra.hu/haznov/htm/Leontodon.autumnalis.html"},
+       en:"Autumn Hawkbit (Scorzoneroides autumnalis) opens dandelion-like yellow flowers but blooms well into autumn. Common on hay meadows; one of the most important late-season nectar sources for bees."}},
 
 {short:"erdesoroszlanfog",sci:"Leontodon hispidus",
  images:["images/erdesoroszlanfog_1.jpg","images/erdesoroszlanfog_2.jpg","images/erdesoroszlanfog_3.jpg"],
@@ -442,11 +427,10 @@ const PLANTS = [
  height:{hu:"15-50 cm",de:"15-50 cm",en:"15-50 cm"}, 
  desc:{hu:"Az érdes oroszlánfog (Leontodon hispidus) szára és levele sűrűn szőrös, virágjai élénksárgák. Száraz, meszes gyepek jellemző fajai közé tartozik; apró bogarak és méhek fontos pollenforrása.",
        de:"Der Rauhe Löwenzahn (Leontodon hispidus) hat dicht behaarte Stängel und Blätter mit leuchtend gelben Blüten. Typische Art trockener Kalkrasen; wichtige Pollenquelle für Käfer und Bienen.",
-       en:"Rough Hawkbit (Leontodon hispidus) has densely hairy stems and leaves with bright yellow flowers. Typical of dry calcareous grasslands; an important pollen source for small beetles and bees."},
- link:"http://www.terra.hu/haznov/htm/Leontodon.hispidus.html"},
+       en:"Rough Hawkbit (Leontodon hispidus) has densely hairy stems and leaves with bright yellow flowers. Typical of dry calcareous grasslands; an important pollen source for small beetles and bees."}},
 
 {short:"retimargitvirag",sci:"Leucanthemum vulgare",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/20210612_Leucanthemum_vulgare.jpg/960px-20210612_Leucanthemum_vulgare.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/20220519_Leucanthemum_vulgare.jpg/960px-20220519_Leucanthemum_vulgare.jpg","images/retimargitvirag_3.jpg"],
+ images:["images/retimargitvirag_1.jpg","images/retimargitvirag_2.jpg","images/retimargitvirag_3.jpg"],
  name:{hu:"Réti margitvirág",de:"Gewöhnliche Margerite",en:"Ox-eye Daisy"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Szeptember",de:"Mai – September",en:"May – September"},
@@ -455,10 +439,9 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"A réti margitvirág (Leucanthemum vulgare) a klasszikus fehér szirmú, sárga tányérú vadvirág. Évelő, napos kaszálóréteken tenyészik; tömegesen vonzza a nappali pillangókat és bogarakat.",
        de:"Die Gewöhnliche Margerite (Leucanthemum vulgare) ist die klassische weißblütige, gelbscheibige Wildblume. Ausdauernd auf sonnigen Mähwiesen; zieht massenhaft Tagfalter und Käfer an.",
-       en:"Ox-eye Daisy (Leucanthemum vulgare) is the classic white-petalled, yellow-centred wildflower. A perennial of sunny hay meadows; attracts large numbers of butterflies and beetles."},
- link:"http://www.terra.hu/haznov/htm/Leucanthemum.vulgare.html"},
+       en:"Ox-eye Daisy (Leucanthemum vulgare) is the classic white-petalled, yellow-centred wildflower. A perennial of sunny hay meadows; attracts large numbers of butterflies and beetles."}},
 {short:"mocsarimargitvirag",sci:"Leucanthemum paludosum",
- images:["images/mocsarimargitvirag_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Leucanthemum_paludosum_May_2008.jpg/960px-Leucanthemum_paludosum_May_2008.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Leucanthemum_paludosum_May_2008_original.jpg/960px-Leucanthemum_paludosum_May_2008_original.jpg"],
+ images:["images/mocsarimargitvirag_1.jpg","images/mocsarimargitvirag_2.jpg","images/mocsarimargitvirag_3.jpg"],
  name:{hu:"Mocsári margitvirág",de:"Sumpf-Margerite",en:"Marsh Daisy"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
@@ -467,11 +450,10 @@ const PLANTS = [
  height:{hu:"15-30 cm",de:"15-30 cm",en:"15-30 cm"}, 
  desc:{hu:"A mocsári margitvirág (Leucanthemum paludosum) a nedvesebb, mocsaras élőhelyek dekoratív, fehér virágú növénye. Kifejezetten vízigényes faj, kerti tavak partján és mocsárréteken érzi jól magát.",
        de:"Die Sumpf-Margerite (Leucanthemum paludosum) ist eine dekorative, weißblütige Pflanze feuchter bis sumpfiger Lebensräume. Sehr wasserbedürftig, gedeiht an Gartenteichen und auf Sumpfwiesen.",
-       en:"Marsh Daisy (Leucanthemum paludosum) is a decorative white-flowered plant of moist to boggy habitats. Highly water-demanding, thrives by garden ponds and in marshy meadows."},
- link:"https://www.tuja.hu/viragok/margitvirag.html"},
+       en:"Marsh Daisy (Leucanthemum paludosum) is a decorative white-flowered plant of moist to boggy habitats. Highly water-demanding, thrives by garden ponds and in marshy meadows."}},
 
 {short:"pezsmamalyva",sci:"Malva moschata",
- images:["images/pezsmamalyva_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Malva_moschata_20060708163508wp.jpg/960px-Malva_moschata_20060708163508wp.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Malva_moschata_Mitterbach_01.jpg/960px-Malva_moschata_Mitterbach_01.jpg"],
+ images:["images/pezsmamalyva_1.jpg","images/pezsmamalyva_2.jpg","images/pezsmamalyva_3.jpg"],
  name:{hu:"Pézsmamályva",de:"Moschus-Malve",en:"Musk Mallow"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Június – Szeptember",de:"Juni – September",en:"June – September"},
@@ -480,8 +462,7 @@ const PLANTS = [
  height:{hu:"40-80 cm",de:"40-80 cm",en:"40-80 cm"}, 
  desc:{hu:"A pézsmamályva (Malva moschata) halványrózsaszín, nagyméretű, finoman rojtos virágaival díszít. Levelei dörzsölésre kellemes pézsmaillatot árasztanak; szárazabb és nyirkosabb réteken egyaránt megél.",
        de:"Die Moschus-Malve (Malva moschata) ziert mit zartrosa, großen, fein gefransten Blüten. Ihre Blätter verströmen bei Reibung einen feinen Moschusduft; gedeiht auf trockenen wie feuchten Wiesen.",
-       en:"Musk Mallow (Malva moschata) adorns with large, pale-pink, delicately fringed flowers. Its leaves emit a pleasant musky scent when brushed; grows well in both dry and moist meadows."},
- link:"http://www.terra.hu/haznov/htm/Malva.moschata.html"},
+       en:"Musk Mallow (Malva moschata) adorns with large, pale-pink, delicately fringed flowers. Its leaves emit a pleasant musky scent when brushed; grows well in both dry and moist meadows."}},
 
 {short:"vadpasztinak",sci:"Pastinaca sativa",
  images:["images/vadpasztinak_1.jpg","images/vadpasztinak_2.jpg","images/vadpasztinak_3.jpg"],
@@ -493,8 +474,7 @@ const PLANTS = [
  height:{hu:"50-120 cm",de:"50-120 cm",en:"50-120 cm"}, 
  desc:{hu:"A vadpasztinák (Pastinaca sativa) sárgás zöld ernyős virágzattal rendelkező vastag, ehető gyökerű növény. Bár a házi pasztinák őse, levelei napfény hatására bőrkiütést okozhatnak; rovarok kedvelt tápláléka.",
        de:"Der Wild-Pastinak (Pastinaca sativa) besitzt gelblich-grüne Dolden und fleischige, essbare Wurzeln. Urform des Garten-Pastinaks; Pflanzensaft kann bei Sonneneinwirkung Hautreizungen auslösen; Insektenweide.",
-       en:"Wild Parsnip (Pastinaca sativa) features yellowish-green umbels and a thick edible root. Ancestor of the cultivated parsnip; its sap can cause skin irritation in sunlight; highly favoured by insects."},
- link:"http://www.terra.hu/haznov/htm/Pastinaca.sativa.html"},
+       en:"Wild Parsnip (Pastinaca sativa) features yellowish-green umbels and a thick edible root. Ancestor of the cultivated parsnip; its sap can cause skin irritation in sunlight; highly favoured by insects."}},
 
 {short:"hasznosfolditomjen",sci:"Pimpinella saxifraga",
  images:["images/hasznosfolditomjen_1.jpg","images/hasznosfolditomjen_2.jpg","images/hasznosfolditomjen_3.jpg"],
@@ -506,11 +486,10 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"A hasznos földitömjén (Pimpinella saxifraga) fehér, dús ernyős virágzata a száraz, sziklás gyepek jellemzője. Gyökerének aromás illata és gyógyhatása miatt régóta a népigyógyászat része.",
        de:"Die Kleine Bibernelle (Pimpinella saxifraga) trägt weiße, dichte Dolden und ist typisch für trockenefelsige Hänge. Ihre Wurzel wird wegen ihres Aromas und der Heilwirkung traditionell genutzt.",
-       en:"Burnet Saxifrage (Pimpinella saxifraga) bears dense white umbels typical of dry rocky grasslands. Its root belongs to traditional medicine due to its aromatic scent and healing properties."},
- link:"https://termeszetvedelem.hu/talalati-oldal/?veg_id=1418"},
+       en:"Burnet Saxifrage (Pimpinella saxifraga) bears dense white umbels typical of dry rocky grasslands. Its root belongs to traditional medicine due to its aromatic scent and healing properties."}},
 
 {short:"retiutifu",sci:"Plantago lanceolata",
- images:["images/retiutifu_1.jpg","images/retiutifu_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Plantago_lanceolata_-_Kulna.jpg/960px-Plantago_lanceolata_-_Kulna.jpg"],
+ images:["images/retiutifu_1.jpg","images/retiutifu_2.jpg","images/retiutifu_3.jpg"],
  name:{hu:"Réti útifű",de:"Spitzwegerich",en:"Ribwort Plantain"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Szeptember",de:"Mai – September",en:"May – September"},
@@ -519,11 +498,10 @@ const PLANTS = [
  height:{hu:"10-50 cm",de:"10-50 cm",en:"10-50 cm"}, 
  desc:{hu:"A réti útifű (Plantago lanceolata) hosszúkás, lándzsás levelű, közismert gyógynövény. Leveleinek kivonata köhögéscsillapító és sebgyógyító; rétjeink és útmentéink egyik leggyakoribb, elpusztíthatatlan faja.",
        de:"Der Spitzwegerich (Plantago lanceolata) ist eine sehr bekannte Heilpflanze mit schmalen, lanzettlichen Blättern. Blattextrakte wirken reizlindernd und hustenstillend; fast unverwüstlich an jedem Wegrand.",
-       en:"Ribwort Plantain (Plantago lanceolata) is a well-known medicinal plant with long lanceolate leaves. Its extracts are used to soothe coughs and heal wounds; an almost indestructible common species alongpaths and meadows."},
- link:"https://mek.oszk.hu/00000/00056/html/285.htm"},
+       en:"Ribwort Plantain (Plantago lanceolata) is a well-known medicinal plant with long lanceolate leaves. Its extracts are used to soothe coughs and heal wounds; an almost indestructible common species alongpaths and meadows."}},
 
 {short:"nagyviragugyikfu",sci:"Prunella grandiflora",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Atlas_roslin_pl_G%C5%82owienka_wielkokwiatowa_754_7676.jpg/960px-Atlas_roslin_pl_G%C5%82owienka_wielkokwiatowa_754_7676.jpg","images/nagyviragugyikfu_2.jpg","images/nagyviragugyikfu_3.jpg"],
+ images:["images/nagyviragugyikfu_1.jpg","images/nagyviragugyikfu_2.jpg","images/nagyviragugyikfu_3.jpg"],
  name:{hu:"Nagyvirágú gyíkfű",de:"Großblütige Braunelle",en:"Large-flowered Selfheal"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Július – Augusztus",de:"Juli – August",en:"July – August"},
@@ -532,8 +510,7 @@ const PLANTS = [
  height:{hu:"10-30 cm",de:"10-30 cm",en:"10-30 cm"}, 
  desc:{hu:"A nagyvirágú gyíkfű (Prunella grandiflora) dús, lila ajakos virágai nagyméretű fejecskéket alkotnak. Száraz, meszes gyepeken alacsony szőnyeget képez; kertészeti szempontból is az egyik legdekoratívabb honos fajunk.",
        de:"Die Großblütige Braunelle (Prunella grandiflora) formt große Köpfchen aus dichten violetten Lippenblüten. Bildet niedrige Teppiche auf Kalktrockenrasen; ein äußerst dekorativer einheimischer Bodendecker.",
-       en:"Large-flowered Selfheal (Prunella grandiflora) forms large heads of dense purple lipped flowers. Creates low mats on dry calcareous grasslands; one of our most decorative native species for gardening."},
- link:"http://www.terra.hu/haznov/htm/Prunella.grandiflora.html"},
+       en:"Large-flowered Selfheal (Prunella grandiflora) forms large heads of dense purple lipped flowers. Creates low mats on dry calcareous grasslands; one of our most decorative native species for gardening."}},
 
 {short:"kozonsegesgyikfu",sci:"Prunella vulgaris",
  images:["images/kozonsegesgyikfu_1.jpg","images/kozonsegesgyikfu_2.jpg","images/kozonsegesgyikfu_3.jpg"],
@@ -545,11 +522,10 @@ const PLANTS = [
  height:{hu:"5-20 cm",de:"5-20 cm",en:"5-20 cm"}, 
  desc:{hu:"A közönséges gyíkfű (Prunella vulgaris) kisebb méretű, kék-lila virágzataival réteken, kertekben, erdei utakon mindenhol előfordul. Jól bírja a taposást és fűnyírást is; nektárforrás poszméhek számára.",
        de:"Die Kleine Braunelle (Prunella vulgaris) kommt mit kleineren blau-violetten Blütenständen überall auf Wiesen und Wegen vor. Sehr trittfest und schnittverträglich; Nektarquelle für Hummeln.",
-       en:"Common Selfheal (Prunella vulgaris) is pervasive on meadows and paths with its smaller blue-purple flower heads. Tolerates trampling and mowing very well; serves as a nectar source for bumblebees."},
- link:"http://www.terra.hu/haznov/htm/Prunella.vulgaris.html"},
+       en:"Common Selfheal (Prunella vulgaris) is pervasive on meadows and paths with its smaller blue-purple flower heads. Tolerates trampling and mowing very well; serves as a nectar source for bumblebees."}},
 
 {short:"mezeizsalya",sci:"Salvia pratensis",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Gallocresta_%28Salvia_pratensis%29%2C_Hartelholz%2C_M%C3%BAnich%2C_Alemania%2C_2020-06-20%2C_DD_38-61_FS.jpg/960px-Gallocresta_%28Salvia_pratensis%29%2C_Hartelholz%2C_M%C3%BAnich%2C_Alemania%2C_2020-06-20%2C_DD_38-61_FS.jpg","images/mezeizsalya_2.jpg","images/mezeizsalya_3.jpg"],
+ images:["images/mezeizsalya_1.jpg","images/mezeizsalya_2.jpg","images/mezeizsalya_3.jpg"],
  name:{hu:"Mezei zsálya",de:"Wiesen-Salbei",en:"Meadow Clary"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Augusztus",de:"Mai – August",en:"May – August"},
@@ -558,11 +534,10 @@ const PLANTS = [
  height:{hu:"40-80 cm",de:"40-80 cm",en:"40-80 cm"}, 
  desc:{hu:"A mezei zsálya (Salvia pratensis) mélykék, olykor violaszínű ajakos virágai a nyár eleji rétek fénypontjai. Száraz lejtők, lösztalajok lakója; különleges billenőmechanizmusa rákényszeríti a méheket a beporzásra.",
        de:"Der Wiesen-Salbei (Salvia pratensis) ziert frühsommerliche Wiesen mit tiefblauen, teils violetten Blütenständen. Auf trockenen Lössböden zuhause; sein spezieller Hebelmechanismus garantiert die Bestäubung durch Bienen.",
-       en:"Meadow Clary (Salvia pratensis) is a highlight of early summer meadows with deep blue or violet flowers. Inhabits dry slopes and loess soils; its unique lever mechanism forces bees to pollinate it."},
- link:"http://www.terra.hu/haznov/htm/Salvia.pratensis.html"},
+       en:"Meadow Clary (Salvia pratensis) is a highlight of early summer meadows with deep blue or violet flowers. Inhabits dry slopes and loess soils; its unique lever mechanism forces bees to pollinate it."}},
 
 {short:"csabaireverfu",sci:"Sanguisorba minor",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Illustration_Sanguisorba_minor0.jpg/960px-Illustration_Sanguisorba_minor0.jpg","images/csabaireverfu_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Sanguisorba_minor_kz15.jpg/960px-Sanguisorba_minor_kz15.jpg"],
+ images:["images/csabaireverfu_1.jpg","images/csabaireverfu_2.jpg","images/csabaireverfu_3.jpg"],
  name:{hu:"Csabaíre vérfű",de:"Kleiner Wiesenknopf",en:"Salad Burnet"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Augusztus",de:"Mai – August",en:"May – August"},
@@ -571,11 +546,10 @@ const PLANTS = [
  height:{hu:"20-60 cm",de:"20-60 cm",en:"20-60 cm"}, 
  desc:{hu:"A csabaíre vérfű (Sanguisorba minor) zöldes-bíborvörös, gömbölyded fejecskékben nyílik. Levelei dörzsölésre uborkaillatúak, zsenge korukban finom salátaízesítők; száraz gyepek igénytelen növénye.",
        de:"Der Kleine Wiesenknopf (Sanguisorba minor) blüht in grünlich-purpurroten kugeligen Köpfchen. Seine Blätter duften nach Gurke und werten als Salatbeigabe Gerichte auf; anspruchslose Pflanze auf Trockenrasen.",
-       en:"Salad Burnet (Sanguisorba minor) blooms in greenish-crimson rounded heads. Its crushed leaves smell of cucumber and make an excellent salad garnish; an undemanding plant of dry grasslands."},
- link:"http://www.terra.hu/haznov/htm/Sanguisorba.minor.html"},
+       en:"Salad Burnet (Sanguisorba minor) blooms in greenish-crimson rounded heads. Its crushed leaves smell of cucumber and make an excellent salad garnish; an undemanding plant of dry grasslands."}},
 
 {short:"galambszinuordogszem",sci:"Scabiosa columbaria",
- images:["images/galambszinuordogszem_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Scabiosa_columbaria_%27Pink_Mist%27%2C_duifkruid_01.JPG/960px-Scabiosa_columbaria_%27Pink_Mist%27%2C_duifkruid_01.JPG","https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Scabiosa_columbaria_%27Pink_Mist%27%2C_duifkruid_02.JPG/960px-Scabiosa_columbaria_%27Pink_Mist%27%2C_duifkruid_02.JPG"],
+ images:["images/galambszinuordogszem_1.jpg","images/galambszinuordogszem_2.jpg","images/galambszinuordogszem_3.jpg"],
  name:{hu:"Galambszínű ördögszem",de:"Tauben-Skabiose",en:"Small Scabious"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Július – Október",de:"Juli – Oktober",en:"July – October"},
@@ -584,8 +558,7 @@ const PLANTS = [
  height:{hu:"30-80 cm",de:"30-80 cm",en:"30-80 cm"}, 
  desc:{hu:"A galambszínű ördögszem (Scabiosa columbaria) halványlila, galambkék árnyalatú lapított virágfejeivel díszít. Nyárutón és kora ősszel virágzik száraz, meszes domboldalakon; lepkék előszeretettel látogatják.",
        de:"Die Tauben-Skabiose (Scabiosa columbaria) blüht mit blasslila bis taubenblauen, abgeflachten Köpfchen. Blüht im Spätsommer auf trockenen Kalkhügellandschaften; wird sehr gerne von Faltern besucht.",
-       en:"Small Scabious (Scabiosa columbaria) boasts pale violet to pigeon-blue flattened flower heads. Blooms in late summer on dry calcareous hillsides; highly attractive to butterflies."},
- link:"http://www.terra.hu/haznov/htm/Scabiosa.columbaria.html"},
+       en:"Small Scabious (Scabiosa columbaria) boasts pale violet to pigeon-blue flattened flower heads. Blooms in late summer on dry calcareous hillsides; highly attractive to butterflies."}},
 
 {short:"sargaordogszem",sci:"Scabiosa ochroleuca",
  images:["images/sargaordogszem_1.jpg","images/sargaordogszem_2.jpg","images/sargaordogszem_3.jpg"],
@@ -597,11 +570,10 @@ const PLANTS = [
  height:{hu:"30-80 cm",de:"30-80 cm",en:"30-80 cm"}, 
  desc:{hu:"A sárga ördögszem (Scabiosa ochroleuca) krémsárga, gömbölyded virágzata a száraz pusztai és löszgyepek jellegzetes színfoltja. Szálkás formája a legrekkenőbb hőségben is kitart; értékes rovarcsalogató tápnövény.",
        de:"Die Gelbe Skabiose (Scabiosa ochroleuca) ist mit ihren cremegelben Köpfchen typisch für trockene Steppen- und Lössrasen. Erträgt extreme Hitze problemlos; lockt als wertvolle Nährpflanze zahlreiche Insekten an.",
-       en:"Yellow Scabious (Scabiosa ochroleuca) with its cream-yellow globose heads is characteristic of dry steppe and loess grasslands. Endures intense heat effortlessly; a valuable plant for attracting insects."},
- link:"http://www.terra.hu/haznov/htm/Scabiosa.ochroleuca.html"},
+       en:"Yellow Scabious (Scabiosa ochroleuca) with its cream-yellow globose heads is characteristic of dry steppe and loess grasslands. Endures intense heat effortlessly; a valuable plant for attracting insects."}},
 
 {short:"pirosmecsvirag",sci:"Silene dioica",
- images:["images/pirosmecsvirag_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Dagkoekoeksbloem%2C_10-07-2025._%28d.j.b.%29_01.jpg/960px-Dagkoekoeksbloem%2C_10-07-2025._%28d.j.b.%29_01.jpg","images/pirosmecsvirag_3.jpg"],
+ images:["images/pirosmecsvirag_1.jpg","images/pirosmecsvirag_2.jpg","images/pirosmecsvirag_3.jpg"],
  name:{hu:"Piros mécsvirág",de:"Rote Lichtnelke",en:"Red Campion"},
  lifespan:{hu:"Két- vagy többnyári",de:"Zweijährig bis ausdauernd",en:"Biennial to perennial"},
  bloom:{hu:"Május – Október",de:"Mai – Oktober",en:"May – October"},
@@ -610,11 +582,10 @@ const PLANTS = [
  height:{hu:"40-80 cm",de:"40-80 cm",en:"40-80 cm"}, 
  desc:{hu:"A piros mécsvirág (Silene dioica) nyirkos rétek és ligeterdők élénk sötétrózsaszín vadvirága. Nevével ellentétben nem tiszta piros; a tavasztól őszig nyíló virágok poszméheket és pillangókat szolgálnak ki bőségesen.",
        de:"Die Rote Lichtnelke (Silene dioica) ist eine leuchtend dunkelrosa Wildblume frischer Wiesen und Auwälder. Blüht unermüdlich von Frühling bis Herbst und wird emsig von Hummeln und Tagfaltern angeflogen.",
-       en:"Red Campion (Silene dioica) is a bright deep-pink wildflower of moist meadows and damp woodlands. Blooming tirelessly from spring to autumn, it generously supports bumblebees and butterflies."},
- link:"http://www.terra.hu/haznov/htm/Silene.dioica.html"},
+       en:"Red Campion (Silene dioica) is a bright deep-pink wildflower of moist meadows and damp woodlands. Blooming tirelessly from spring to autumn, it generously supports bumblebees and butterflies."}},
 
 {short:"kakukkszegfu",sci:"Silene flos-cuculi",
- images:["images/kakukkszegfu_1.jpg","images/kakukkszegfu_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Lychnis_flos-cuculi_2.jpg/960px-Lychnis_flos-cuculi_2.jpg"],
+ images:["images/kakukkszegfu_1.jpg","images/kakukkszegfu_2.jpg","images/kakukkszegfu_3.jpg"],
  name:{hu:"Kakukkszegfű",de:"Kuckucks-Lichtnelke",en:"Ragged-Robin"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Július",de:"Mai – Juli",en:"May – July"},
@@ -623,11 +594,10 @@ const PLANTS = [
  height:{hu:"30-80 cm",de:"30-80 cm",en:"30-80 cm"}, 
  desc:{hu:"A kakukkszegfű (Silene flos-cuculi) nevét a kakukkszó idején nyíló, mélyen hasogatott, szinte rongyosnak tűnő rózsaszín szirmairól kapta. Láprétek és nedves kaszálók elengedhetetlen kísérője.",
        de:"Die Kuckucks-Lichtnelke (Silene flos-cuculi) fällt durch ihre tief geschlitzten, fast zerrissen wirkenden rosaroten Kronblätter auf, die blühen, wenn der Kuckuck ruft. Ein Muss für Feuchtwiesen.",
-       en:"Ragged-Robin (Silene flos-cuculi) is named for its deeply lobed, almost ragged-looking pink petals that appear when the cuckoo calls. An essential companion of fens and damp hay meadows."},
- link:"http://www.terra.hu/haznov/htm/Silene.flos-cuculi.html"},
+       en:"Ragged-Robin (Silene flos-cuculi) is named for its deeply lobed, almost ragged-looking pink petals that appear when the cuckoo calls. An essential companion of fens and damp hay meadows."}},
 
 {short:"holyagoshabszegfu",sci:"Silene vulgaris",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Silene_vulgaris_147320221.jpg/960px-Silene_vulgaris_147320221.jpg","images/holyagoshabszegfu_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Silene_vulgaris_212570116.jpg/960px-Silene_vulgaris_212570116.jpg"],
+ images:["images/holyagoshabszegfu_1.jpg","images/holyagoshabszegfu_2.jpg","images/holyagoshabszegfu_3.jpg"],
  name:{hu:"Hólyagos habszegfű",de:"Taubenkropf-Leimkraut",en:"Bladder Campion"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Szeptember",de:"Mai – September",en:"May – September"},
@@ -636,11 +606,10 @@ const PLANTS = [
  height:{hu:"30-60 cm",de:"30-60 cm",en:"30-60 cm"}, 
  desc:{hu:"A hólyagos habszegfű (Silene vulgaris) különös ismertetőjegye a szirmok alatt felfúvódott, hólyagszerű csésze, mely fehér virágokat ölel. Száraz gyepekben nő; éjszaka fokozottabban illatozva vonzza az éjjeli lepkéket.",
        de:"Das Taubenkropf-Leimkraut (Silene vulgaris) ist erkennbar am aufgeblasenen, blasenartigen Kelch unter den weißen Blüten. Wächst in Trockenrasen; duftet nachts intensiver, um Nachtfalter anzulocken.",
-       en:"Bladder Campion (Silene vulgaris) is distinguished by the inflated, bladder-like calyx clasping its white flowers. Grows in dry grasslands; emits a stronger scent at night to attract moths."},
- link:"http://www.terra.hu/haznov/htm/Silene.vulgaris.html"},
+       en:"Bladder Campion (Silene vulgaris) is distinguished by the inflated, bladder-like calyx clasping its white flowers. Grows in dry grasslands; emits a stronger scent at night to attract moths."}},
 
 {short:"pazsitocsillaghur",sci:"Stellaria graminea",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/-Stellaria_graminea_2_20230705-A7201924.JPG-_%2853024014376%29.jpg/960px--Stellaria_graminea_2_20230705-A7201924.JPG-_%2853024014376%29.jpg","images/pazsitocsillaghur_2.jpg","images/pazsitocsillaghur_3.jpg"],
+ images:["images/pazsitocsillaghur_1.jpg","images/pazsitocsillaghur_2.jpg","images/pazsitocsillaghur_3.jpg"],
  name:{hu:"Pázsitos csillaghúr",de:"Gras-Sternmiere",en:"Lesser Stitchwort"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Május – Augusztus",de:"Mai – August",en:"May – August"},
@@ -649,11 +618,10 @@ const PLANTS = [
  height:{hu:"20-50 cm",de:"20-50 cm",en:"20-50 cm"}, 
  desc:{hu:"A pázsitos csillaghúr (Stellaria graminea) hajszálvékony száraival és apró, fehér csillag alakú virágaival szinte beleolvad a fűfélék közé. Üde vagy közepesen nedves réteken terjedelmes aljnövényzetet képez.",
        de:"Die Gras-Sternmiere (Stellaria graminea) schmiegt sich mit hauchdünnen Stängeln und kleinen weißen Sternblüten an Gräser an. Bildet auf frischen oder nur leicht feuchten Wiesen ein ausgedehntes Unterholz.",
-       en:"Lesser Stitchwort (Stellaria graminea) with its capillary stems and tiny white star flowers almost blends in among the grasses. Forms expansive undergrowth in fresh or moderately moist meadows."},
- link:"http://www.terra.hu/haznov/htm/Stellaria.graminea.html"},
+       en:"Lesser Stitchwort (Stellaria graminea) with its capillary stems and tiny white star flowers almost blends in among the grasses. Forms expansive undergrowth in fresh or moderately moist meadows."}},
 
 {short:"retibakszakall",sci:"Tragopogon pratensis",
- images:["images/retibakszakall_1.jpg","images/retibakszakall_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/2019-06-07_%28105%29_Tragopogon_pratensis_%28Jack-go-to-bed-at-noon%29_with_insects_at_Bichlh%C3%A4usl%2C_Frankenfels%2C_Austria.jpg/960px-2019-06-07_%28105%29_Tragopogon_pratensis_%28Jack-go-to-bed-at-noon%29_with_insects_at_Bichlh%C3%A4usl%2C_Frankenfels%2C_Austria.jpg"],
+ images:["images/retibakszakall_1.jpg","images/retibakszakall_2.jpg","images/retibakszakall_3.jpg"],
  name:{hu:"Réti bakszakáll",de:"Wiesen-Bocksbart",en:"Meadow Goat's-beard"},
  lifespan:{hu:"Kétnyári",de:"Zweijährig",en:"Biennial"},
  bloom:{hu:"Május – Július",de:"Mai – Juli",en:"May – July"},
@@ -662,11 +630,10 @@ const PLANTS = [
  height:{hu:"30-70 cm",de:"30-70 cm",en:"30-70 cm"}, 
  desc:{hu:"A réti bakszakáll (Tragopogon pratensis) sárga fészkes virágát dél körül szorosan becsukja (angol társneve: Jack-go-to-bed-at-noon). Terméses állapotában bóbitás magjai jellegzetes bakszakáll-szerű formát öltenek.",
        de:"Der Wiesen-Bocksbart (Tragopogon pratensis) schließt seine gelben Blüten oft schon am Mittag. Im fruchtenden Zustand bilden die großen, gefiederten Pappus-Schirme den charakteristischen 'Bocksbart'.",
-       en:"Meadow Goat's-beard (Tragopogon pratensis) often closes its yellow flowers around noon (hence 'Jack-go-to-bed-at-noon'). In seed, its large feathery pappus forms a characteristic 'goat's beard' shape."},
- link:"http://www.terra.hu/haznov/htm/Tragopogon.pratensis.html"},
+       en:"Meadow Goat's-beard (Tragopogon pratensis) often closes its yellow flowers around noon (hence 'Jack-go-to-bed-at-noon'). In seed, its large feathery pappus forms a characteristic 'goat's beard' shape."}},
 
 {short:"tarlohere",sci:"Trifolium arvense",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Trifolium_arvense_-_kassiristik_Keilas.jpg/960px-Trifolium_arvense_-_kassiristik_Keilas.jpg","images/tarlohere_2.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Trifolium_arvense_145836974.jpg/960px-Trifolium_arvense_145836974.jpg"],
+ images:["images/tarlohere_1.jpg","images/tarlohere_2.jpg","images/tarlohere_3.jpg"],
  name:{hu:"Tarlóhere",de:"Hasen-Klee",en:"Hare's-foot Clover"},
  lifespan:{hu:"Egynyári",de:"Einjährig",en:"Annual"},
  bloom:{hu:"Június – Szeptember",de:"Juni – September",en:"June – September"},
@@ -675,11 +642,10 @@ const PLANTS = [
  height:{hu:"10-30 cm",de:"10-30 cm",en:"10-30 cm"}, 
  desc:{hu:"A tarlóhere (Trifolium arvense) selymes, bolyhos füzérvirágzata nyúllábra hasonlít. Száraz, homokos és tápanyagszegény termőhelyeken egyaránt pionír faj; virágzata megszárítva szárazvirág csokrokban is jól mutat.",
        de:"Der Hasen-Klee (Trifolium arvense) besitzt seidig behaarte, längliche Blütenköpfe, die an Hasenpfoten erinnern. Pionierpflanze auf trockenen Sand- und Magerböden; eignet sich getrocknet auch gut für Sträuße.",
-       en:"Hare's-foot Clover (Trifolium arvense) bears silky, fluffy flower heads resembling a hare's foot. A pioneer species on dry sandy and poor soils; its dried inflorescence looks great in dry arrangements."},
- link:"http://www.terra.hu/haznov/htm/Trifolium.arvense.html"},
+       en:"Hare's-foot Clover (Trifolium arvense) bears silky, fluffy flower heads resembling a hare's foot. A pioneer species on dry sandy and poor soils; its dried inflorescence looks great in dry arrangements."}},
 
 {short:"aproviraguokorfarkkoro",sci:"Verbascum thapsus",
- images:["https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/00_2263_Kleinbl%C3%BCtige_K%C3%B6nigskerze_%28Verbascum_thapsus%29.jpg/960px-00_2263_Kleinbl%C3%BCtige_K%C3%B6nigskerze_%28Verbascum_thapsus%29.jpg","images/aproviraguokorfarkkoro_2.jpg","images/aproviraguokorfarkkoro_3.jpg"],
+ images:["images/aproviraguokorfarkkoro_1.jpg","images/aproviraguokorfarkkoro_2.jpg","images/aproviraguokorfarkkoro_3.jpg"],
  name:{hu:"Apróvirágú ökörfarkkóró",de:"Kleinblütige Königskerze",en:"Great Mullein"},
  lifespan:{hu:"Kétnyári",de:"Zweijährig",en:"Biennial"},
  bloom:{hu:"Június – Augusztus",de:"Juni – August",en:"June – August"},
@@ -688,11 +654,10 @@ const PLANTS = [
  height:{hu:"50-150 cm",de:"50-150 cm",en:"50-150 cm"}, 
  desc:{hu:"Az apróvirágú ökörfarkkóró (Verbascum thapsus) hatalmas, ezüstösen gyapjas tőleveleket fejleszt, melyekből feltörő sárga virágú tornyosuló szára egyedülálló látvány. Légúti panaszokra bevált ősi gyógynövény.",
        de:"Die Kleinblütige Königskerze (Verbascum thapsus) bildet riesige silbrig-wollige Blattrosetten, aus denen sich ein imposanter gelbblühender Stängel erhebt. Altbewährte Heilpflanze, v.a. bei Atemwegsbeschwerden.",
-       en:"Great Mullein (Verbascum thapsus) develops huge silvery-woolly basal leaves from which an impressive yellow-flowered towering stem arises. An ancient and proven medicinal plant for respiratory complaints."},
- link:"http://www.terra.hu/haznov/htm/Verbascum.thapsus.html"},
+       en:"Great Mullein (Verbascum thapsus) develops huge silvery-woolly basal leaves from which an impressive yellow-flowered towering stem arises. An ancient and proven medicinal plant for respiratory complaints."}},
 
 {short:"osztorusveronika",sci:"Veronica chamaedrys",
- images:["images/osztorusveronika_1.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/%28MHNT%29_Veronica_chamaedrys_-_Plant_Habit.jpg/960px-%28MHNT%29_Veronica_chamaedrys_-_Plant_Habit.jpg","https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Veronica_chamaedrys_-_K%C3%BClmamailane.jpg/960px-Veronica_chamaedrys_-_K%C3%BClmamailane.jpg"],
+ images:["images/osztorusveronika_1.jpg","images/osztorusveronika_2.jpg","images/osztorusveronika_3.jpg"],
  name:{hu:"Ösztörűs veronika",de:"Gamander-Ehrenpreis",en:"Germander Speedwell"},
  lifespan:{hu:"Évelő",de:"Ausdauernd",en:"Perennial"},
  bloom:{hu:"Április – Június",de:"April – Juni",en:"April – June"},
@@ -701,8 +666,7 @@ const PLANTS = [
  height:{hu:"10-30 cm",de:"10-30 cm",en:"10-30 cm"}, 
  desc:{hu:"Az ösztörűs veronika (Veronica chamaedrys) ragyogó azúrkék, fehéres közepű virágaival áprilistól hódítja meg a tavaszi gyepeket. Ismertetőjegye a szárán két sorban futó szőrzet – úgynevezett 'angyal-létra'.",
        de:"Der Gamander-Ehrenpreis (Veronica chamaedrys) erobert das Frühlingsgras mit seinen leuchtend azurblauen Blüten mit weißer Mitte. Erkennbar an der behaarten 'Engelsleiter', die in zwei Reihen am Stängel entlangläuft.",
-       en:"Germander Speedwell (Veronica chamaedrys) conquers spring lawns with its brilliant azure-blue flowers with white eyes. Distinguished by the twin lines of hair ('angel's ladder') running down opposite sides of its stem."},
- link:"http://www.terra.hu/haznov/htm/Veronica.chamaedrys.html"}
+       en:"Germander Speedwell (Veronica chamaedrys) conquers spring lawns with its brilliant azure-blue flowers with white eyes. Distinguished by the twin lines of hair ('angel's ladder') running down opposite sides of its stem."}}
 ];
 
 // ── STATE ────────────────────────────────────────────────────────────────────
@@ -736,7 +700,10 @@ function applyLang(l){
   // Re-populate select filters
   function popF(id, field, allTxt){
     const sel = $(id); const val = sel.value;
-    sel.innerHTML = `<option value="">${allTxt}</option>` + getUnique(field).map(v => `<option value="${v}">${v}</option>`).join('');
+    const items = getUnique(field); // Returns [{key, label}]
+    sel.innerHTML = `<option value="">${allTxt}</option>` + 
+                   items.map(v => `<option value="${v.key}">${v.label}</option>`).join('');
+    // Restore selection if it still exists in the new list
     sel.value = [...sel.options].some(o=>o.value===val) ? val : '';
   }
   popF('fl-life', 'lifespan', UI[l].filterLife);
@@ -789,13 +756,33 @@ lb.addEventListener('click', e=>{ if(e.target===lb||e.target===lbImg) closeLb();
 document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLb(); });
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
+const MONTHS = {
+  hu: ["Január","Február","Március","Április","Május","Június","Július","Augusztus","Szeptember","Október","November","December"],
+  de: ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"],
+  en: ["January","February","March","April","May","June","July","August","September","October","November","December"]
+};
+
 function getUnique(field){
-  return [...new Set(PLANTS.map(p => t(p[field])))].filter(x=>x).sort();
+  // Returns unique values using 'hu' as permanent key and current lang as label
+  const seen = new Set();
+  const res = [];
+  PLANTS.forEach(p => {
+    const key = p[field].hu;
+    if(key && !seen.has(key)){
+      seen.add(key);
+      res.push({ key: key, label: t(p[field]) });
+    }
+  });
+  return res.sort((a,b) => a.label.localeCompare(b.label));
 }
 function t(obj){ return obj && (obj[lang]||obj.hu||''); }
 
 function renderAll(resetLimit = true){
-  if(resetLimit) renderLimit = 10;
+  if(resetLimit) {
+    renderLimit = 10;
+    slides = {};
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
   
   const f = $('search').value.toLowerCase();
   const sort = $('sort-sel').value;
@@ -806,10 +793,10 @@ function renderAll(resetLimit = true){
 
   let filtered = PLANTS.filter(p => {
     if(f && !(t(p.name).toLowerCase().includes(f) || (p.sci||'').toLowerCase().includes(f))) return false;
-    if(life && t(p.lifespan) !== life) return false;
-    if(soil && t(p.soil) !== soil) return false;
-    if(drought && t(p.drought) !== drought) return false;
-    if(sun && t(p.sun) !== sun) return false;
+    if(life && p.lifespan.hu !== life) return false;
+    if(soil && p.soil.hu !== soil) return false;
+    if(drought && p.drought.hu !== drought) return false;
+    if(sun && p.sun.hu !== sun) return false;
     return true;
   });
 
@@ -817,16 +804,25 @@ function renderAll(resetLimit = true){
     let va = '', vb = '';
     if(sort==='name') { va = t(a.name); vb = t(b.name); }
     else if(sort==='life') { va = t(a.lifespan); vb = t(b.lifespan); }
-    else if(sort==='bloom') { va = t(a.bloom); vb = t(b.bloom); }
+    else if(sort==='bloom') {
+      const getVal = p => {
+        const m = t(p.bloom).split(/[–\-]/)[0].trim();
+        return (MONTHS[lang] || MONTHS.hu).indexOf(m);
+      };
+      return getVal(a) - getVal(b);
+    }
     else if(sort==='soil') { va = t(a.soil); vb = t(b.soil); }
     else if(sort==='drought') { va = t(a.drought); vb = t(b.drought); }
     else if(sort==='sun') { va = t(a.sun); vb = t(b.sun); }
-    else if(sort==='height') { va = t(a.height); vb = t(b.height); }
+    else if(sort==='height') {
+      const getH = p => parseInt(t(p.height)) || 0;
+      return getH(a) - getH(b);
+    }
     return va.localeCompare(vb);
   });
 
   const grid = $('grid'), nav = $('sb-nav'), cnt = $('sb-count');
-  grid.innerHTML=''; nav.innerHTML=''; slides={};
+  grid.innerHTML=''; nav.innerHTML='';
 
   if(!filtered.length){
     grid.innerHTML=`<div class="no-results"><i class="fa-solid fa-leaf" style="font-size:2rem;margin-bottom:.5rem;opacity:.3"></i><br>${UI[lang].noResults}</div>`;
@@ -836,27 +832,43 @@ function renderAll(resetLimit = true){
 
   cnt.textContent = `${filtered.length} ${UI[lang].plants}`;
 
-  const toRender = filtered.slice(0, renderLimit);
-
-  toRender.forEach((p, ci) => {
+  // 1. Sidebar list (All filtered items)
+  filtered.forEach((p, i) => {
     const a = document.createElement('a');
-    a.href=`#card-${ci}`; a.innerHTML=`<i class="fa-solid fa-chevron-right"></i>${t(p.name)}`;
-    a.addEventListener('click',()=>{ if(isMob()) closeSb(); });
+    a.href=`#card-${i}`; a.innerHTML=`<i class="fa-solid fa-chevron-right"></i>${t(p.name)}`;
+    a.addEventListener('click',(e)=>{
+      e.preventDefault();
+      // Smart Scroll: ensure card exists in DOM
+      if (i >= renderLimit) {
+        renderLimit = Math.min(filtered.length, i + 10);
+        renderAll(false);
+      }
+      setTimeout(() => {
+        const target = $(`card-${i}`);
+        if(target) target.scrollIntoView({behavior:'smooth'});
+      }, 50);
+      if(isMob()) closeSb();
+    });
     nav.appendChild(a);
+  });
 
-    const imgs = p.images && p.images.length ? p.images : ['images/'+p.short+'_1.jpg','images/'+p.short+'_2.jpg','images/'+p.short+'_3.jpg'];
-    const slides3 = imgs.slice(0,3);
+  // 2. Main Grid (Sliced for performance)
+  const toRender = filtered.slice(0, renderLimit);
+  toRender.forEach((p, i) => {
+    const thumbs = ['images/thumbnails/'+p.short+'_1.jpg','images/thumbnails/'+p.short+'_2.jpg','images/thumbnails/'+p.short+'_3.jpg'];
+    const fulls = ['images/'+p.short+'_1.jpg','images/'+p.short+'_2.jpg','images/'+p.short+'_3.jpg'];
+    const slides3 = thumbs.slice(0,3);
 
     const card = document.createElement('div');
-    card.className='card'; card.id=`card-${ci}`;
+    card.className='card'; card.id=`card-${i}`;
     card.innerHTML=`
-<div class="carousel" id="cr-${ci}">
+<div class="carousel" id="cr-${i}">
   <div class="c-track">
-    ${slides3.map(img=>`<div class="c-slide"><img src="${img}" alt="${t(p.name)}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x230/4a7c59/fff?text=🌿'" onclick="openLb('${img}')"></div>`).join('')}
+    ${slides3.map((img, idx)=>`<div class="c-slide"><img src="${img}" alt="${t(p.name)}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x230/4a7c59/fff?text=🌿'" onclick="openLb('${fulls[idx]}')"></div>`).join('')}
   </div>
-  <button class="c-btn prev" onclick="goSlide(${ci},-1)"><i class="fa-solid fa-chevron-left"></i></button>
-  <button class="c-btn next" onclick="goSlide(${ci},1)"><i class="fa-solid fa-chevron-right"></i></button>
-  <div class="c-dots">${slides3.map((_,i)=>`<div class="dot${i===0?' on':''}" onclick="jumpSlide(${ci},${i})"></div>`).join('')}</div>
+  <button class="c-btn prev" onclick="goSlide(${i},-1)"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="c-btn next" onclick="goSlide(${i},1)"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="c-dots">${slides3.map((_,idx)=>`<div class="dot${idx===0?' on':''}" onclick="jumpSlide(${i},${idx})"></div>`).join('')}</div>
 </div>
 <div class="c-body">
   <div class="c-names"><h3>${t(p.name)}</h3><span class="sci">${p.sci}</span></div>
@@ -869,7 +881,7 @@ function renderAll(resetLimit = true){
     <span class="badge" title="${sort==='height'?'Rendezett':''}"><i class="fa-solid fa-ruler-vertical"></i><b>${UI[lang].heightLabel}:</b> ${t(p.height)}</span>
   </div>
   <p class="c-desc">${t(p.desc)}</p>
-  <a href="${p.link}" target="_blank" class="c-link"><i class="fa-solid fa-circle-info"></i> ${UI[lang].moreInfo}</a>
+  <a href="https://www.google.com/search?q=${encodeURIComponent(p.sci + ' ' + t(p.name))}" target="_blank" class="c-link"><i class="fa-solid fa-square-arrow-up-right"></i> ${UI[lang].moreInfo}</a>
 </div>`;
     grid.appendChild(card);
   });
@@ -891,7 +903,7 @@ function renderAll(resetLimit = true){
     entries.forEach(e=>{
       if(e.isIntersecting){
         const id=e.target.id, idx=parseInt(id.split('-')[1]);
-        links.forEach((l,i)=>l.classList.toggle('active',i===idx));
+        links.forEach((l,idx2)=>l.classList.toggle('active',idx2===idx));
       }
     });
   },{threshold:.4});
