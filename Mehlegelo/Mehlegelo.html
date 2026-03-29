@@ -52,7 +52,8 @@ body{background:var(--bg);color:var(--tp);transition:var(--tr);overflow-x:hidden
 #main.expanded{margin-left:0}
 
 /* HEADER */
-header{position:sticky;top:.5rem;z-index:100;display:flex;justify-content:space-between;align-items:center;background:var(--bg2);padding:.9rem 1.25rem;border-radius:.75rem;box-shadow:var(--sh);border:1px solid var(--bd);margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap;transition:var(--tr)}
+header{position:sticky;top:.5rem;z-index:100;display:flex;justify-content:space-between;align-items:center;background:var(--bg2);padding:.9rem 1.25rem;border-radius:.75rem;box-shadow:var(--sh);border:1px solid var(--bd);margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap;transition:var(--tr);transform:translateY(0);opacity:1}
+header.hide{transform:translateY(-120%);opacity:0}
 .hdr-left{display:flex;align-items:center;gap:.9rem}
 .hdr-title h1{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--tp);line-height:1.2}
 .hdr-title span{font-size:.78rem;color:var(--ts)}
@@ -671,9 +672,10 @@ const PLANTS = [
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let lang = localStorage.getItem('lang') || 'hu';
-let slides = {};
+let slides = {}, lastScroll = 0;
 let renderLimit = 10;
 const $ = id => document.getElementById(id);
+const hdr = $('header');
 
 // ── DARK MODE ────────────────────────────────────────────────────────────────
 function applyTheme(dark){
@@ -917,6 +919,13 @@ $('fl-life').addEventListener('change', () => renderAll());
 $('fl-soil').addEventListener('change', () => renderAll());
 $('fl-drought').addEventListener('change', () => renderAll());
 $('fl-sun').addEventListener('change', () => renderAll());
+
+window.addEventListener('scroll', () => {
+  const curr = window.pageYOffset;
+  if (curr > lastScroll && curr > 100) hdr.classList.add('hide');
+  else hdr.classList.remove('hide');
+  lastScroll = Math.max(0, curr);
+});
 
 applyLang(lang);
 </script>
