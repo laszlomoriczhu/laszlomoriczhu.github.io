@@ -209,70 +209,50 @@
     </div>
 
     <script>
-        // MODIFIED DATA STRUCTURE: 'equivalentGroup' added for substitution tracking.
+        // remainingPills = tényleges maradék tabletta 2026-05-16-án
         const medications = [
             {
                 name: "ASA Protect Pharmavit (100mg)",
-                boxes: 4,
+                remainingPills: 20,
                 value: 30,
                 daily: 1,
-                startDate: "2025-11-05", 
+                startDate: "2026-05-16",
                 equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/asa_protect_pharmavit_100_mg_gyomornedv_ellenallo_filmtabletta/56808" 
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/asa_protect_pharmavit_100_mg_gyomornedv_ellenallo_filmtabletta/56808"
             },
             {
                 name: "PANTOPRAZOL 1 A Pharma 20mg",
-                boxes: 4,
+                remainingPills: 6,
                 value: 28,
                 daily: 1,
-                startDate: "2025-11-05",
+                startDate: "2026-05-16",
                 equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/pantoprazol_1_a_pharma_20_mg_gyomornedv_ellenallo_tabletta/51838" 
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/pantoprazol_1_a_pharma_20_mg_gyomornedv_ellenallo_tabletta/51838"
             },
-            /*
-            {
-                name: "Rosuvastation Sandoz 20mg",
-                boxes: 1,
-                value: 30,
-                daily: 1,
-                startDate: "2025-11-05",
-                equivalentGroup: "Rosuvastatin", // EQUIVALENT GROUP 1
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/rosuvastatin_sandoz_20_mg_filmtabletta/54778"
-            },
-            {
-                name: "Rozuva-Teva 20mg",
-                boxes: 3,
-                value: 30,
-                daily: 1,
-                startDate: "2025-12-06", 
-                equivalentGroup: "Rosuvastatin", // EQUIVALENT GROUP 2
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/rozuva_teva_20_mg_filmtabletta/59847"
-            },
-            */
             {
                 name: "Letrox 75mcg",
-                boxes: 1,
+                remainingPills: 8,
                 value: 100,
                 daily: 1,
-                startDate: "2026-02-12",
+                startDate: "2026-05-16",
                 equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/letrox_75_g_tabletta/15549"
             },
             {
                 name: "Coverex-AS 5mg",
-                boxes: 8,
+                remainingPills: 34,
                 value: 30,
                 daily: 2,
-                startDate: "2025-11-04",
+                startDate: "2026-05-16",
                 equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/coverex_as_5_mg_filmtabletta/15650"
             },
             {
                 name: "Zenofor 1000mg",
-                boxes: 1,
+                remainingPills: 54,
                 value: 60,
                 daily: 2,
-                startDate: "2026-02-13",
+                startDate: "2026-05-16",
                 equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/zenofor_1000_mg_retard_tabletta/64214"
             }
@@ -286,7 +266,7 @@
             if (!acc[key]) {
                 acc[key] = { totalPills: 0, dailyDosage: med.daily, startDate: med.startDate, members: [] };
             }
-            acc[key].totalPills += med.boxes * med.value;
+            acc[key].totalPills += med.remainingPills;
             acc[key].members.push(med.name);
             return acc;
         }, {});
@@ -371,57 +351,44 @@
             let htmlContent = '';
 
             medicationsWithDays.forEach(med => {
-                const totalPills = med.boxes * med.value;
                 const daysRemaining = med.daysRemaining; 
                 const statusClass = getStatusClass(daysRemaining);
                 
-                const formattedStartDate = med.startDate.replace(/-/g, '.');
-                
-                const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('en-US', { 
+                const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('hu-HU', { 
                     year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
                 });
                 
-                // NEW: Equivalence Info
                 const equivalenceHtml = med.isEquivalent 
-                    ? `<div class="equivalence-info">Part of <strong>${med.equivalentGroup}</strong> group. Supply based on combined stock.</div>`
+                    ? `<div class="equivalence-info">Részét képezi a(z) <strong>${med.equivalentGroup}</strong> csoportnak. A készlet az összes azonos hatóanyagú gyógyszer alapján számított.</div>`
                     : '';
-
 
                 htmlContent += `
                     <div class="medication-card">
                         <h2>${med.name}</h2>
                         ${equivalenceHtml}
                         <div class="detail-row">
-                            <span class="label">Packs:</span>
-                            <span class="value">${med.boxes}</span>
+                            <span class="label">Maradék tabletta:</span>
+                            <span class="value">${med.remainingPills} db</span>
                         </div>
                         <div class="detail-row">
-                            <span class="label">Pills per Pack:</span>
-                            <span class="value">${med.value}</span>
+                            <span class="label">Tabletta/doboz:</span>
+                            <span class="value">${med.value} db</span>
                         </div>
                         <div class="detail-row">
-                            <span class="label">Total Pills (Pack):</span>
-                            <span class="value">${totalPills}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Daily Dosage:</span>
-                            <span class="value">${med.daily} pill(s)</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Start Date:</span>
-                            <span class="value">${formattedStartDate}</span>
+                            <span class="label">Napi adag:</span>
+                            <span class="value">${med.daily} db/nap</span>
                         </div>
                         
                         <div class="expiration-info">
-                            <div class="expiration-date">Stock Depletion: ${expiresDateFormatted}</div>
+                            <div class="expiration-date">Készlet várható vége: ${expiresDateFormatted}</div>
                             <div class="days-remaining ${statusClass}">${daysRemaining}</div>
-                            <div class="label">Days Remaining (Group Stock)</div>
+                            <div class="label">Hátralévő nap</div>
                         </div>
                         
-                        <a href="${med.link}" class="details-button">
-                            Details 🔗
+                        <a href="${med.link}" class="details-button" target="_blank">
+                            Részletek 🔗
                         </a>
                     </div>
                 `;
