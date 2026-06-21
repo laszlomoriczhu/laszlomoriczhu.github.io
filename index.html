@@ -2,91 +2,1160 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Garden</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="icon" href="favicon.webp" type="image/webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Gallery</title>
+    <!-- 7. WoW Faktor: Kézírásos betűtípus -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Segoe+UI&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS --- */
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #81c784;
+            --bg-color: #f1f8e9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 10px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-y: scroll;
+            transition: background-color 1s ease; /* 9. WoW Faktor: Dinamikus háttér */
+        }
+
+        /* Top controls: Language selector */
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        .lang-btn {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid var(--secondary-color);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .lang-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* 3. WoW Faktor: Scroll-Reactive Header */
+        header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.75));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--secondary-color);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top center;
+        }
+        header.scrolled {
+            padding: 0.5rem 1rem;
+            border-radius: 0 0 30px 30px;
+            border-bottom: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        header.scrolled h1 { font-size: 1.8rem; margin-bottom: 0; }
+        header.scrolled h2 { opacity: 0; height: 0; margin: 0; }
+        
+        h1 { font-size: 3rem; color: var(--primary-color); margin-bottom: 0.5rem; letter-spacing: -1px; transition: font-size 0.4s ease; }
+        h2 { font-size: 2.2rem; font-family: 'Dancing Script', cursive; font-weight: 700; color: #555; transition: all 0.3s ease; height: 3.5rem; overflow: hidden; margin: 0; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; min-height: 100vh; padding-bottom: 150px; }
+
+        .timeline-nav {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 2rem;
+        }
+        .timeline-btn {
+            background-color: var(--card-bg); border: 2px solid var(--secondary-color);
+            color: var(--primary-color); padding: 10px 24px; border-radius: 30px;
+            cursor: pointer; font-weight: bold; font-size: 1rem; transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); outline: none;
+        }
+        .timeline-btn:hover, .timeline-btn.active {
+            background-color: var(--primary-color); color: white;
+            border-color: var(--primary-color); transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(46, 125, 50, 0.25);
+        }
+
+        .filter-container {
+            display: flex; justify-content: center; align-items: center; gap: 20px;
+            margin-bottom: 3rem; flex-wrap: wrap;
+        }
+        .toggle-container {
+            font-weight: bold; color: var(--primary-color); cursor: pointer;
+            display: flex; align-items: center; gap: 8px;
+        }
+        #gallery-container.hide-watermarks .month-watermark { opacity: 0; pointer-events: none; }
+
+        #month-filter {
+            padding: 10px 20px; font-size: 1rem; border: 2px solid var(--secondary-color);
+            border-radius: 30px; background-color: var(--card-bg); color: var(--primary-color);
+            font-weight: bold; cursor: pointer; outline: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: var(--transition); appearance: none; -webkit-appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232e7d32%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat; background-position: right 15px top 50%;
+            background-size: 12px auto; padding-right: 40px;
+        }
+        #month-filter:hover { border-color: var(--primary-color); box-shadow: 0 6px 12px rgba(46, 125, 50, 0.2); }
+
+        .gallery-section { display: none; }
+        .gallery-section.active { display: block; animation: fadeInSection 0.5s ease forwards; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-bottom: 4rem; }
+        
+        .gallery-item {
+            background: var(--card-bg); border-radius: 16px; overflow: hidden;
+            box-shadow: var(--shadow); transition: transform 0.4s ease, opacity 0.4s ease, box-shadow 0.3s ease; cursor: pointer;
+            position: relative; aspect-ratio: 4/3;
+            /* 1. WoW Faktor: Scroll Reveal alappozíció */
+            opacity: 0; transform: translateY(40px);
+        }
+        /* Reveal class amit JS ad hozzá */
+        .gallery-item.reveal { opacity: 1; transform: translateY(0); }
+        /* 4. WoW Faktor: Szűrési animáció rejtett állapota */
+        .gallery-item.filtered-out { opacity: 0 !important; transform: scale(0.8) !important; pointer-events: none; position: absolute; }
+
+        .gallery-item:hover { z-index: 2; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        /* 5. WoW Faktor: Blur-up és 6. Parallax alapok */
+        .gallery-item img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: transform 0.1s linear, filter 0.8s ease; /* blur fade out */
+            filter: blur(15px); /* alapállapot homályos */
+            transform: scale(1.15); /* parallax miatt kicsit nagyobbnak kell lennie */
+        }
+        .gallery-item img.loaded { filter: blur(0); }
+        /* Hover esetén sima scale, felülírja a parallaxot */
+        .gallery-item:hover img { transform: scale(1.2) !important; transition: transform 0.6s ease; }
+
+        .month-watermark {
+            position: absolute; top: 15px; left: 15px; background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+            color: var(--primary-color); padding: 4px 14px;
+            border-radius: 20px; font-size: 0.85rem; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 10; pointer-events: none; transition: opacity 0.3s ease;
+        }
+
+        .gallery-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 30px 20px 20px; color: white; opacity: 0; transition: var(--transition);
+            display: flex; align-items: flex-end; justify-content: center;
+            z-index: 11;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-overlay span { font-weight: bold; letter-spacing: 1px; transform: translateY(10px); transition: var(--transition); }
+        .gallery-item:hover .gallery-overlay span { transform: translateY(0); }
+
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85);
+            display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0;
+            pointer-events: none; transition: opacity 0.3s ease; 
+        }
+        .lightbox.active { opacity: 1; pointer-events: all; }
+        
+        /* 10. WoW Faktor: Ambilight */
+        .lightbox-ambilight {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; height: 90%; object-fit: contain; filter: blur(60px); opacity: 0.5; z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .lightbox img.main-img { 
+            max-width: 90%; max-height: 90vh; border-radius: 8px; box-shadow: 0 0 50px rgba(0,0,0,0.6); 
+            transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            z-index: 2;
+        }
+        .lightbox.active img.main-img { transform: scale(1); }
+        
+        .lightbox-close { position: absolute; top: 20px; right: 30px; color: rgba(255,255,255,0.7); font-size: 50px; cursor: pointer; transition: color 0.3s ease; line-height: 1; z-index: 1001; }
+        .lightbox-close:hover { color: white; }
+
+        .lightbox-nav {
+            position: absolute; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.7);
+            font-size: 60px; cursor: pointer; padding: 20px; transition: color 0.3s ease, transform 0.2s;
+            user-select: none; z-index: 1001; font-family: sans-serif;
+        }
+        .lightbox-nav:hover { color: white; transform: translateY(-50%) scale(1.1); }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        .empty-state {
+            text-align: center; padding: 5rem 2rem; color: #666; background: rgba(255,255,255,0.5);
+            border-radius: 20px; border: 2px dashed #bcaaa4; margin-bottom: 4rem;
+        }
+        .empty-state h3 { color: var(--primary-color); margin-bottom: 1rem; }
+
+        @keyframes fadeInSection { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .lightbox-nav { font-size: 40px; padding: 10px; }
+            .lightbox-prev { left: 5px; } .lightbox-next { right: 5px; }
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.5rem; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+            .top-controls { top: 10px; right: 10px; }
+            header { padding: 1.5rem 1rem 1rem; }
+            header.scrolled { padding: 0.5rem 1rem; }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .timeline-btn { padding: 8px 16px; font-size: 0.9rem; }
+            h1 { font-size: 1.8rem; } h2 { font-size: 1.2rem; }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="heading">
-            <h3>Our&nbsp;<span>little&nbsp;</span>Garden</h3>
-            <h4><span>&nbsp;by&nbsp;</span>Horváth&nbsp;Csilla<span>&nbsp;&&nbsp;</span>Móricz&nbsp;László</h4>
-            <!--
-            <h4><span>by</span>By<span>Horváth&nbsp;Csilla&nbsp;and</span>garden</h4>    
-            -->
-        </div>
-        <div class="box">
-            <div class="dream">
-                <img src="pics/bg/2024autumn_bg.jpg">
-                <div class="btn">
-                    <a href="2024autumn.html">2024 Autumn</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/2024summer_bg.jpg">
-                <div class="btn">
-                    <a href="2024summer.html">2024 Summer</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/2024spring_bg.jpg">
-                <div class="btn">
-                    <a href="2024spring.html">2024 Spring</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/20232024winter_bg.jpg">
-                <div class="btn">
-                    <a href="20232024winter.html">2023-24 Winter</a>
-                </div>
-            </div>
-        </div>
-        <div class="box">
-            <div class="dream">
-                <img src="pics/bg/2023autumn_bg.jpg">
-                <div class="btn">
-                    <a href="2023autumn.html">2023 Autumn</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/2023summer_bg.jpg">
-                <div class="btn">
-                    <a href="2023summer.html">2023 Summer</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/2023spring_bg.jpg">
-                <div class="btn">
-                    <a href="2023spring.html">2023 Spring</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/20222023winter_bg.jpg">
-                <div class="btn">
-                    <a href="20222023winter.html">2022-23 Winter</a>
-                </div>
-            </div>
-        </div>
-        <div class="box">
-            <div class="dream">
-                <img src="pics/bg/2022_bg.jpg">
-                <div class="btn">
-                    <a href="2022.html">2022</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/theBegins_bg.jpg">
-                <div class="btn">
-                    <a href="theBegins.html">The Begins</a>
-                </div>
-            </div>
-            <div class="dream">
-                <img src="pics/bg/residents_bg.jpg">
-                <div class="btn">
-                    <a href="residents.html">Residents</a>
-                </div>
-            </div>
-        </div>
+
+    <div class="top-controls">
+        <button id="lang-btn" class="lang-btn">HUN</button>
     </div>
-</body>        
+
+    <header id="main-header">
+        <h1 id="title-text">Our little Garden</h1>
+        <h2 id="subtitle-text">by Csilla Horváth & László Móricz</h2>
+    </header>
+
+    <main class="container">
+        
+        <nav class="timeline-nav" id="timeline-nav"></nav>
+
+        <div class="filter-container">
+            <select id="month-filter"></select>
+            
+            <label class="toggle-container">
+                <input type="checkbox" id="watermark-toggle" checked>
+                <span id="watermark-label">Vízjel mutatása</span>
+            </label>
+        </div>
+
+        <div id="gallery-container"></div>
+
+    </main>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <div class="lightbox-nav lightbox-prev" id="lightbox-prev">&#10094;</div>
+        
+        <!-- 10. WoW Faktor: Ambilight réteg -->
+        <img src="" class="lightbox-ambilight" id="lightbox-ambilight">
+        <!-- Fő nagy kép -->
+        <img src="" alt="Nagyított kép" class="main-img" id="lightbox-img">
+        
+        <div class="lightbox-nav lightbox-next" id="lightbox-next">&#10095;</div>
+    </div>
+
+    <script>
+        // --- INJECT DATA START ---
+        const galleryData = [
+    {
+        "year": "2026",
+        "images": []
+    },
+    {
+        "year": "2025",
+        "images": []
+    },
+    {
+        "year": "2024",
+        "images": []
+    },
+    {
+        "year": "2023",
+        "images": [
+            {
+                "thumb": "2023/IMG_20230115_111017_thumb.webp",
+                "full": "2023/IMG_20230115_111017_full.webp",
+                "monthIndex": 0,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230115_111035_thumb.webp",
+                "full": "2023/IMG_20230115_111035_full.webp",
+                "monthIndex": 0,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230115_122440_thumb.webp",
+                "full": "2023/IMG_20230115_122440_full.webp",
+                "monthIndex": 0,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230205_134158_thumb.webp",
+                "full": "2023/IMG_20230205_134158_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230205_134240_thumb.webp",
+                "full": "2023/IMG_20230205_134240_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230205_134251_thumb.webp",
+                "full": "2023/IMG_20230205_134251_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230222_104431_thumb.webp",
+                "full": "2023/IMG_20230222_104431_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230222_104438_thumb.webp",
+                "full": "2023/IMG_20230222_104438_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230224_164651_thumb.webp",
+                "full": "2023/IMG_20230224_164651_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230224_164912_thumb.webp",
+                "full": "2023/IMG_20230224_164912_full.webp",
+                "monthIndex": 1,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230320_181332_thumb.webp",
+                "full": "2023/IMG_20230320_181332_full.webp",
+                "monthIndex": 2,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230321_170351_thumb.webp",
+                "full": "2023/IMG_20230321_170351_full.webp",
+                "monthIndex": 2,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230321_170403_thumb.webp",
+                "full": "2023/IMG_20230321_170403_full.webp",
+                "monthIndex": 2,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230321_170438_thumb.webp",
+                "full": "2023/IMG_20230321_170438_full.webp",
+                "monthIndex": 2,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230321_170449_thumb.webp",
+                "full": "2023/IMG_20230321_170449_full.webp",
+                "monthIndex": 2,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230401_161600_thumb.webp",
+                "full": "2023/IMG_20230401_161600_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230401_185121_thumb.webp",
+                "full": "2023/IMG_20230401_185121_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230401_192021_thumb.webp",
+                "full": "2023/IMG_20230401_192021_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230402_171901_thumb.webp",
+                "full": "2023/IMG_20230402_171901_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230403_163656_thumb.webp",
+                "full": "2023/IMG_20230403_163656_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230406_170401_thumb.webp",
+                "full": "2023/IMG_20230406_170401_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230413_164546_thumb.webp",
+                "full": "2023/IMG_20230413_164546_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230411_180016_thumb.webp",
+                "full": "2023/IMG_20230411_180016_full.webp",
+                "monthIndex": 3,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230501_103721_thumb.webp",
+                "full": "2023/IMG_20230501_103721_full.webp",
+                "monthIndex": 4,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230522_183020_thumb.webp",
+                "full": "2023/IMG_20230522_183020_full.webp",
+                "monthIndex": 4,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230522_202642_thumb.webp",
+                "full": "2023/IMG_20230522_202642_full.webp",
+                "monthIndex": 4,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230522_202656_thumb.webp",
+                "full": "2023/IMG_20230522_202656_full.webp",
+                "monthIndex": 4,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122222_thumb.webp",
+                "full": "2023/IMG_20230616_122222_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122326_thumb.webp",
+                "full": "2023/IMG_20230616_122326_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122412_thumb.webp",
+                "full": "2023/IMG_20230616_122412_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122433_thumb.webp",
+                "full": "2023/IMG_20230616_122433_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122602_thumb.webp",
+                "full": "2023/IMG_20230616_122602_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122628_thumb.webp",
+                "full": "2023/IMG_20230616_122628_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230616_122718_thumb.webp",
+                "full": "2023/IMG_20230616_122718_full.webp",
+                "monthIndex": 5,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_151743_thumb.webp",
+                "full": "2023/IMG_20230701_151743_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_151757_thumb.webp",
+                "full": "2023/IMG_20230701_151757_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_151810_thumb.webp",
+                "full": "2023/IMG_20230701_151810_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_151910_thumb.webp",
+                "full": "2023/IMG_20230701_151910_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_151923_thumb.webp",
+                "full": "2023/IMG_20230701_151923_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_152033_thumb.webp",
+                "full": "2023/IMG_20230701_152033_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_152123_thumb.webp",
+                "full": "2023/IMG_20230701_152123_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230701_152237_thumb.webp",
+                "full": "2023/IMG_20230701_152237_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230705_164502_thumb.webp",
+                "full": "2023/IMG_20230705_164502_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230706_163829_thumb.webp",
+                "full": "2023/IMG_20230706_163829_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124057_thumb.webp",
+                "full": "2023/IMG_20230714_124057_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124109_thumb.webp",
+                "full": "2023/IMG_20230714_124109_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124206_thumb.webp",
+                "full": "2023/IMG_20230714_124206_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124233_thumb.webp",
+                "full": "2023/IMG_20230714_124233_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124238_thumb.webp",
+                "full": "2023/IMG_20230714_124238_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124306_thumb.webp",
+                "full": "2023/IMG_20230714_124306_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124318_thumb.webp",
+                "full": "2023/IMG_20230714_124318_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230714_124554_thumb.webp",
+                "full": "2023/IMG_20230714_124554_full.webp",
+                "monthIndex": 6,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20231029_170152_thumb.webp",
+                "full": "2023/IMG_20231029_170152_full.webp",
+                "monthIndex": 9,
+                "year": 2023
+            },
+            {
+                "thumb": "2023/IMG_20230723_205523-EFFECTS_thumb.webp",
+                "full": "2023/IMG_20230723_205523-EFFECTS_full.webp",
+                "monthIndex": 5,
+                "year": 2026
+            }
+        ]
+    },
+    {
+        "year": "2022",
+        "images": [
+            {
+                "thumb": "2022/IMG_20220623_211340_thumb.webp",
+                "full": "2022/IMG_20220623_211340_full.webp",
+                "monthIndex": 5,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20220623_211359_thumb.webp",
+                "full": "2022/IMG_20220623_211359_full.webp",
+                "monthIndex": 5,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20220623_211404_thumb.webp",
+                "full": "2022/IMG_20220623_211404_full.webp",
+                "monthIndex": 5,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20220623_211414_thumb.webp",
+                "full": "2022/IMG_20220623_211414_full.webp",
+                "monthIndex": 5,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20220623_211430_thumb.webp",
+                "full": "2022/IMG_20220623_211430_full.webp",
+                "monthIndex": 5,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075355_thumb.webp",
+                "full": "2022/IMG_20221122_075355_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075401_thumb.webp",
+                "full": "2022/IMG_20221122_075401_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075429_thumb.webp",
+                "full": "2022/IMG_20221122_075429_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075500_thumb.webp",
+                "full": "2022/IMG_20221122_075500_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075503_thumb.webp",
+                "full": "2022/IMG_20221122_075503_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075520_thumb.webp",
+                "full": "2022/IMG_20221122_075520_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075531_thumb.webp",
+                "full": "2022/IMG_20221122_075531_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            },
+            {
+                "thumb": "2022/IMG_20221122_075552_thumb.webp",
+                "full": "2022/IMG_20221122_075552_full.webp",
+                "monthIndex": 10,
+                "year": 2022
+            }
+        ]
+    },
+    {
+        "year": "Kezdetek",
+        "images": [
+            {
+                "thumb": "Kezdetek/IMG_20190602_112915_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112915_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112927_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112927_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112930_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112930_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112931_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112931_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112932_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112932_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112933_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112933_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112946_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112946_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112948_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112948_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190602_112951_thumb.webp",
+                "full": "Kezdetek/IMG_20190602_112951_full.webp",
+                "monthIndex": 5,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190727_162501_thumb.webp",
+                "full": "Kezdetek/IMG_20190727_162501_full.webp",
+                "monthIndex": 6,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190727_162518_thumb.webp",
+                "full": "Kezdetek/IMG_20190727_162518_full.webp",
+                "monthIndex": 6,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190727_162557_thumb.webp",
+                "full": "Kezdetek/IMG_20190727_162557_full.webp",
+                "monthIndex": 6,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190727_162607_thumb.webp",
+                "full": "Kezdetek/IMG_20190727_162607_full.webp",
+                "monthIndex": 6,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190921_170930_thumb.webp",
+                "full": "Kezdetek/IMG_20190921_170930_full.webp",
+                "monthIndex": 8,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20190921_170953_thumb.webp",
+                "full": "Kezdetek/IMG_20190921_170953_full.webp",
+                "monthIndex": 8,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20191023_090848_thumb.webp",
+                "full": "Kezdetek/IMG_20191023_090848_full.webp",
+                "monthIndex": 9,
+                "year": 2019
+            },
+            {
+                "thumb": "Kezdetek/IMG_20210514_155422_thumb.webp",
+                "full": "Kezdetek/IMG_20210514_155422_full.webp",
+                "monthIndex": 4,
+                "year": 2021
+            },
+            {
+                "thumb": "Kezdetek/IMG_20211106_113918_thumb.webp",
+                "full": "Kezdetek/IMG_20211106_113918_full.webp",
+                "monthIndex": 10,
+                "year": 2021
+            }
+        ]
+    }
+];
+        // --- INJECT DATA END ---
+
+        const i18n = {
+            en: {
+                title: "Our little Garden",
+                subtitle: "by Csilla Horváth & László Móricz",
+                allMonths: "All months",
+                showWatermark: "Show watermark",
+                emptyTitle: "No images uploaded yet.",
+                emptyDesc: "Upload images and run the build script!",
+                clickZoom: "Click to zoom",
+                langToggle: "HUN",
+                months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                years: { 'Kezdetek': 'The Begins' }
+            },
+            hu: {
+                title: "Kertünk Naplója",
+                subtitle: "készítette Horváth Csilla és Móricz László",
+                allMonths: "Minden hónap",
+                showWatermark: "Vízjel mutatása",
+                emptyTitle: "Még nincsenek feltöltve képek.",
+                emptyDesc: "Töltsd fel a képeket, és futtasd a segédprogramot!",
+                clickZoom: "Kattints a nagyításhoz",
+                langToggle: "ENG",
+                months: ['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'],
+                years: { 'Kezdetek': 'Kezdetek' }
+            }
+        };
+
+        // 9. WoW Faktor: Dinamikus háttérszínek évszámonként
+        const yearColors = {
+            '2026': '#e8f5e9', // friss zöldes
+            '2025': '#f1f8e9', // alap zöldes
+            '2024': '#f9fbe7', // sárgászöld
+            '2023': '#fffde7', // halvány sárga
+            '2022': '#fff8e1', // narancsos-sárga
+            'Kezdetek': '#fbe9e7' // szépia-szerű meleg
+        };
+
+        let currentLang = localStorage.getItem('gardenLang') || 'en';
+        let currentMonthFilter = localStorage.getItem('gardenMonthFilter') || 'all';
+        let isWatermarkVisible = localStorage.getItem('gardenWatermark') !== 'false';
+        
+        let activeYearTab = galleryData[0]?.year || '';
+
+        const langBtn = document.getElementById('lang-btn');
+        const monthFilterSelect = document.getElementById('month-filter');
+        const watermarkToggle = document.getElementById('watermark-toggle');
+        const galleryContainer = document.getElementById('gallery-container');
+        const navContainer = document.getElementById('timeline-nav');
+        const header = document.getElementById('main-header');
+        
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxAmbilight = document.getElementById('lightbox-ambilight');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        // 2. WoW Faktor: Haptic Feedback
+        function haptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate(15);
+            }
+        }
+
+        // Nyelv váltás
+        langBtn.onclick = () => {
+            haptic();
+            currentLang = currentLang === 'en' ? 'hu' : 'en';
+            localStorage.setItem('gardenLang', currentLang);
+            renderUI();
+        };
+
+        // Vízjel kapcsoló
+        watermarkToggle.checked = isWatermarkVisible;
+        if (!isWatermarkVisible) galleryContainer.classList.add('hide-watermarks');
+        
+        watermarkToggle.addEventListener('change', (e) => {
+            haptic();
+            isWatermarkVisible = e.target.checked;
+            localStorage.setItem('gardenWatermark', isWatermarkVisible);
+            if (isWatermarkVisible) {
+                galleryContainer.classList.remove('hide-watermarks');
+            } else {
+                galleryContainer.classList.add('hide-watermarks');
+            }
+        });
+
+        // Hónap szűrő
+        monthFilterSelect.addEventListener('change', (e) => {
+            haptic();
+            currentMonthFilter = e.target.value;
+            localStorage.setItem('gardenMonthFilter', currentMonthFilter);
+            applyFilter();
+        });
+
+        // 3. WoW Faktor: Scroll-Reactive Header
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else if (window.scrollY < 20) {
+                header.classList.remove('scrolled');
+            }
+        }, { passive: true });
+
+        // 1. WoW Faktor: Scroll Reveal Observer
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        function renderUI() {
+            document.documentElement.lang = currentLang;
+            const t = i18n[currentLang];
+            
+            langBtn.textContent = t.langToggle;
+            document.getElementById('title-text').textContent = t.title;
+            document.getElementById('subtitle-text').textContent = t.subtitle;
+            document.getElementById('watermark-label').textContent = t.showWatermark;
+
+            monthFilterSelect.innerHTML = `<option value="all">${t.allMonths}</option>`;
+            t.months.forEach((m, i) => {
+                monthFilterSelect.innerHTML += `<option value="${i}">${m}</option>`;
+            });
+            
+            if (currentMonthFilter !== 'all' && currentMonthFilter >= 0 && currentMonthFilter <= 11) {
+                monthFilterSelect.value = currentMonthFilter;
+            } else {
+                monthFilterSelect.value = 'all';
+                currentMonthFilter = 'all';
+            }
+
+            renderGalleryContent(t);
+            applyFilter();
+            updateBackground();
+        }
+
+        function renderGalleryContent(t) {
+            navContainer.innerHTML = '';
+            galleryContainer.innerHTML = '';
+
+            galleryData.forEach((section, index) => {
+                const yearLabel = t.years[section.year] || section.year;
+                
+                const btn = document.createElement('button');
+                btn.className = `timeline-btn ${section.year === activeYearTab ? 'active' : ''}`;
+                btn.textContent = yearLabel;
+                btn.onclick = () => {
+                    haptic();
+                    showSection(section.year, btn);
+                };
+                navContainer.appendChild(btn);
+
+                const sectionEl = document.createElement('div');
+                sectionEl.className = `gallery-section ${section.year === activeYearTab ? 'active' : ''}`;
+                sectionEl.id = `section-${section.year}`;
+                
+                if (!section.images || section.images.length === 0) {
+                    sectionEl.innerHTML = `
+                        <div class="empty-state">
+                            <h3>${t.emptyTitle}</h3>
+                            <p>${t.emptyDesc}</p>
+                        </div>`;
+                } else {
+                    const grid = document.createElement('div');
+                    grid.className = 'gallery-grid';
+                    
+                    section.images.forEach(imgData => {
+                        const item = document.createElement('div');
+                        item.className = 'gallery-item';
+                        item.dataset.monthIndex = imgData.monthIndex; 
+                        item.dataset.full = imgData.full;
+                        
+                        let monthStr = '';
+                        if (typeof imgData.monthIndex === 'number' && imgData.monthIndex >= 0) {
+                            monthStr = t.months[imgData.monthIndex];
+                        }
+                        const watermarkText = monthStr ? `${imgData.year} ${monthStr}` : '';
+
+                        // 5. Blur-up képek
+                        item.innerHTML = `
+                            <div class="month-watermark">${watermarkText}</div>
+                            <img src="${imgData.thumb}" alt="${yearLabel} fotó" loading="lazy" onload="this.classList.add('loaded')">
+                            <div class="gallery-overlay">
+                                <span>${t.clickZoom}</span>
+                            </div>
+                        `;
+                        item.onclick = () => {
+                            haptic();
+                            openLightbox(imgData.full, item);
+                        };
+                        grid.appendChild(item);
+                        
+                        // Csatoljuk az observerhez
+                        revealObserver.observe(item);
+                    });
+                    sectionEl.appendChild(grid);
+                }
+                galleryContainer.appendChild(sectionEl);
+            });
+        }
+
+        function applyFilter() {
+            // 4. Szűrési Shuffle Animáció logikája
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if (currentMonthFilter === 'all' || item.dataset.monthIndex === String(currentMonthFilter)) {
+                    item.classList.remove('filtered-out');
+                    // Reset CSS pozíció
+                    item.style.position = 'relative';
+                    setTimeout(() => item.style.display = 'block', 10);
+                } else {
+                    item.classList.add('filtered-out');
+                    // Várjuk meg az animációt mielőtt kivesszük a flow-ból
+                    setTimeout(() => {
+                        if(item.classList.contains('filtered-out')) {
+                            item.style.display = 'none';
+                            item.style.position = 'absolute';
+                        }
+                    }, 400);
+                }
+            });
+            if (lightbox.classList.contains('active')) closeLightbox();
+        }
+
+        function updateBackground() {
+            // 9. Dinamikus Háttérszín
+            document.body.style.backgroundColor = yearColors[activeYearTab] || 'var(--bg-color)';
+        }
+
+        function showSection(year, btn) {
+            activeYearTab = year;
+            updateBackground();
+            
+            document.querySelectorAll('.timeline-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.gallery-section').forEach(s => s.classList.remove('active'));
+            const s = document.getElementById(`section-${year}`);
+            if (s) {
+                s.classList.add('active');
+                // Újratöltjük az observert a látható elemeken, hogy ússzanak be
+                s.querySelectorAll('.gallery-item').forEach(item => {
+                    item.classList.remove('reveal');
+                    if (!item.classList.contains('filtered-out')) {
+                        revealObserver.observe(item);
+                    }
+                });
+            }
+        }
+
+        // 6. WoW Faktor: Parallax görgetés mobilon is
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const items = document.querySelectorAll('.gallery-section.active .gallery-item:not(.filtered-out) img');
+                    const vh = window.innerHeight;
+                    items.forEach(img => {
+                        const rect = img.parentElement.getBoundingClientRect();
+                        // Csak a látható képeket mozgassuk
+                        if (rect.top < vh && rect.bottom > 0) {
+                            // -15px től +15px ig mozogjon
+                            const yPos = ((rect.top / vh) * 30) - 15;
+                            // Ha nincs hoverelve, akkor alkalmazzuk a parallaxot
+                            if (!img.parentElement.matches(':hover')) {
+                                img.style.transform = `scale(1.15) translateY(${yPos}px)`;
+                            }
+                        }
+                    });
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+
+
+        // --- Lightbox ---
+        let visibleImages = [];
+        let currentImageIndex = 0;
+
+        function openLightbox(fullSrc, clickedItem) {
+            const activeSection = document.querySelector('.gallery-section.active');
+            if (activeSection) {
+                const items = Array.from(activeSection.querySelectorAll('.gallery-item:not(.filtered-out)'));
+                visibleImages = items.map(el => el.dataset.full);
+                currentImageIndex = visibleImages.indexOf(clickedItem.dataset.full);
+                if (currentImageIndex === -1) currentImageIndex = 0;
+            } else {
+                visibleImages = [fullSrc];
+                currentImageIndex = 0;
+            }
+            updateLightboxImage();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateLightboxImage() {
+            lightboxImg.src = visibleImages[currentImageIndex];
+            // 10. Ambilight hatás beállítása
+            lightboxAmbilight.src = visibleImages[currentImageIndex];
+            
+            const prevBtn = document.getElementById('lightbox-prev');
+            const nextBtn = document.getElementById('lightbox-next');
+            if (prevBtn) prevBtn.style.display = currentImageIndex > 0 ? 'block' : 'none';
+            if (nextBtn) nextBtn.style.display = currentImageIndex < visibleImages.length - 1 ? 'block' : 'none';
+        }
+
+        function nextImage() { 
+            if (currentImageIndex < visibleImages.length - 1) { 
+                haptic(); currentImageIndex++; updateLightboxImage(); 
+            } 
+        }
+        function prevImage() { 
+            if (currentImageIndex > 0) { 
+                haptic(); currentImageIndex--; updateLightboxImage(); 
+            } 
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            setTimeout(() => { 
+                lightboxImg.src = ''; 
+                lightboxAmbilight.src = ''; 
+            }, 300);
+        }
+
+        lightboxClose.onclick = () => { haptic(); closeLightbox(); };
+        document.getElementById('lightbox-prev').onclick = (e) => { e.stopPropagation(); prevImage(); };
+        document.getElementById('lightbox-next').onclick = (e) => { e.stopPropagation(); nextImage(); };
+        lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); };
+
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowRight') nextImage();
+                if (e.key === 'ArrowLeft') prevImage();
+            }
+        });
+
+        let touchStartX = 0, touchEndX = 0;
+        lightbox.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+        lightbox.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) nextImage();
+            if (touchEndX > touchStartX + 50) prevImage();
+        }, {passive: true});
+
+        // Start
+        renderUI();
+    </script>
+</body>
 </html>

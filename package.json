@@ -1,0 +1,12 @@
+{
+  "name": "garden-gallery",
+  "version": "1.0.0",
+  "description": "Image optimizer for Garden Gallery",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "exifreader": "^4.20.0",
+    "sharp": "^0.33.2"
+  }
+}
