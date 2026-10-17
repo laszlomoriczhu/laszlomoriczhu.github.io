@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const directories = ['2026', '2025', '2024', '2023', '2022', 'Kezdetek'];
+const directories = ['2026', '2025', '2024', '2023', '2022', 'Kezdetek', 'Lakoink'];
 const htmlFile = 'index.html';
 
 async function processImages() {
