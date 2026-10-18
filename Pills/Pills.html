@@ -91,6 +91,32 @@
             flex-direction: column;
         }
 
+        /* Vitamin card variant - green left border */
+        .vitamin-card {
+            border-left-color: var(--success-color);
+        }
+
+        .vitamin-card .expiration-date {
+            color: var(--success-color);
+        }
+
+        /* Section headers */
+        .section-header {
+            grid-column: 1 / -1;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding: 10px 0 5px 0;
+            border-bottom: 3px solid var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .section-header.vitamin-header {
+            color: var(--success-color);
+            border-bottom-color: var(--success-color);
+            margin-top: 20px;
+        }
+
         .medication-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -193,19 +219,18 @@
 </head>
 <body>
     <div class="container">
-        <h1>💊 Your Medication Supply Tracker</h1>
+        <h1>💊 Gyógyszerkészlet Nyomkövető</h1>
 
         <div class="sort-control">
-            <label for="sortSelector">Sort By:</label>
+            <label for="sortSelector">Rendezés:</label>
             <select id="sortSelector" onchange="renderMedications()">
-                <option value="days_asc">Days Remaining (Ascending)</option>
-                <option value="days_desc">Days Remaining (Descending)</option>
-                <option value="name_asc">Name (A-Z)</option>
+                <option value="days_asc">Hátralévő nap (növekvő)</option>
+                <option value="days_desc">Hátralévő nap (csökkenő)</option>
+                <option value="name_asc">Név (A-Z)</option>
             </select>
         </div>
 
-        <div class="medication-list" id="medicationList">
-            </div>
+        <div class="medication-list" id="medicationList"></div>
     </div>
 
     <script>
@@ -213,6 +238,7 @@
         const medications = [
             {
                 name: "Letrox 100mcg",
+                type: "medication",
                 remainingPills: 69,
                 value: 100,
                 daily: 1,
@@ -222,6 +248,7 @@
             },
             {
                 name: "Coverex-AS 5mg",
+                type: "medication",
                 remainingPills: 85,
                 value: 30,
                 daily: 2,
@@ -231,6 +258,7 @@
             },
             {
                 name: "Zenofor 1000mg",
+                type: "medication",
                 remainingPills: 102,
                 value: 60,
                 daily: 2,
@@ -240,6 +268,7 @@
             },
             {
                 name: "ASA Protect Pharmavit (100mg)",
+                type: "medication",
                 remainingPills: 47,
                 value: 30,
                 daily: 1,
@@ -249,6 +278,7 @@
             },
             {
                 name: "PANTOPRAZOL 1 A Pharma 20mg",
+                type: "medication",
                 remainingPills: 21,
                 value: 28,
                 daily: 1,
@@ -258,12 +288,54 @@
             },
             {
                 name: "Rozuva-Teva 10mg",
+                type: "medication",
                 remainingPills: 25,
                 value: 30,
                 daily: 1,
                 startDate: "2026-10-18",
                 equivalentGroup: null,
                 link: "https://www.hazipatika.com/gyogyszerkereso/termek/rozuva_teva_10_mg_filmtabletta/53697"
+            },
+            // --- Vitaminok / Étrend-kiegészítők ---
+            {
+                name: "BioCo Cink-biszglicinát 25mg",
+                type: "vitamin",
+                remainingPills: 15,
+                value: 60,
+                daily: 1,
+                startDate: "2026-10-18",
+                equivalentGroup: null,
+                link: "https://www.bioco.hu/termek/cink-biszgliginat-25-mg"
+            },
+            {
+                name: "BÉRES VITA D3 4000NE",
+                type: "vitamin",
+                remainingPills: 50,
+                value: 60,
+                daily: 1,
+                startDate: "2026-10-18",
+                equivalentGroup: null,
+                link: "https://www.hazipatika.com/gyogyszerkereso/termek/beres_vita_d3_4000_ne_lagy_kapszula/64029"
+            },
+            {
+                name: "JutaVit Szerves SZELÉN 100mcg",
+                type: "vitamin",
+                remainingPills: 74,
+                value: 100,
+                daily: 1,
+                startDate: "2026-10-18",
+                equivalentGroup: null,
+                link: "https://www.jutavit.hu/termek/jutavit-szerves-selen-100-mcg"
+            },
+            {
+                name: "NORDVITAL Magnézium-biszglicinát 800mg +B6",
+                type: "vitamin",
+                remainingPills: 51,
+                value: 90,
+                daily: 1,
+                startDate: "2026-10-18",
+                equivalentGroup: null,
+                link: "https://www.nordvital.hu/termekek/magnezium-biszgliginat-800-mg-b6"
             }
         ];
         
@@ -357,24 +429,27 @@
                 return 0;
             });
 
-            let htmlContent = '';
+            // Split into two groups
+            const meds    = medicationsWithDays.filter(m => m.type !== 'vitamin');
+            const vitamins = medicationsWithDays.filter(m => m.type === 'vitamin');
 
-            medicationsWithDays.forEach(med => {
-                const daysRemaining = med.daysRemaining; 
+            function buildCard(med, isVitamin) {
+                const daysRemaining = med.daysRemaining;
                 const statusClass = getStatusClass(daysRemaining);
-                
-                const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('hu-HU', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
+                const cardClass = isVitamin ? 'medication-card vitamin-card' : 'medication-card';
+
+                const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('hu-HU', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
                 });
-                
-                const equivalenceHtml = med.isEquivalent 
+
+                const equivalenceHtml = med.isEquivalent
                     ? `<div class="equivalence-info">Részét képezi a(z) <strong>${med.equivalentGroup}</strong> csoportnak. A készlet az összes azonos hatóanyagú gyógyszer alapján számított.</div>`
                     : '';
 
-                htmlContent += `
-                    <div class="medication-card">
+                return `
+                    <div class="${cardClass}">
                         <h2>${med.name}</h2>
                         ${equivalenceHtml}
                         <div class="detail-row">
@@ -389,19 +464,27 @@
                             <span class="label">Napi adag:</span>
                             <span class="value">${med.daily} db/nap</span>
                         </div>
-                        
                         <div class="expiration-info">
                             <div class="expiration-date">Készlet várható vége: ${expiresDateFormatted}</div>
                             <div class="days-remaining ${statusClass}">${daysRemaining}</div>
                             <div class="label">Hátralévő nap</div>
                         </div>
-                        
                         <a href="${med.link}" class="details-button" target="_blank">
                             Részletek 🔗
                         </a>
                     </div>
                 `;
-            });
+            }
+
+            let htmlContent = '';
+
+            // --- Gyógyszerek szekció ---
+            htmlContent += '<div class="section-header">💊 Gyógyszerek</div>';
+            meds.forEach(med => { htmlContent += buildCard(med, false); });
+
+            // --- Vitaminok szekció ---
+            htmlContent += '<div class="section-header vitamin-header">🌿 Vitaminok / Étrend-kiegészítők</div>';
+            vitamins.forEach(med => { htmlContent += buildCard(med, true); });
 
             listContainer.innerHTML = htmlContent;
         }
