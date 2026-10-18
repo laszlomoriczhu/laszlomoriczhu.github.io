@@ -22,7 +22,7 @@
             font-family: 'Roboto', sans-serif;
             background-color: var(--background-color);
             margin: 0;
-            padding: 20px;
+            padding: 16px;
             color: #343a40;
         }
 
@@ -213,6 +213,96 @@
 
         .details-button:hover {
             background-color: #5a6268;
+        }
+
+        /* =============================================
+           MOBILE OPTIMIZATION
+           ============================================= */
+        @media (max-width: 600px) {
+
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 20px;
+            }
+
+            /* Sort control stacks vertically */
+            .sort-control {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                margin-bottom: 12px;
+                padding: 6px 0;
+            }
+
+            .sort-control label {
+                margin-right: 0;
+                text-align: left;
+            }
+
+            .sort-control select {
+                width: 100%;
+                font-size: 1rem;
+                padding: 10px 15px;
+                box-sizing: border-box;
+            }
+
+            /* Single-column card grid */
+            .medication-list {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .section-header {
+                font-size: 1.15rem;
+                padding: 8px 0 4px 0;
+            }
+
+            .section-header.vitamin-header {
+                margin-top: 14px;
+            }
+
+            /* Tighter card layout */
+            .medication-card {
+                padding: 14px;
+            }
+
+            .medication-card h2 {
+                font-size: 1.15rem;
+                margin-bottom: 10px;
+                padding-bottom: 8px;
+            }
+
+            .detail-row {
+                font-size: 0.88rem;
+                margin-bottom: 6px;
+            }
+
+            .expiration-date {
+                font-size: 1rem;
+            }
+
+            .days-remaining {
+                font-size: 1.8rem;
+            }
+
+            /* Bigger touch target for button */
+            .details-button {
+                padding: 13px 15px;
+                font-size: 1rem;
+                margin-top: 14px;
+            }
+        }
+
+        /* Disable hover lift on touch devices */
+        @media (hover: none) {
+            .medication-card:hover {
+                transform: none;
+                box-shadow: var(--box-shadow);
+            }
         }
 
     </style>
