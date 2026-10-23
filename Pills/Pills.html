@@ -1,591 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medication Supply Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #007BFF;
-            --secondary-color: #6c757d;
-            --background-color: #f8f9fa;
-            --card-background: #ffffff;
-            --danger-color: #dc3545;
-            --warning-color: #ffc107;
-            --success-color: #28a745;
-            --border-radius: 8px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            margin: 0;
-            padding: 16px;
-            color: #343a40;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 40px;
-            font-weight: 700;
-        }
-
-        /* Sort Control Styling */
-        .sort-control {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
-        }
-
-        .sort-control label {
-            font-weight: 700;
-            margin-right: 10px;
-            color: #495057;
-        }
-
-        .sort-control select {
-            padding: 8px 15px;
-            border-radius: var(--border-radius);
-            border: 1px solid #ced4da;
-            background-color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: border-color 0.3s;
-            appearance: none;
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007BFF%22%20d%3D%22M287%2073.5c-4.1-4.1-9.3-6.2-14.7-6.2s-10.5%202.1-14.7%206.2L146.2%20199.1%2034.7%2073.5c-4.1-4.1-9.3-6.2-14.7-6.2S10%2069.4%205.8%2073.5c-8.2%208.2-8.2%2021.5%200%2029.7l130%20130c4.1%204.1%209.3%206.2%2014.7%206.2s10.5-2.1%2014.7-6.2l130-130c8.3-8.2%208.3-21.5.1-29.7z%22%2F%3E%3C%2Fsvg%3E');
-            background-repeat: no-repeat;
-            background-position: right 10px top 50%;
-            background-size: 10px auto;
-        }
-
-        .sort-control select:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-
-
-        .medication-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .medication-card {
-            background-color: var(--card-background);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
-            border-left: 5px solid var(--primary-color);
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Vitamin card variant - green left border */
-        .vitamin-card {
-            border-left-color: var(--success-color);
-        }
-
-        .vitamin-card .expiration-date {
-            color: var(--success-color);
-        }
-
-        /* Section headers */
-        .section-header {
-            grid-column: 1 / -1;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            padding: 10px 0 5px 0;
-            border-bottom: 3px solid var(--primary-color);
-            margin-bottom: 5px;
-        }
-
-        .section-header.vitamin-header {
-            color: var(--success-color);
-            border-bottom-color: var(--success-color);
-            margin-top: 20px;
-        }
-
-        .medication-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .medication-card h2 {
-            margin-top: 0;
-            color: #495057;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-weight: 400;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .label {
-            font-weight: 700;
-            color: var(--secondary-color);
-        }
-
-        .value {
-            font-weight: 400;
-        }
-
-        .equivalence-info {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #28a745; /* Green for equivalent */
-            margin-bottom: 15px;
-            padding: 5px 0;
-            border-top: 1px dotted #e0e0e0;
-            text-align: center;
-        }
-        
-        .equivalence-info strong {
-            font-weight: 700;
-        }
-
-
-        .expiration-info {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #ced4da;
-            text-align: center;
-            flex-grow: 1; 
-        }
-
-        .expiration-date {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--primary-color);
-        }
-
-        .days-remaining {
-            font-size: 2.2rem;
-            font-weight: 700;
-        }
-
-        /* Color Coding for Days Remaining */
-        .status-danger {
-            color: var(--danger-color); 
-        }
-        .status-warning {
-            color: var(--warning-color); 
-        }
-        .status-safe {
-            color: var(--success-color); 
-        }
-        
-        /* Details Button Style */
-        .details-button {
-            display: block;
-            width: 100%;
-            padding: 10px 15px;
-            margin-top: 20px;
-            background-color: var(--secondary-color);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            font-weight: 700;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .details-button:hover {
-            background-color: #5a6268;
-        }
-
-        /* =============================================
-           MOBILE OPTIMIZATION
-           ============================================= */
-        @media (max-width: 600px) {
-
-            body {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 1.4rem;
-                margin-bottom: 20px;
-            }
-
-            /* Sort control stacks vertically */
-            .sort-control {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-                margin-bottom: 12px;
-                padding: 6px 0;
-            }
-
-            .sort-control label {
-                margin-right: 0;
-                text-align: left;
-            }
-
-            .sort-control select {
-                width: 100%;
-                font-size: 1rem;
-                padding: 10px 15px;
-                box-sizing: border-box;
-            }
-
-            /* Single-column card grid */
-            .medication-list {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .section-header {
-                font-size: 1.15rem;
-                padding: 8px 0 4px 0;
-            }
-
-            .section-header.vitamin-header {
-                margin-top: 14px;
-            }
-
-            /* Tighter card layout */
-            .medication-card {
-                padding: 14px;
-            }
-
-            .medication-card h2 {
-                font-size: 1.15rem;
-                margin-bottom: 10px;
-                padding-bottom: 8px;
-            }
-
-            .detail-row {
-                font-size: 0.88rem;
-                margin-bottom: 6px;
-            }
-
-            .expiration-date {
-                font-size: 1rem;
-            }
-
-            .days-remaining {
-                font-size: 1.8rem;
-            }
-
-            /* Bigger touch target for button */
-            .details-button {
-                padding: 13px 15px;
-                font-size: 1rem;
-                margin-top: 14px;
-            }
-        }
-
-        /* Disable hover lift on touch devices */
-        @media (hover: none) {
-            .medication-card:hover {
-                transform: none;
-                box-shadow: var(--box-shadow);
-            }
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16665a">
+<title>Gyógyszereim · Napi rend és készlet</title>
+<style>
+:root{color-scheme:light;--bg:#f5f4ef;--paper:#fff;--ink:#20372f;--muted:#58685f;--line:#dce3dc;--green:#16665a;--soft:#e7f1eb;--amber:#845110;--amber-bg:#fff3dc;--red:#a43232;--red-bg:#ffeded;--radius:20px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}a{color:var(--green)}button,select,input{font:inherit}button,a,select{-webkit-tap-highlight-color:transparent}button,select{min-height:48px}button{cursor:pointer}a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #b45a20;outline-offset:4px}h1,h2,h3,p{margin:0}h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.12;letter-spacing:-.045em;font-weight:750}h2{font-size:clamp(1.45rem,4vw,2rem);letter-spacing:-.025em;line-height:1.25}h3{font-size:1.1rem;line-height:1.4}small,.small{font-size:.85rem}.muted{color:var(--muted)}.wrap{max-width:1120px;margin:auto;padding:0 24px}.skip-link{position:absolute;left:16px;top:-100px;z-index:5;background:white;padding:12px}.skip-link:focus{top:12px}.topbar{border-bottom:1px solid var(--line);padding:18px 0}.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-weight:750;display:flex;align-items:center;gap:10px}.brand-mark{display:grid;place-items:center;width:34px;height:34px;background:var(--green);border-radius:11px;color:white;font-size:22px}.print-button{background:transparent;border:1px solid var(--line);border-radius:12px;padding:8px 14px;color:var(--ink)}.hero{padding:38px 24px 28px}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:750;color:var(--green);margin-bottom:12px}.hero p{margin-top:14px;max-width:610px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:26px}.stat{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 20px}.stat strong{display:block;font-size:1.65rem;line-height:1.2;letter-spacing:-.03em}.stat span{display:block;color:var(--muted);font-size:.85rem;margin-top:5px}.nav{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0}.nav .wrap{display:flex;gap:8px}.nav a{display:flex;align-items:center;justify-content:center;min-height:46px;padding:9px 20px;border-radius:12px;text-decoration:none;font-weight:700;flex:1}.nav a:first-child{color:white;background:var(--green)}.nav a:last-child{background:white;border:1px solid var(--line)}section{padding-top:32px}.section-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}.section-title p{color:var(--muted);font-size:.9rem}.schedule{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.slot{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;min-width:0}.slot-header{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px}.slot-number{width:32px;height:32px;flex-shrink:0;border-radius:50%;background:var(--soft);color:var(--green);display:grid;place-items:center;font-size:.85rem;font-weight:750}.slot-header p{font-size:.85rem;color:var(--muted);margin-top:3px}.dose-list{list-style:none;margin:0;padding:0}.dose-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:12px 0;border-top:1px solid var(--line);align-items:start}.dose-list a{display:inline-block;text-decoration:none;font-weight:650;overflow-wrap:anywhere}.dose-list a:hover{text-decoration:underline}.dose-list small{display:block;color:var(--muted);margin-top:3px}.dose{white-space:nowrap;font-size:.85rem;font-weight:750;background:var(--soft);color:var(--green);padding:4px 9px;border-radius:8px}.slot-note{padding:11px 13px;border-radius:11px;background:#f3f6f2;font-size:.85rem;color:var(--muted);margin-top:14px}.notice{border:1px solid #e2ceaa;border-radius:14px;padding:14px 17px;background:var(--amber-bg);color:#6d4819;margin-top:16px;font-size:.9rem}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:18px 0}.toolbar label{font-size:.9rem;font-weight:650}.toolbar select{max-width:100%;border:1px solid var(--line);border-radius:12px;background:white;color:var(--ink);padding:8px 34px 8px 12px}.stock-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.stock-card{display:flex;flex-direction:column;background:white;border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0;scroll-margin-top:90px}.stock-card:target{outline:3px solid var(--green);outline-offset:3px}.type{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:750}.stock-card h3{margin:8px 0 12px;overflow-wrap:anywhere}.timing{font-size:.9rem;background:#f3f6f2;border-radius:10px;padding:10px 12px;margin-bottom:16px}.stock-numbers{display:flex;align-items:baseline;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:14px}.stock-numbers strong{font-size:1.8rem;letter-spacing:-.04em}.stock-numbers span{font-size:.85rem}.badge{border-radius:8px;padding:5px 9px;font-size:.78rem;font-weight:750;display:inline-block}.safe{background:var(--soft);color:var(--green)}.warning{background:var(--amber-bg);color:var(--amber)}.danger{background:var(--red-bg);color:var(--red)}.stock-details{margin:12px 0 18px;font-size:.85rem;color:var(--muted)}.stock-details div{display:flex;justify-content:space-between;gap:12px;margin-top:5px}.stock-details dt{flex:1}.stock-details dd{margin:0;text-align:right}.details-link{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:auto;font-size:.9rem;font-weight:700;text-decoration:none}.details-link:hover{background:var(--soft);border-color:var(--green)}details{margin:18px 0;border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px 18px}summary{cursor:pointer;font-weight:650;min-height:30px}details p{margin-top:12px;font-size:.9rem;color:var(--muted)}footer{padding:30px 0 max(30px,env(safe-area-inset-bottom));color:var(--muted);font-size:.8rem}footer p+p{margin-top:6px}.empty{grid-column:1/-1;padding:24px;background:white;border-radius:16px}
+@media(min-width:900px){.slot:last-child{grid-column:1/-1}.slot:last-child .dose-list{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}}
+@media(max-width:850px){.stock-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.wrap{padding:0 16px}.topbar{padding:12px 0}.hero{padding:28px 16px 20px}.hero p{font-size:.95rem}.print-button{padding:8px 11px;font-size:.85rem}.stats{gap:8px;margin-top:22px}.stat{padding:13px 10px;border-radius:13px}.stat strong{font-size:1.4rem}.stat span{font-size:.75rem}.nav a{padding:9px 10px}.section-title{display:block}.section-title p{margin-top:6px}.schedule,.stock-grid{grid-template-columns:minmax(0,1fr)}.slot,.stock-card{padding:18px}.toolbar{align-items:stretch;flex-direction:column;gap:6px}.toolbar select{width:100%}section{padding-top:26px}.notice{padding:13px 14px}.stock-card h3{font-size:1.15rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{background:white;font-size:11pt}.wrap{max-width:none;padding:0}.topbar,.nav,.print-button,.toolbar,footer{display:none}.hero{padding:0 0 12px}h1{font-size:26pt}.stats{margin-top:12px}.schedule{grid-template-columns:1fr 1fr}.stock-grid{grid-template-columns:1fr 1fr}.slot,.stock-card{break-inside:avoid;padding:12px}.details-link{display:none}section{padding-top:18px}.notice{background:white}.slot:last-child{grid-column:auto}.slot:last-child .dose-list{display:block}}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>💊 Gyógyszerkészlet Nyomkövető</h1>
-
-        <div class="sort-control">
-            <label for="sortSelector">Rendezés:</label>
-            <select id="sortSelector" onchange="renderMedications()">
-                <option value="days_asc">Hátralévő nap (növekvő)</option>
-                <option value="days_desc">Hátralévő nap (csökkenő)</option>
-                <option value="name_asc">Név (A-Z)</option>
-            </select>
-        </div>
-
-        <div class="medication-list" id="medicationList"></div>
-    </div>
-
-    <script>
-        // remainingPills = tényleges maradék tabletta 2026-10-18-án reggel (bevétel előtt)
-        const medications = [
-            {
-                name: "Letrox 100mcg",
-                type: "medication",
-                remainingPills: 69,
-                value: 100,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/letrox_100_g_tabletta/15550"
-            },
-            {
-                name: "Coverex-AS 5mg",
-                type: "medication",
-                remainingPills: 85,
-                value: 30,
-                daily: 2,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/coverex_as_5_mg_filmtabletta/15650"
-            },
-            {
-                name: "Zenofor 1000mg",
-                type: "medication",
-                remainingPills: 102,
-                value: 60,
-                daily: 2,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/zenofor_1000_mg_retard_tabletta/64214"
-            },
-            {
-                name: "ASA Protect Pharmavit (100mg)",
-                type: "medication",
-                remainingPills: 47,
-                value: 30,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/asa_protect_pharmavit_100_mg_gyomornedv_ellenallo_filmtabletta/56808"
-            },
-            {
-                name: "PANTOPRAZOL 1 A Pharma 20mg",
-                type: "medication",
-                remainingPills: 21,
-                value: 28,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/pantoprazol_1_a_pharma_20_mg_gyomornedv_ellenallo_tabletta/51838"
-            },
-            {
-                name: "Rozuva-Teva 10mg",
-                type: "medication",
-                remainingPills: 25,
-                value: 30,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/rozuva_teva_10_mg_filmtabletta/53697"
-            },
-            // --- Vitaminok / Étrend-kiegészítők ---
-            {
-                name: "BioCo Cink-biszglicinát 25mg",
-                type: "vitamin",
-                remainingPills: 16,
-                value: 60,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.bioco.hu/termek/cink-biszgliginat-25-mg"
-            },
-            {
-                name: "BÉRES VITA D3 4000NE",
-                type: "vitamin",
-                remainingPills: 51,
-                value: 60,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.hazipatika.com/gyogyszerkereso/termek/beres_vita_d3_4000_ne_lagy_kapszula/64029"
-            },
-            {
-                name: "JutaVit Szerves SZELÉN 100mcg",
-                type: "vitamin",
-                remainingPills: 75,
-                value: 100,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.jutavit.hu/termek/jutavit-szerves-selen-100-mcg"
-            },
-            {
-                name: "NORDVITAL Magnézium-biszglicinát 800mg +B6",
-                type: "vitamin",
-                remainingPills: 52,
-                value: 90,
-                daily: 1,
-                startDate: "2026-10-18",
-                equivalentGroup: null,
-                link: "https://www.nordvital.hu/termekek/magnezium-biszgliginat-800-mg-b6"
-            }
-        ];
-        
-        // --- NEW LOGIC: PRE-CALCULATE AGGREGATED STOCK FOR EQUIVALENT GROUPS ---
-        
-        // 1. Group medications by their equivalentGroup (or their own name if no group)
-        const groups = medications.reduce((acc, med) => {
-            const key = med.equivalentGroup || med.name;
-            if (!acc[key]) {
-                acc[key] = { totalPills: 0, dailyDosage: med.daily, startDate: med.startDate, members: [] };
-            }
-            acc[key].totalPills += med.remainingPills;
-            acc[key].members.push(med.name);
-            return acc;
-        }, {});
-
-        // 2. Calculate the depletion date for each GROUP
-        const calculatedGroups = {};
-        for (const key in groups) {
-            const group = groups[key];
-            
-            const daysSupply = Math.floor(group.totalPills / group.dailyDosage);
-
-            const today = new Date();
-            const startDate = new Date(group.startDate); 
-            
-            today.setHours(12, 0, 0, 0);
-            startDate.setHours(12, 0, 0, 0);
-
-            const diffTime = today.getTime() - startDate.getTime();
-            const daysUsed = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            const actualDaysUsed = Math.max(0, daysUsed);
-
-            const daysRemaining = daysSupply - actualDaysUsed;
-            
-            const depletionDate = new Date(today);
-            depletionDate.setDate(today.getDate() + daysRemaining);
-
-            calculatedGroups[key] = {
-                depletionDate: depletionDate.toISOString().slice(0, 10),
-                daysRemaining: Math.max(0, daysRemaining),
-                memberCount: group.members.length
-            };
-        }
-        
-        // ------------------------------------------------------------------------
-
-        // FUNCTION: Returns the calculated depletion data for the individual medication (now based on group)
-        function getDepletionData(med) {
-            const key = med.equivalentGroup || med.name;
-            return calculatedGroups[key];
-        }
-
-        // Function to determine the status color class
-        function getStatusClass(days) {
-            if (days < 7) {
-                return 'status-danger';
-            } else if (days <= 30) {
-                return 'status-warning';
-            } else {
-                return 'status-safe';
-            }
-        }
-        
-        // FUNCTION: Render the medication cards, incorporating sorting logic
-        function renderMedications() {
-            const listContainer = document.getElementById('medicationList');
-            const sortCriteria = document.getElementById('sortSelector').value;
-            
-            // 1. Map medications to include the AGGREGATED daysRemaining and depletion date
-            const medicationsWithDays = medications.map(med => {
-                const calculatedData = getDepletionData(med);
-                return {
-                    ...med,
-                    expiresOn: calculatedData.depletionDate,
-                    daysRemaining: calculatedData.daysRemaining,
-                    isEquivalent: med.equivalentGroup && calculatedData.memberCount > 1
-                };
-            });
-
-            // 2. SORT the list based on the selected criteria
-            medicationsWithDays.sort((a, b) => {
-                if (sortCriteria === 'name_asc') {
-                    return a.name.localeCompare(b.name);
-                } else if (sortCriteria === 'days_asc') {
-                    return a.daysRemaining - b.daysRemaining;
-                } else if (sortCriteria === 'days_desc') {
-                    return b.daysRemaining - a.daysRemaining;
-                }
-                return 0;
-            });
-
-            // Split into two groups
-            const meds    = medicationsWithDays.filter(m => m.type !== 'vitamin');
-            const vitamins = medicationsWithDays.filter(m => m.type === 'vitamin');
-
-            function buildCard(med, isVitamin) {
-                const daysRemaining = med.daysRemaining;
-                const statusClass = getStatusClass(daysRemaining);
-                const cardClass = isVitamin ? 'medication-card vitamin-card' : 'medication-card';
-
-                const expiresDateFormatted = new Date(med.expiresOn).toLocaleDateString('hu-HU', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-
-                const equivalenceHtml = med.isEquivalent
-                    ? `<div class="equivalence-info">Részét képezi a(z) <strong>${med.equivalentGroup}</strong> csoportnak. A készlet az összes azonos hatóanyagú gyógyszer alapján számított.</div>`
-                    : '';
-
-                return `
-                    <div class="${cardClass}">
-                        <h2>${med.name}</h2>
-                        ${equivalenceHtml}
-                        <div class="detail-row">
-                            <span class="label">Maradék tabletta:</span>
-                            <span class="value">${med.remainingPills} db</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Tabletta/doboz:</span>
-                            <span class="value">${med.value} db</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="label">Napi adag:</span>
-                            <span class="value">${med.daily} db/nap</span>
-                        </div>
-                        <div class="expiration-info">
-                            <div class="expiration-date">Készlet várható vége: ${expiresDateFormatted}</div>
-                            <div class="days-remaining ${statusClass}">${daysRemaining}</div>
-                            <div class="label">Hátralévő nap</div>
-                        </div>
-                        <a href="${med.link}" class="details-button" target="_blank">
-                            Részletek 🔗
-                        </a>
-                    </div>
-                `;
-            }
-
-            let htmlContent = '';
-
-            // --- Gyógyszerek szekció ---
-            htmlContent += '<div class="section-header">💊 Gyógyszerek</div>';
-            meds.forEach(med => { htmlContent += buildCard(med, false); });
-
-            // --- Vitaminok szekció ---
-            htmlContent += '<div class="section-header vitamin-header">🌿 Vitaminok / Étrend-kiegészítők</div>';
-            vitamins.forEach(med => { htmlContent += buildCard(med, true); });
-
-            listContainer.innerHTML = htmlContent;
-        }
-
-        // Run the rendering function when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-             // Set the default sort
-             document.getElementById('sortSelector').value = 'days_asc'; 
-             renderMedications();
-        });
-
-    </script>
+<a class="skip-link" href="#napi-rend">Ugrás a napi rendhez</a>
+<header class="topbar"><div class="wrap"><div class="brand"><span class="brand-mark" aria-hidden="true">+</span>Gyógyszereim</div><button class="print-button" id="printButton" type="button">Nyomtatás</button></div></header>
+<main>
+<div class="hero wrap"><div class="eyebrow">Napi rend és készlet</div><h1>Minden a maga idejében.</h1><p>A bevételi rend és a készletek egy helyen, könnyen áttekinthetően.</p><div class="stats"><div class="stat"><strong>6 + 4</strong><span>gyógyszer + kiegészítő</span></div><div class="stat"><strong>12 db</strong><span>összesen naponta</span></div><div class="stat"><strong id="nextRefill">–</strong><span>legközelebbi készlethiány</span></div></div></div>
+<nav class="nav" aria-label="Oldalon belüli navigáció"><div class="wrap"><a href="#napi-rend">Napi bevételi rend</a><a href="#keszlet">Készleteim</a></div></nav>
+<div class="wrap">
+<section id="napi-rend" aria-labelledby="scheduleTitle"><div class="section-title"><h2 id="scheduleTitle">A napod, öt lépésben</h2><p>Az általad megadott adagokkal</p></div><div class="schedule" id="scheduleList"></div><p class="notice"><strong>Pantoprazol:</strong> reggeli előtt 1 órával, egészben bevéve. A Coverex reggeli–esti elosztása és a Zenofor esti 2 tablettája a szakorvosi előírásod szerinti rend.</p></section>
+<section id="keszlet" aria-labelledby="stockTitle"><div class="section-title"><h2 id="stockTitle">Készleteim</h2><p id="stockDate"></p></div><div id="refillNotice" role="status"></div><div class="toolbar"><label for="sortSelector">Kártyák sorrendje</label><select id="sortSelector"><option value="days_asc">Leghamarabb fogy el</option><option value="days_desc">Legtovább tart ki</option><option value="name_asc">Név szerint (A–Z)</option></select></div><div class="stock-grid" id="medicationList"></div><details><summary>Hogyan számoljuk a készletet?</summary><p>A becslés a 2026. október 18-án, a napi bevétel előtt feljegyzett készletből indul. A kijelzett darabszám mindig a mai nap elejére vonatkozik; a mai adagokat még tartalmazza. Ez nem bevételi napló.</p><p>A négy étrend-kiegészítő 2026. október 22-én kimaradt. Ezt a számítás külön figyelembe veszi, ezért egy nappal tovább tartanak ki. A legutolsó teljesen fedezett napot és az első hiányos napot is jelöljük. Részleges napi készletnél a megmaradt darabszám külön látható.</p><p>A beszerzési jelzés 14 vagy kevesebb teljes napnyi készletnél jelenik meg. A számítás a feljegyzett szedési rendet feltételezi; új doboz vagy további kihagyás után frissíteni kell az adatokat. A készlet vége nem a dobozra nyomtatott lejárati idő.</p></details></section>
+<footer><p>A részletek a megfelelő gyógyszer betegtájékoztatójára vagy a kiegészítő gyártói termékoldalára vezetnek, új lapon.</p><p>A bevételi rend a saját gyógyszerelésed áttekintése. Az adagolás módosítását a kezelőorvossal egyeztesd.</p></footer>
+</div>
+<noscript><p class="wrap">A bevételi rend és a készletek megjelenítéséhez engedélyezd a JavaScriptet.</p></noscript>
+</main>
+<script>
+'use strict';
+// Indulókészlet: 2026-10-18, reggel, a napi bevétel előtt.
+// Az előző +1 db-os korrekció helyett a tényleges kihagyás külön szerepel.
+const medications = [
+ {id:'letrox',name:'Letrox 100 µg',type:'medication',remainingPills:69,value:100,daily:1,startDate:'2026-10-18',timing:'Felkeléskor · 1 tabletta',note:'Éhgyomorra, vízzel. Reggeli és kávé előtt legalább 30–60 perccel.',link:'https://www.hazipatika.com/gyogyszerkereso/termek/letrox_100_g_tabletta/6340'},
+ {id:'coverex',name:'Coverex-AS 5 mg',type:'medication',remainingPills:85,value:30,daily:2,startDate:'2026-10-18',timing:'Reggel 1 + este 1 tabletta',note:'A kardiológus által előírt reggeli–esti elosztásban.',link:'https://www.hazipatika.com/gyogyszerkereso/termek/coverex_as_5_mg_filmtabletta/15650'},
+ {id:'zenofor',name:'Zenofor 1000 mg retard',type:'medication',remainingPills:102,value:60,daily:2,startDate:'2026-10-18',timing:'Vacsorával · 2 tabletta',note:'A diabetológus előírása szerint egyszerre 2 tabletta. Egészben lenyelve.',link:'https://www.hazipatika.com/gyogyszerkereso/termek/zenofor_1000_mg_retard_tabletta/64214'},
+ {id:'asa',name:'ASA Protect Pharmavit 100 mg',type:'medication',remainingPills:47,value:30,daily:1,startDate:'2026-10-18',timing:'Reggelivel · 1 tabletta',note:'Étkezés közben vagy után, egészben lenyelve.',link:'https://www.hazipatika.com/gyogyszerkereso/termek/asa_protect_pharmavit_100_mg_gyomornedv_ellenallo_filmtabletta/56808'},
+ {id:'pantoprazol',name:'Pantoprazol 1 A Pharma 20 mg',type:'medication',remainingPills:21,value:28,daily:1,startDate:'2026-10-18',timing:'Reggeli előtt 1 órával · 1 tabletta',note:'Egészben, vízzel. A Letrox után időzítve.',link:'https://www.hazipatika.com/gyogyszerkereso/termek/pantoprazol_1_a_pharma_20_mg_gyomornedv_ellenallo_tabletta/51838'},
+ {id:'rozuva',name:'Rozuva-Teva 10 mg',type:'medication',remainingPills:25,value:30,daily:1,startDate:'2026-10-18',timing:'Reggelivel · 1 tabletta',note:'Naponta azonos időben.',link:'https://www.hazipatika.com/gyogyszerkereso/termek/rozuva_teva_10_mg_filmtabletta/59846'},
+ {id:'cink',name:'BioCo Cink-biszglicinát 25 mg',type:'vitamin',remainingPills:16,value:60,daily:1,startDate:'2026-10-18',skippedDates:['2026-10-22'],timing:'Ebéd után · 1 tabletta',note:'A Letroxtól legalább 4 órával elkülönítve.',link:'https://bioco.hu/specialis-termekek/agymukodes/bioco-cink-biszglicinat-25-mg-tabletta-60-db'},
+ {id:'d3',name:'Béres Vita-D3 4000 NE',type:'vitamin',remainingPills:51,value:60,daily:1,startDate:'2026-10-18',skippedDates:['2026-10-22'],timing:'Ebéd után · 1 kapszula',note:'A megadott napi rend szerint.',link:'https://www.beres.hu/termek/beres-vita-d3-4000-ne-lagyzselatin-kapszula/'},
+ {id:'szelen',name:'JutaVit Szerves Szelén 100 µg',type:'vitamin',remainingPills:75,value:100,daily:1,startDate:'2026-10-18',skippedDates:['2026-10-22'],timing:'Ebéd után · 1 tabletta',note:'A Letroxtól legalább 4 órával elkülönítve.',link:'https://jutavit.hu/webshop/asvanyi-anyagok/szerves-szelen-100db/'},
+ {id:'magnezium',name:'Nordvital Magnézium-biszglicinát 800 mg + B6',type:'vitamin',remainingPills:52,value:90,daily:1,startDate:'2026-10-18',skippedDates:['2026-10-22'],timing:'Ebéd után · 1 kapszula',note:'A Letroxtól legalább 4 órával elkülönítve.',link:'https://nordvital.hu/products/nordvital-magnezium-biszglicinat-90db'}
+];
+const schedule = [
+ {title:'Felkeléskor',subtitle:'A nap első gyógyszere',items:[['letrox',1]],note:'Vízzel, éhgyomorra. A reggelid az eddigi rend szerint 1–2 órával később következik.'},
+ {title:'Reggeli előtt',subtitle:'1 órával az étkezés előtt',items:[['pantoprazol',1]],note:'Példa kétórás reggeli időablakra: Letrox → 60 perc → pantoprazol → 60 perc → reggeli.'},
+ {title:'Reggelinél',subtitle:'1–2 órával felkelés után',items:[['rozuva',1],['coverex',1],['asa',1]],note:'Coverex: a megadott szakorvosi rendben. A betegtájékoztató étkezés előtti bevételt javasol; az étkezéshez viszonyított időzítést egyeztesd a kezelőorvossal.'},
+ {title:'Ebéd után / délután',subtitle:'Legalább 4 órával a Letrox után',items:[['cink',1],['d3',1],['magnezium',1],['szelen',1]],note:'Mind a négy kiegészítőből napi 1 darab, az általad megadott rend szerint.'},
+ {title:'Vacsoránál',subtitle:'Az esti adagok',items:[['coverex',1],['zenofor',2]],note:'Zenofor: az esti étkezéssel, egyszerre 2 tabletta, egészben. Coverex: az előírt esti 1 tabletta.'}
+];
+const DAY_MS = 86400000;
+function dayNumber(iso) { return Date.parse(iso + 'T00:00:00Z') / DAY_MS; }
+function isoDay(day) { return new Date(day * DAY_MS).toISOString().slice(0,10); }
+function todayISO() {
+ const parts = new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Budapest',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+ const part = type => parts.find(p => p.type === type).value;
+ return `${part('year')}-${part('month')}-${part('day')}`;
+}
+function formatDate(iso,short=false) { return new Intl.DateTimeFormat('hu-HU',{timeZone:'UTC',...(short?{month:'short',day:'numeric'}:{year:'numeric',month:'short',day:'numeric'})}).format(new Date(iso+'T12:00:00Z')); }
+// Naptári napokkal számolunk, ezért az óraátállítás nem okoz eltérést.
+function getDepletionData(med,asOf=todayISO()) {
+ const start = dayNumber(med.startDate), today = dayNumber(asOf);
+ const skipped = new Set((med.skippedDates || []).map(dayNumber).filter(d => d >= start));
+ const daysElapsed = Math.max(0,today-start);
+ const skippedPast = [...skipped].filter(d => d < today).length;
+ const remaining = Math.max(0,med.remainingPills-(daysElapsed-skippedPast)*med.daily);
+ const fullDays = Math.floor(remaining/med.daily), partialPills = remaining%med.daily;
+ let available = med.remainingPills, cursor = start, lastCovered = null;
+ while (available >= med.daily) {
+  if (!skipped.has(cursor)) { available -= med.daily; lastCovered = cursor; }
+  cursor++;
+ }
+ while(skipped.has(cursor)) cursor++;
+ return {remaining,fullDays,partialPills,firstShortDate:isoDay(cursor),lastCoveredDate:lastCovered===null?null:isoDay(lastCovered),daysUntilShort:Math.max(0,cursor-today)};
+}
+function renderSchedule() {
+ document.getElementById('scheduleList').innerHTML = schedule.map((slot,index) => `<article class="slot"><div class="slot-header"><span class="slot-number" aria-hidden="true">${index+1}</span><div><h3>${slot.title}</h3><p>${slot.subtitle}</p></div></div><ul class="dose-list">${slot.items.map(([id,count]) => {const med=medications.find(m=>m.id===id);return `<li><div><a href="#${id}">${med.name}</a><small>${med.note}</small></div><span class="dose">${count} db</span></li>`;}).join('')}</ul><p class="slot-note">${slot.note}</p></article>`).join('');
+}
+function renderMedications() {
+ const today=todayISO();
+ const data=medications.map(med=>({...med,...getDepletionData(med,today)}));
+ const sort=document.getElementById('sortSelector').value;
+ data.sort((a,b)=>sort==='name_asc'?a.name.localeCompare(b.name,'hu'):sort==='days_desc'?b.daysUntilShort-a.daysUntilShort:a.daysUntilShort-b.daysUntilShort);
+ document.getElementById('stockDate').textContent=`${formatDate(today)} · nap eleji becslés`;
+ const nearest=Math.min(...data.map(m=>m.daysUntilShort));
+ document.getElementById('nextRefill').textContent=nearest===0?'Ma':`${nearest} nap`;
+ const low=data.filter(m=>m.fullDays<=14);
+ const urgent=low.some(m=>m.fullDays<7);
+ document.getElementById('refillNotice').innerHTML=low.length?`<p class="notice"><strong>${urgent?'Beszerzés esedékes':'Érdemes előre beszerezni'}:</strong> ${low.map(m=>`${m.name} (${m.fullDays} teljes nap)`).join(' · ')}</p>`:'';
+ document.getElementById('medicationList').innerHTML=data.map(med=>{
+  const status=med.fullDays<7?'danger':med.fullDays<=14?'warning':'safe';
+  const badge=med.remaining===0?'Elfogyott':med.fullDays===0?'Részleges napi készlet':`${med.fullDays} teljes nap`;
+  return `<article class="stock-card" id="${med.id}"><span class="type">${med.type==='vitamin'?'Étrend-kiegészítő':'Gyógyszer'}</span><h3>${med.name}</h3><p class="timing">${med.timing}</p><div class="stock-numbers"><div><strong>${med.remaining}</strong> <span>db maradt</span></div><span class="badge ${status}">${badge}</span></div><dl class="stock-details"><div><dt>Napi adag</dt><dd>${med.daily} db</dd></div><div><dt>Dobozonként</dt><dd>${med.value} db</dd></div><div><dt>Utolsó teljes nap</dt><dd>${med.lastCoveredDate?formatDate(med.lastCoveredDate):'Nincs teljes napi adag'}</dd></div><div><dt>Első hiányos nap</dt><dd>${formatDate(med.firstShortDate)}</dd></div>${med.partialPills?`<div><dt>További részadag</dt><dd>${med.partialPills} db</dd></div>`:''}</dl><a class="details-link" href="${med.link}" target="_blank" rel="noopener noreferrer" aria-label="${med.name} – részletek, új lapon"><span>${med.type==='vitamin'?'Gyártói részletek':'Betegtájékoztató'}</span><span aria-hidden="true">↗</span></a></article>`;
+ }).join('');
+}
+document.getElementById('sortSelector').addEventListener('change',renderMedications);
+document.getElementById('printButton').addEventListener('click',()=>window.print());
+renderSchedule();renderMedications();
+let renderedDay=todayISO();
+setInterval(()=>{const day=todayISO();if(day!==renderedDay){renderedDay=day;renderMedications();}},60000);
+</script>
 </body>
 </html>
