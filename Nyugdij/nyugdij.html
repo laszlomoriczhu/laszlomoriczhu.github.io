@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nyugdíj Visszaszámláló 🎉</title>
     <style>
         * {
@@ -15,14 +15,14 @@
 
         html,
         body {
-            height: 100%;
-            overflow: hidden;
+            min-height: 100%;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, black 0%, grey 100%);
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -39,7 +39,8 @@
             text-align: center;
             width: 100%;
             max-width: 420px;
-            margin: 0 auto;
+            margin: auto;
+            flex-shrink: 0;
             position: relative;
         }
 
@@ -451,6 +452,7 @@
             align-items: center;
             padding: 20px;
             backdrop-filter: blur(4px);
+            overflow-y: auto;
         }
 
         .anniversary-content {
@@ -463,6 +465,8 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             border: 3px solid #ff69b4;
             animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: calc(100dvh - 40px);
+            overflow-y: auto;
         }
 
         @keyframes popIn {
@@ -872,6 +876,34 @@
             return new Date(fixedRetirementDate);
         }
 
+        // Naptári évek és napok; a maradék órák valós eltelt időt jelentenek.
+        function calendarDifference(start, end) {
+            function anniversary(years) {
+                const date = new Date(start);
+                date.setDate(1);
+                date.setFullYear(start.getFullYear() + years);
+                const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                date.setDate(Math.min(start.getDate(), lastDay));
+                return date;
+            }
+            let years = end.getFullYear() - start.getFullYear();
+            if (anniversary(years) > end) years--;
+            const anchor = anniversary(years);
+            const civilDay = date => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+            let days = Math.round((civilDay(end) - civilDay(anchor)) / 86400000);
+            const dayAnchor = new Date(anchor);
+            dayAnchor.setDate(anchor.getDate() + days);
+            if (dayAnchor > end) {
+                days--;
+                dayAnchor.setDate(dayAnchor.getDate() - 1);
+            }
+            const remainder = end - dayAnchor;
+            return { years, days,
+                hours: Math.floor(remainder / 3600000),
+                minutes: Math.floor(remainder / 60000) % 60,
+                seconds: Math.floor(remainder / 1000) % 60 };
+        }
+
         // 4. JELENLEGI ÁLLAPOT SZÁMÍTÁSA
         function calculateCurrentProgress() {
             const now = getNow();
@@ -884,8 +916,9 @@
             const progressPercent = (elapsedDays / totalDaysRequired) * 100;
 
             // Évek és napok számítása a teljesítményhez
-            const currentYears = Math.floor(elapsedDays / 365);
-            const currentRemainingDays = Math.floor(elapsedDays % 365);
+            const elapsedCalendar = calendarDifference(workStartDate, now);
+            const currentYears = elapsedCalendar.years;
+            const currentRemainingDays = elapsedCalendar.days;
 
             return {
                 percent: progressPercent,
@@ -916,23 +949,7 @@
             // Teljes napok
             const totalDays = Math.floor(timeLeftMs / (1000 * 60 * 60 * 24));
 
-            // Évek és napok
-            const years = Math.floor(totalDays / 365);
-            const days = totalDays % 365;
-
-            // Órák, percek, másodpercek
-            const hours = Math.floor((timeLeftMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeftMs % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeftMs % (1000 * 60)) / 1000);
-
-            return {
-                years: years,
-                days: days,
-                hours: hours,
-                minutes: minutes,
-                seconds: seconds,
-                totalDays: totalDays
-            };
+            return { ...calendarDifference(now, targetDate), totalDays };
         }
 
         // 6. ADVENTI GYERTYÁK SZÁMÍTÁSA
@@ -1007,10 +1024,14 @@
         // KONFETTI EFFEKTUS
         let isConfettiRunning = false;
         let confettiInterval;
+        let confettiMode = null;
 
         function startConfetti(intensity = 'normal', type = 'standard') {
-            if (isConfettiRunning) return;
+            const mode = intensity + ':' + type;
+            if (isConfettiRunning && confettiMode === mode) return;
+            stopConfetti();
             isConfettiRunning = true;
+            confettiMode = mode;
 
             const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4', '#ffffff', '#FFD700'];
 
@@ -1108,6 +1129,7 @@
                 clearInterval(confettiInterval);
                 confettiInterval = null;
                 isConfettiRunning = false;
+                confettiMode = null;
             }
         }
 
@@ -1164,7 +1186,7 @@
             const messageDiv = document.querySelector('.message');
 
             // Ha már nyugdíjas
-            if (timeLeft.totalDays <= 0) {
+            if (getNow() >= fixedRetirementDate) {
                 document.body.style.background = 'linear-gradient(135deg, #FFD700 0%, #FF8C00 100%)';
                 document.getElementById('target-date').textContent = 'Már nyugdíjas! 🎉';
                 document.getElementById('progress-bar').style.width = '100%';
@@ -1173,7 +1195,9 @@
                 // Üzenet frissítése
                 messageDiv.innerHTML = '<p class="highlight" style="font-size: 1.3em; color: #2e7d32;">Gratulálok! Elérted a nyugdíjat! 🥂</p>';
 
-                startConfetti('intense');
+                if (!Array.from(document.querySelectorAll('.anniversary-modal')).some(m => m.style.display === 'flex')) {
+                    startConfetti('intense');
+                }
             } else {
                 document.body.style.background = getSeasonalBackground();
                 // Ha még nem nyugdíjas (vagy visszaváltottunk teszt módból)
@@ -1210,8 +1234,7 @@
         }
 
         // 9. INICIALIZÁLÁS ÉS FRISSÍTÉS
-        updateAllDisplays(); // Azonnali frissítés
-        setInterval(updateAllDisplays, 1000); // Másodpercenkénti frissítés
+
 
         // 11. HÁZASSÁGI ÉVFORDULÓ KEZELÉSE
         function checkAnniversary() {
@@ -1239,7 +1262,7 @@
             stopConfetti();
         }
 
-        checkAnniversary();
+
 
         // 12. NÉVNAP KEZELÉSE (Csilla - 04.22)
         function checkNameDay() {
@@ -1259,7 +1282,7 @@
             stopConfetti();
         }
 
-        checkNameDay();
+
 
         // 13. HAVI ÉVFORDULÓ KEZELÉSE (Minden hónap 3-án - Megismerkedés: 2017.04.03)
         function checkMonthlyAnniversary() {
@@ -1290,7 +1313,7 @@
             stopConfetti();
         }
 
-        checkMonthlyAnniversary();
+
 
         // 14. SZÜLETÉSNAP KEZELÉSE (11.19)
         function checkBirthday() {
@@ -1325,15 +1348,33 @@
             }, 1000);
         }
 
-        checkBirthday();
 
-        // 10. MOBIL OPTIMALIZÁLÁS
-        document.addEventListener('gesturestart', function (e) {
-            e.preventDefault();
+
+        // Egy adott napon a bezárt köszöntést nem nyitjuk újra.
+        let lastCheckedDay = null;
+        function refresh() {
+            const now = getNow();
+            const dayKey = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate();
+            if (dayKey !== lastCheckedDay) {
+                lastCheckedDay = dayKey;
+                document.querySelectorAll('.anniversary-modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+                stopConfetti();
+                checkAnniversary();
+                checkNameDay();
+                checkMonthlyAnniversary();
+                checkBirthday();
+            }
+            updateAllDisplays();
+        }
+        refresh();
+        setInterval(refresh, 1000);
+        // Mobilon háttérből visszatérve azonnal frissítünk.
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) refresh();
         });
-
-        document.addEventListener('touchstart', function () { }, { passive: true });
+        window.addEventListener('pageshow', refresh);
     </script>
 </body>
-
 </html>
