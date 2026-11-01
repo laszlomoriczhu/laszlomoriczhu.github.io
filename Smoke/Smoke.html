@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smoke</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Alap / Normál téma */
+        :root {
+            --body-bg-color: #f0f0f0;
+            --container-bg-color: #ffffff;
+            --text-color: #333;
+            --border-color: #ddd;
+        }
+
+        /* Dark mode téma */
+        body.dark-mode {
+            --body-bg-color: #222222;
+            --container-bg-color: #333333;
+            --text-color: #f0f0f0;
+            --border-color: #555;
+        }
+
+        /* Old Money 1 (Klasszikus Bézs/Barna) */
+        body.old-money-1 {
+            --body-bg-color: #e8e4d9;
+            --container-bg-color: #ffffff;
+            --text-color: #5d4d38;
+            --border-color: #c7c1b5;
+        }
+
+        /* Old Money 2 (Sötétkék és Arany) */
+        body.old-money-2 {
+            --body-bg-color: #0b1a29;
+            --container-bg-color: #1a2a3a;
+            --text-color: #e6c888;
+            --border-color: #2d455c;
+        }
+
+        /* Old Money 3 (Ezüst és Fehér) */
+        body.old-money-3 {
+            --body-bg-color: #f3f3f3;
+            --container-bg-color: #e1e1e1;
+            --text-color: #444;
+            --border-color: #c2c2c2;
+        }
+
+        /* Old Money 4 (Sötétzöld és Krém) */
+        body.old-money-4 {
+            --body-bg-color: #1f3d2f;
+            --container-bg-color: #f5f0e1;
+            --text-color: #1f3d2f;
+            --border-color: #c7c2b6;
+        }
+
+        /* Old Money 5 (Vörös és Arany) */
+        body.old-money-5 {
+            --body-bg-color: #6a1a20;
+            --container-bg-color: #f0e6c3;
+            --text-color: #6a1a20;
+            --border-color: #d1b782;
+        }
+
+        /* Old Money 6 (Szürke és Kék) */
+        body.old-money-6 {
+            --body-bg-color: #c3c7d6;
+            --container-bg-color: #e6e9f2;
+            --text-color: #3a475a;
+            --border-color: #b1b5c4;
+        }
+
+        /* Old Money 7 (Kék és Fehér) */
+        body.old-money-7 {
+            --body-bg-color: #1d3557;
+            --container-bg-color: #ffffff;
+            --text-color: #1d3557;
+            --border-color: #457b9d;
+        }
+
+        /* Old Money 8 (Zöld és Bézs) */
+        body.old-money-8 {
+            --body-bg-color: #2a3d2e;
+            --container-bg-color: #f2f1e6;
+            --text-color: #2a3d2e;
+            --border-color: #a4b3a4;
+        }
+
+        /* Old Money 9 (Sötétlila és Szürke) */
+        body.old-money-9 {
+            --body-bg-color: #3f3041;
+            --container-bg-color: #635d64;
+            --text-color: #e0e0e0;
+            --border-color: #544b55;
+        }
+
+        /* Old Money 10 (Sötét Barna és Krém) */
+        body.old-money-10 {
+            --body-bg-color: #4b3832;
+            --container-bg-color: #f4f1de;
+            --text-color: #4b3832;
+            --border-color: #8c766b;
+        }
+
+        /* Globális stílusok */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--body-bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color 0.5s ease;
+        }
+
+        .container {
+            background-color: var(--container-bg-color);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            box-sizing: border-box;
+            transition: background-color 0.5s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        #szam {
+            font-size: 4em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            transition: color 0.5s ease;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        #elteltIdo, #megsporoltIdo, #currencyRate {
+            font-size: 1.1em;
+            color: var(--text-color);
+            transition: color 0.5s ease;
+        }
+
+        .dropdown-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        #themeSelector {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--container-bg-color);
+            color: var(--text-color);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        #themeSelector:hover {
+            border-color: var(--text-color);
+        }
+
+        /* Reszponzív stílusok */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            #szam {
+                font-size: 3em;
+            }
+            p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Aktuális állapot</h1>
+            <div class="dropdown-container">
+                <select id="themeSelector">
+                    <option value="normal">Normál</option>
+                    <option value="dark-mode">Sötét mód</option>
+                    <optgroup label="Old Money">
+                        <option value="old-money-1">Bézs/Barna</option>
+                        <option value="old-money-2">Sötétkék/Arany</option>
+                        <option value="old-money-3">Ezüst/Fehér</option>
+                        <option value="old-money-4">Zöld/Krém</option>
+                        <option value="old-money-5">Vörös/Arany</option>
+                        <option value="old-money-6">Szürke/Kék</option>
+                        <option value="old-money-7">Kék/Fehér</option>
+                        <option value="old-money-8">Zöld/Bézs</option>
+                        <option value="old-money-9">Sötétlila/Szürke</option>
+                        <option value="old-money-10">Sötét Barna/Krém</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
+        <div id="szam">0.00</div>
+        <p id="elteltIdo">Eltelt idő: 0 nap, 0 óra, 0 perc</p>
+        <p id="megsporoltIdo">Megspórolt idő: 0 nap, 0 óra, 0 perc</p>
+        <h1>
+        <p id="currencyRate">EUR/HUF árfolyam: Betöltés...</p>
+        </h1>
+    </div>
+
+    <script>
+        const priceUpdates = [
+            { date: new Date('2025-05-10T00:00:00'), price: 2390 },
+            { date: new Date('2025-07-17T00:00:00'), price: 2440 }
+        ];
+
+        const minutesSavedPerDay = 80;
+
+        function frissitSzam() {
+            const most = new Date();
+            let teljesSzam = 0;
+            let kumulaltElteltIdoMs = 0;
+            
+            for (let i = 0; i < priceUpdates.length; i++) {
+                const currentPeriodStartDate = priceUpdates[i].date;
+                const currentPrice = priceUpdates[i].price;
+                const nextPeriodStartDate = (i + 1 < priceUpdates.length) ? priceUpdates[i + 1].date : most;
+                
+                if (currentPeriodStartDate <= most) {
+                    const periodEndDate = (nextPeriodStartDate > most) ? most : nextPeriodStartDate;
+                    const periodDurationMs = periodEndDate.getTime() - currentPeriodStartDate.getTime();
+                    
+                    kumulaltElteltIdoMs += periodDurationMs;
+                    
+                    const periodDays = periodDurationMs / (1000 * 60 * 60 * 24);
+                    teljesSzam += periodDays * currentPrice;
+                } else {
+                    break;
+                }
+            }
+            
+            const jelenlegiSzam = teljesSzam;
+            document.getElementById('szam').innerText = jelenlegiSzam.toLocaleString('hu-HU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            
+            // Eltelt idő
+            const totalSeconds = Math.floor(kumulaltElteltIdoMs / 1000);
+            const seconds = totalSeconds % 60;
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const minutes = totalMinutes % 60;
+            const totalHours = Math.floor(totalMinutes / 60);
+            const hours = totalHours % 24;
+            const days = Math.floor(totalHours / 24);
+
+            document.getElementById('elteltIdo').innerText = `Eltelt idő: ${days} nap, ${hours} óra, ${minutes} perc`;
+            
+            // Megspórolt idő
+            const totalDaysElapsedForSavedTime = kumulaltElteltIdoMs / (1000 * 60 * 60 * 24);
+            const totalMinutesSaved = totalDaysElapsedForSavedTime * minutesSavedPerDay;
+            const savedDays = Math.floor(totalMinutesSaved / (60 * 24));
+            const remainingMinutesAfterDays = totalMinutesSaved % (60 * 24);
+            const savedHours = Math.floor(remainingMinutesAfterDays / 60);
+            const savedMinutes = Math.floor(remainingMinutesAfterDays % 60);
+            
+            document.getElementById('megsporoltIdo').innerText = `Megspórolt idő: ${savedDays} nap, ${savedHours} óra, ${savedMinutes} perc`;
+        }
+
+        // ÚJ DINAMIKUS ÁRFOLYAM FRISSÍTŐ FUNKCIÓ
+        async function frissitArfolyam() {
+            const url = 'https://api.frankfurter.app/latest?from=EUR&to=HUF';
+            const currencyRateElement = document.getElementById('currencyRate');
+            
+            // Előzetes érték, amíg betölt
+            currencyRateElement.innerText = `EUR/HUF árfolyam: Betöltés...`; 
+
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP hiba: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Ellenőrizzük, hogy a válasz tartalmazza-e a "HUF" árfolyamot
+                if (data.rates && data.rates.HUF) {
+                    const arfolyam = data.rates.HUF;
+                    currencyRateElement.innerText = `EUR/HUF: ${arfolyam.toFixed(2)} HUF`;
+                } else {
+                    throw new Error("Érvénytelen válasz az API-tól.");
+                }
+                
+            } catch (error) {
+                console.error("Hiba az árfolyam lekérdezése közben:", error);
+                // Visszatérés a statikus értékhez hiba esetén
+                const statikusArfolyam = 390.85; 
+                currencyRateElement.innerText = `EUR/HUF: ${statikusArfolyam.toFixed(2)} HUF (Hiba esetén)`;
+            }
+        }
+
+        // Kezdeti frissítések
+        frissitSzam();
+        frissitArfolyam();
+
+        // Frissítés 60 másodpercenként
+        setInterval(frissitSzam, 60000);
+        // Frissítés 5 percenként
+        setInterval(frissitArfolyam, 300000);
+
+        // Téma váltó (változatlan maradt)
+        const themeSelector = document.getElementById('themeSelector');
+        const applyTheme = (theme) => {
+            document.body.classList.remove(
+                'dark-mode', 'old-money-1', 'old-money-2', 'old-money-3',
+                'old-money-4', 'old-money-5', 'old-money-6',
+                'old-money-7', 'old-money-8', 'old-money-9', 'old-money-10'
+            );
+            if (theme !== 'normal') {
+                document.body.classList.add(theme);
+            }
+            localStorage.setItem('selectedTheme', theme);
+        };
+
+        themeSelector.addEventListener('change', (event) => {
+            applyTheme(event.target.value);
+        });
+
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+            themeSelector.value = savedTheme;
+        } else {
+            applyTheme('normal');
+            themeSelector.value = 'normal';
+        }
+    </script>
+</body>
+</html>
