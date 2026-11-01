@@ -1,356 +1,73 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smoke</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        /* Alap / Normál téma */
-        :root {
-            --body-bg-color: #f0f0f0;
-            --container-bg-color: #ffffff;
-            --text-color: #333;
-            --border-color: #ddd;
-        }
-
-        /* Dark mode téma */
-        body.dark-mode {
-            --body-bg-color: #222222;
-            --container-bg-color: #333333;
-            --text-color: #f0f0f0;
-            --border-color: #555;
-        }
-
-        /* Old Money 1 (Klasszikus Bézs/Barna) */
-        body.old-money-1 {
-            --body-bg-color: #e8e4d9;
-            --container-bg-color: #ffffff;
-            --text-color: #5d4d38;
-            --border-color: #c7c1b5;
-        }
-
-        /* Old Money 2 (Sötétkék és Arany) */
-        body.old-money-2 {
-            --body-bg-color: #0b1a29;
-            --container-bg-color: #1a2a3a;
-            --text-color: #e6c888;
-            --border-color: #2d455c;
-        }
-
-        /* Old Money 3 (Ezüst és Fehér) */
-        body.old-money-3 {
-            --body-bg-color: #f3f3f3;
-            --container-bg-color: #e1e1e1;
-            --text-color: #444;
-            --border-color: #c2c2c2;
-        }
-
-        /* Old Money 4 (Sötétzöld és Krém) */
-        body.old-money-4 {
-            --body-bg-color: #1f3d2f;
-            --container-bg-color: #f5f0e1;
-            --text-color: #1f3d2f;
-            --border-color: #c7c2b6;
-        }
-
-        /* Old Money 5 (Vörös és Arany) */
-        body.old-money-5 {
-            --body-bg-color: #6a1a20;
-            --container-bg-color: #f0e6c3;
-            --text-color: #6a1a20;
-            --border-color: #d1b782;
-        }
-
-        /* Old Money 6 (Szürke és Kék) */
-        body.old-money-6 {
-            --body-bg-color: #c3c7d6;
-            --container-bg-color: #e6e9f2;
-            --text-color: #3a475a;
-            --border-color: #b1b5c4;
-        }
-
-        /* Old Money 7 (Kék és Fehér) */
-        body.old-money-7 {
-            --body-bg-color: #1d3557;
-            --container-bg-color: #ffffff;
-            --text-color: #1d3557;
-            --border-color: #457b9d;
-        }
-
-        /* Old Money 8 (Zöld és Bézs) */
-        body.old-money-8 {
-            --body-bg-color: #2a3d2e;
-            --container-bg-color: #f2f1e6;
-            --text-color: #2a3d2e;
-            --border-color: #a4b3a4;
-        }
-
-        /* Old Money 9 (Sötétlila és Szürke) */
-        body.old-money-9 {
-            --body-bg-color: #3f3041;
-            --container-bg-color: #635d64;
-            --text-color: #e0e0e0;
-            --border-color: #544b55;
-        }
-
-        /* Old Money 10 (Sötét Barna és Krém) */
-        body.old-money-10 {
-            --body-bg-color: #4b3832;
-            --container-bg-color: #f4f1de;
-            --text-color: #4b3832;
-            --border-color: #8c766b;
-        }
-
-        /* Globális stílusok */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--body-bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            transition: background-color 0.5s ease;
-        }
-
-        .container {
-            background-color: var(--container-bg-color);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-            box-sizing: border-box;
-            transition: background-color 0.5s ease;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin: 0;
-            font-weight: 700;
-        }
-
-        #szam {
-            font-size: 4em;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 15px;
-            transition: color 0.5s ease;
-        }
-
-        p {
-            font-size: 1.2em;
-            margin: 10px 0;
-        }
-
-        #elteltIdo, #megsporoltIdo, #currencyRate {
-            font-size: 1.1em;
-            color: var(--text-color);
-            transition: color 0.5s ease;
-        }
-
-        .dropdown-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 10px;
-        }
-
-        #themeSelector {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background-color: var(--container-bg-color);
-            color: var(--text-color);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.5s ease;
-        }
-
-        #themeSelector:hover {
-            border-color: var(--text-color);
-        }
-
-        /* Reszponzív stílusok */
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            #szam {
-                font-size: 3em;
-            }
-            p {
-                font-size: 1em;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#173e35">
+<title>Dohányzás nélkül · Idő és megtakarítás</title>
+<style>
+:root{color-scheme:light;--paper:#f5f4ee;--ink:#183b32;--muted:#66776d;--green:#173e35;--line:#dce3d9;--accent:#d9f09d}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-text-size-adjust:100%}.wrap{width:min(100% - 40px,900px);margin-inline:auto}header{padding:28px 0 22px}.brand{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:750}.brand-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:12px;background:var(--green);color:var(--accent)}.brand-icon svg{width:20px;height:20px}.intro{padding:10px 0 26px}.eyebrow{font-size:.7rem;font-weight:750;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}h1{font-size:clamp(2.2rem,7vw,3.8rem);line-height:1.08;letter-spacing:-.055em;margin:0;font-weight:750}.intro p:last-child{color:var(--muted);margin:14px 0 0;font-size:.95rem}.dashboard{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{border:1px solid var(--line);border-radius:26px;padding:28px;background:#fff;min-width:0}.savings{grid-column:1/-1;background:var(--green);border-color:var(--green);color:#fff;position:relative;overflow:hidden;padding:32px}.savings:after{content:"";position:absolute;width:220px;height:220px;border:1px solid #ffffff12;border-radius:50%;right:-90px;top:-115px;pointer-events:none}.card-label{font-size:.8rem;font-weight:650;margin:0;display:flex;align-items:center;gap:9px}.savings .card-label{color:#d3e3d6}.dot{height:7px;width:7px;flex:none;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px #d9f09d15}.amount{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:12px;margin:20px 0 12px;font-variant-numeric:tabular-nums;line-height:1.1}.amount strong{font-size:clamp(1.85rem,7.2vw,4.4rem);letter-spacing:-.045em;font-weight:750;white-space:nowrap}.currency{font-size:clamp(1.2rem,4vw,2rem);color:var(--accent);font-weight:650}.savings-note{margin:0;color:#c0d4c5;font-size:.85rem;max-width:430px}.saving-rate{display:inline-flex;align-items:center;gap:7px;color:var(--accent);border-top:1px solid #ffffff20;padding-top:17px;margin-top:24px;font-size:.85rem;width:100%}.card h2{margin:0;font-size:.9rem;font-weight:650}.duration{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:24px;font-variant-numeric:tabular-nums}.duration strong{display:block;font-size:clamp(1.55rem,4vw,2.2rem);font-weight:750;letter-spacing:-.045em;line-height:1.15}.duration span{display:block;color:var(--muted);font-size:.75rem;margin-top:6px}.card-note{font-size:.8rem;color:var(--muted);margin:20px 0 0}.time-card{background:#e9eedf}.time-amount{font-variant-numeric:tabular-nums;font-size:clamp(2rem,5vw,3rem);font-weight:750;letter-spacing:-.045em;line-height:1.2;margin:22px 0 8px}.time-amount small{font-size:1rem;letter-spacing:0;font-weight:550}.time-remainder{font-size:.9rem;margin:0;color:#4e6555;font-variant-numeric:tabular-nums}.footer{padding:24px 0 max(28px,env(safe-area-inset-bottom));color:var(--muted);font-size:.75rem}.footer p{margin:0}.footer p+p{margin-top:7px}noscript p{padding:16px;border:1px solid var(--line);border-radius:12px}.savings,.card{box-shadow:0 8px 28px #183b3204}
+@media(max-width:650px){.dashboard{grid-template-columns:minmax(0,1fr);gap:14px}.savings{grid-column:auto}.wrap{width:calc(100% - 32px)}header{padding:22px 0 20px}.intro{padding:8px 0 24px}.card{padding:24px;border-radius:22px}.savings{padding:26px 24px}.duration{gap:12px}.duration strong{font-size:2rem}.amount{column-gap:9px}.saving-rate{margin-top:20px}}
+@media(max-width:360px){.card,.savings{padding:22px 18px}.duration{gap:7px}.duration strong{font-size:1.7rem}.amount strong{font-size:1.8rem}}
+</style>
 </head>
 <body>
-
-    <div class="container">
-        <div class="header">
-            <h1>Aktuális állapot</h1>
-            <div class="dropdown-container">
-                <select id="themeSelector">
-                    <option value="normal">Normál</option>
-                    <option value="dark-mode">Sötét mód</option>
-                    <optgroup label="Old Money">
-                        <option value="old-money-1">Bézs/Barna</option>
-                        <option value="old-money-2">Sötétkék/Arany</option>
-                        <option value="old-money-3">Ezüst/Fehér</option>
-                        <option value="old-money-4">Zöld/Krém</option>
-                        <option value="old-money-5">Vörös/Arany</option>
-                        <option value="old-money-6">Szürke/Kék</option>
-                        <option value="old-money-7">Kék/Fehér</option>
-                        <option value="old-money-8">Zöld/Bézs</option>
-                        <option value="old-money-9">Sötétlila/Szürke</option>
-                        <option value="old-money-10">Sötét Barna/Krém</option>
-                    </optgroup>
-                </select>
-            </div>
-        </div>
-
-        <div id="szam">0.00</div>
-        <p id="elteltIdo">Eltelt idő: 0 nap, 0 óra, 0 perc</p>
-        <p id="megsporoltIdo">Megspórolt idő: 0 nap, 0 óra, 0 perc</p>
-        <h1>
-        <p id="currencyRate">EUR/HUF árfolyam: Betöltés...</p>
-        </h1>
-    </div>
-
-    <script>
-        const priceUpdates = [
-            { date: new Date('2025-05-10T00:00:00'), price: 2390 },
-            { date: new Date('2025-07-17T00:00:00'), price: 2440 }
-        ];
-
-        const minutesSavedPerDay = 80;
-
-        function frissitSzam() {
-            const most = new Date();
-            let teljesSzam = 0;
-            let kumulaltElteltIdoMs = 0;
-            
-            for (let i = 0; i < priceUpdates.length; i++) {
-                const currentPeriodStartDate = priceUpdates[i].date;
-                const currentPrice = priceUpdates[i].price;
-                const nextPeriodStartDate = (i + 1 < priceUpdates.length) ? priceUpdates[i + 1].date : most;
-                
-                if (currentPeriodStartDate <= most) {
-                    const periodEndDate = (nextPeriodStartDate > most) ? most : nextPeriodStartDate;
-                    const periodDurationMs = periodEndDate.getTime() - currentPeriodStartDate.getTime();
-                    
-                    kumulaltElteltIdoMs += periodDurationMs;
-                    
-                    const periodDays = periodDurationMs / (1000 * 60 * 60 * 24);
-                    teljesSzam += periodDays * currentPrice;
-                } else {
-                    break;
-                }
-            }
-            
-            const jelenlegiSzam = teljesSzam;
-            document.getElementById('szam').innerText = jelenlegiSzam.toLocaleString('hu-HU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            
-            // Eltelt idő
-            const totalSeconds = Math.floor(kumulaltElteltIdoMs / 1000);
-            const seconds = totalSeconds % 60;
-            const totalMinutes = Math.floor(totalSeconds / 60);
-            const minutes = totalMinutes % 60;
-            const totalHours = Math.floor(totalMinutes / 60);
-            const hours = totalHours % 24;
-            const days = Math.floor(totalHours / 24);
-
-            document.getElementById('elteltIdo').innerText = `Eltelt idő: ${days} nap, ${hours} óra, ${minutes} perc`;
-            
-            // Megspórolt idő
-            const totalDaysElapsedForSavedTime = kumulaltElteltIdoMs / (1000 * 60 * 60 * 24);
-            const totalMinutesSaved = totalDaysElapsedForSavedTime * minutesSavedPerDay;
-            const savedDays = Math.floor(totalMinutesSaved / (60 * 24));
-            const remainingMinutesAfterDays = totalMinutesSaved % (60 * 24);
-            const savedHours = Math.floor(remainingMinutesAfterDays / 60);
-            const savedMinutes = Math.floor(remainingMinutesAfterDays % 60);
-            
-            document.getElementById('megsporoltIdo').innerText = `Megspórolt idő: ${savedDays} nap, ${savedHours} óra, ${savedMinutes} perc`;
-        }
-
-        // ÚJ DINAMIKUS ÁRFOLYAM FRISSÍTŐ FUNKCIÓ
-        async function frissitArfolyam() {
-            const url = 'https://api.frankfurter.app/latest?from=EUR&to=HUF';
-            const currencyRateElement = document.getElementById('currencyRate');
-            
-            // Előzetes érték, amíg betölt
-            currencyRateElement.innerText = `EUR/HUF árfolyam: Betöltés...`; 
-
-            try {
-                const response = await fetch(url);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP hiba: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Ellenőrizzük, hogy a válasz tartalmazza-e a "HUF" árfolyamot
-                if (data.rates && data.rates.HUF) {
-                    const arfolyam = data.rates.HUF;
-                    currencyRateElement.innerText = `EUR/HUF: ${arfolyam.toFixed(2)} HUF`;
-                } else {
-                    throw new Error("Érvénytelen válasz az API-tól.");
-                }
-                
-            } catch (error) {
-                console.error("Hiba az árfolyam lekérdezése közben:", error);
-                // Visszatérés a statikus értékhez hiba esetén
-                const statikusArfolyam = 390.85; 
-                currencyRateElement.innerText = `EUR/HUF: ${statikusArfolyam.toFixed(2)} HUF (Hiba esetén)`;
-            }
-        }
-
-        // Kezdeti frissítések
-        frissitSzam();
-        frissitArfolyam();
-
-        // Frissítés 60 másodpercenként
-        setInterval(frissitSzam, 60000);
-        // Frissítés 5 percenként
-        setInterval(frissitArfolyam, 300000);
-
-        // Téma váltó (változatlan maradt)
-        const themeSelector = document.getElementById('themeSelector');
-        const applyTheme = (theme) => {
-            document.body.classList.remove(
-                'dark-mode', 'old-money-1', 'old-money-2', 'old-money-3',
-                'old-money-4', 'old-money-5', 'old-money-6',
-                'old-money-7', 'old-money-8', 'old-money-9', 'old-money-10'
-            );
-            if (theme !== 'normal') {
-                document.body.classList.add(theme);
-            }
-            localStorage.setItem('selectedTheme', theme);
-        };
-
-        themeSelector.addEventListener('change', (event) => {
-            applyTheme(event.target.value);
-        });
-
-        const savedTheme = localStorage.getItem('selectedTheme');
-        if (savedTheme) {
-            applyTheme(savedTheme);
-            themeSelector.value = savedTheme;
-        } else {
-            applyTheme('normal');
-            themeSelector.value = 'normal';
-        }
-    </script>
+<header class="wrap"><div class="brand"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4c-8-1-14 3-14 9a6 6 0 0 0 6 6c6 0 10-7 8-15Z"/><path d="m5 20 9-10"/></svg></span>Dohányzás nélkül</div></header>
+<main class="wrap">
+<div class="intro"><p class="eyebrow">Minden nap számít</p><h1>Több marad.<br>Pénzből és időből is.</h1><p>2025. május 10. óta nem dohányzom.</p></div>
+<div class="dashboard">
+<section class="card savings" aria-labelledby="moneyTitle"><h2 class="card-label" id="moneyTitle"><span class="dot" aria-hidden="true"></span>Ennyit spóroltam</h2><div class="amount" aria-live="off"><strong id="savedMoney">–</strong><span class="currency">Ft</span></div><p class="savings-note">A pénz, amit azóta nem cigarettára költöttem.</p><div class="saving-rate">+<span id="dailySaving">2 440</span> Ft minden dohányzásmentes nappal</div></section>
+<section class="card" aria-labelledby="elapsedTitle"><h2 id="elapsedTitle">Dohányzás nélkül eltelt idő</h2><div class="duration" aria-live="off"><div><strong id="elapsedDays">–</strong><span>nap</span></div><div><strong id="elapsedHours">–</strong><span>óra</span></div><div><strong id="elapsedMinutes">–</strong><span>perc</span></div><div><strong id="elapsedSeconds">–</strong><span>másodperc</span></div></div><p class="card-note">Egy döntés. Azóta minden nap nyerek vele.</p></section>
+<section class="card time-card" aria-labelledby="timeTitle"><h2 id="timeTitle">Visszanyert idő</h2><p class="time-amount"><span id="savedDays">–</span> <small>teljes nap</small></p><p class="time-remainder" id="savedRemainder">– óra és – perc</p><p class="card-note">Napi 80 perc, amit már nem dohányzással töltök.</p></section>
+</div>
+<noscript><p>A számlálók megjelenítéséhez engedélyezd a JavaScriptet.</p></noscript>
+</main>
+<footer class="wrap footer"><p>A számlálók másodpercenként frissülnek.</p><p>A megtakarítás napi 2 390 Ft-tal indul, 2025. július 17-től napi 2 440 Ft-tal, 2026. november 2-től napi 2 840 Ft-tal számol.</p></footer>
+<script>
+'use strict';
+// Rögzített magyarországi kezdőidők; a látogató időzónája nem módosítja őket.
+const START = Date.parse('2025-05-10T00:00:00+02:00');
+const PRICE_UPDATES = [
+ {time: START, price: 2390},
+ {time: Date.parse('2025-07-17T00:00:00+02:00'), price: 2440},
+ {time: Date.parse('2026-11-02T00:00:00+01:00'), price: 2840}
+];
+const DAY_MS = 86400000;
+const MINUTES_SAVED_PER_DAY = 80;
+const moneyFormat = new Intl.NumberFormat('hu-HU', {minimumFractionDigits:2, maximumFractionDigits:2});
+const integerFormat = new Intl.NumberFormat('hu-HU', {maximumFractionDigits:0});
+const elements = Object.fromEntries(['savedMoney','dailySaving','elapsedDays','elapsedHours','elapsedMinutes','elapsedSeconds','savedDays','savedRemainder'].map(id => [id,document.getElementById(id)]));
+function calculateSavings(now) {
+ const elapsedMs = Math.max(0, now - START);
+ let money = 0;
+ let dailySaving = PRICE_UPDATES[0].price;
+ for (let i = 0; i < PRICE_UPDATES.length; i++) {
+  const period = PRICE_UPDATES[i];
+  if (now < period.time) break;
+  const end = Math.min(now, PRICE_UPDATES[i+1]?.time ?? now);
+  money += Math.max(0,end-period.time) / DAY_MS * period.price;
+  dailySaving = period.price;
+ }
+ const elapsedSeconds = Math.floor(elapsedMs / 1000);
+ const savedMinutes = Math.floor(elapsedMs / DAY_MS * MINUTES_SAVED_PER_DAY);
+ return {money,dailySaving,days:Math.floor(elapsedSeconds/86400),hours:Math.floor(elapsedSeconds/3600)%24,minutes:Math.floor(elapsedSeconds/60)%60,seconds:elapsedSeconds%60,savedDays:Math.floor(savedMinutes/1440),savedHours:Math.floor(savedMinutes/60)%24,savedMinutes:savedMinutes%60};
+}
+function updateCounters() {
+ const data = calculateSavings(Date.now());
+ elements.savedMoney.textContent = moneyFormat.format(data.money);
+ elements.dailySaving.textContent = integerFormat.format(data.dailySaving);
+ elements.elapsedDays.textContent = integerFormat.format(data.days);
+ elements.elapsedHours.textContent = String(data.hours).padStart(2,'0');
+ elements.elapsedMinutes.textContent = String(data.minutes).padStart(2,'0');
+ elements.elapsedSeconds.textContent = String(data.seconds).padStart(2,'0');
+ elements.savedDays.textContent = integerFormat.format(data.savedDays);
+ elements.savedRemainder.textContent = data.savedHours + ' óra és ' + data.savedMinutes + ' perc';
+}
+updateCounters();
+setInterval(updateCounters,1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden) updateCounters();});
+window.addEventListener('pageshow',updateCounters);
+</script>
 </body>
 </html>
