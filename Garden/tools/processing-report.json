@@ -1,16 +1,16 @@
 {
-  "photos": 702,
+  "photos": 714,
   "albums": {
     "lakok": 42,
     "kezdetek": 29,
     "2023": 41,
     "2024": 190,
     "2025": 193,
-    "2026": 207
+    "2026": 219
   },
-  "original_bytes": 3408360548,
-  "web_bytes": 291390272,
-  "reused": 664,
+  "original_bytes": 3511000889,
+  "web_bytes": 295197130,
+  "reused": 702,
   "duplicates_skipped": [],
   "missing_exif_date": [
     "LAKOINK\\432530051_1820009441804731_5430928721167106434_n.jpg"

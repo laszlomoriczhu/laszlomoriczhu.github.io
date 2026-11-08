@@ -13,4 +13,4 @@ A script 480 pixeles miniatűröket és legfeljebb 1600 pixeles nagy képeket k�
 
 Az EXIF készítési dátum alapján sorol évbe és évszakba. Január és február az előző év teléhez tartozik. Dátum nélküli VIRAGOK-képek a „Besorolásra vár” albumba kerülnek. Az eredmények és hibák a tools/processing-report.json fájlban ellenőrizhetők. Új fotók hozzáadása után újra kell futtatni; a böngésző nem olvassa a C:\Garden mappát.
 
-A kezdőlapi három kép jelenleg automatikus válogatás a legújabb, dátummal rendelkező VIRAGOK-képekből. Később kézzel kiválasztható a végleges borító.
+Az alapértelmezett „November” album a 2026. novemberi VIRAGOK-képeket mutatja, amelyek a 2026-os albumban is megmaradnak. A főoldal egyetlen nyitóképe a 20261108_170956.jpg feldolgozott változata.
