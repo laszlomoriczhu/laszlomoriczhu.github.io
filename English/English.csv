@@ -1986,3 +1986,203 @@ MP3|nagy utazás|big trip
 MP3|valaki körbevezet (helyszínen)|to show someone around
 MP3|vizsgák|exams
 MP3|javítani a nyelvtudást|to improve English
+FaerchITsupport|megbeszélés|meeting
+FaerchITsupport|napirend|agenda
+FaerchITsupport|meghívó|invitation
+FaerchITsupport|résztvevő|participant
+FaerchITsupport|feladat|task
+FaerchITsupport|határidő|deadline
+FaerchITsupport|felelős|owner
+FaerchITsupport|folyamat|process
+FaerchITsupport|projekt|project
+FaerchITsupport|állapot|status
+FaerchITsupport|frissítés|update
+FaerchITsupport|visszajelzés|feedback
+FaerchITsupport|kérés|request
+FaerchITsupport|jóváhagyás|approval
+FaerchITsupport|megoldás|solution
+FaerchITsupport|probléma|problem
+FaerchITsupport|hiba|issue
+FaerchITsupport|hibaelhárítás|troubleshooting
+FaerchITsupport|hibaüzenet|error message
+FaerchITsupport|hibajegy|ticket
+FaerchITsupport|bejelentés|incident
+FaerchITsupport|szolgáltatáskérés|service request
+FaerchITsupport|prioritás|priority
+FaerchITsupport|sürgős|urgent
+FaerchITsupport|folyamatban|in progress
+FaerchITsupport|megoldva|resolved
+FaerchITsupport|lezárva|closed
+FaerchITsupport|függőben|pending
+FaerchITsupport|elérhető|available
+FaerchITsupport|nem elérhető|unavailable
+FaerchITsupport|felhasználó|user
+FaerchITsupport|felhasználói fiók|user account
+FaerchITsupport|rendszergazdai fiók|administrator account
+FaerchITsupport|jelszó|password
+FaerchITsupport|jelszó-visszaállítás|password reset
+FaerchITsupport|bejelentkezés|sign-in
+FaerchITsupport|kijelentkezés|sign-out
+FaerchITsupport|azonosítás|authentication
+FaerchITsupport|többtényezős hitelesítés|multi-factor authentication
+FaerchITsupport|hozzáférés|access
+FaerchITsupport|hozzáférési jogosultság|access permission
+FaerchITsupport|jogosultság|permission
+FaerchITsupport|engedélyezve|enabled
+FaerchITsupport|letiltva|disabled
+FaerchITsupport|zárolva|locked
+FaerchITsupport|feloldva|unlocked
+FaerchITsupport|megosztott postafiók|shared mailbox
+FaerchITsupport|melléklet|attachment
+FaerchITsupport|levél továbbítása|email forwarding
+FaerchITsupport|válasz mindenkinek|reply all
+FaerchITsupport|eszköz|device
+FaerchITsupport|munkaállomás|workstation
+FaerchITsupport|asztali számítógép|desktop computer
+FaerchITsupport|hordozható számítógép|laptop
+FaerchITsupport|sorozatszám|serial number
+FaerchITsupport|eszköznév|device name
+FaerchITsupport|operációs rendszer|operating system
+FaerchITsupport|újraindítás|restart
+FaerchITsupport|leállítás|shutdown
+FaerchITsupport|újratelepítés|reinstallation
+FaerchITsupport|telepítés|installation
+FaerchITsupport|beállítás|configuration
+FaerchITsupport|illesztőprogram|driver
+FaerchITsupport|szoftverfrissítés|software update
+FaerchITsupport|biztonsági frissítés|security update
+FaerchITsupport|távoli elérés|remote access
+FaerchITsupport|távoli asztal|remote desktop
+FaerchITsupport|kiszolgáló|server
+FaerchITsupport|virtuális kiszolgáló|virtual server
+FaerchITsupport|hálózat|network
+FaerchITsupport|hálózati meghajtó|network drive
+FaerchITsupport|internetkapcsolat|internet connection
+FaerchITsupport|kapcsolódási hiba|connection issue
+FaerchITsupport|vezeték nélküli hálózat|wireless network
+FaerchITsupport|hálózati cím|IP address
+FaerchITsupport|tartománynév-rendszer|domain name system
+FaerchITsupport|tűzfal|firewall
+FaerchITsupport|virtuális magánhálózat|virtual private network
+FaerchITsupport|nyomtató|printer
+FaerchITsupport|nyomtatási sor|print queue
+FaerchITsupport|alapértelmezett nyomtató|default printer
+FaerchITsupport|eszközregisztráció|device enrollment
+FaerchITsupport|eszköz-hozzárendelés|device assignment
+FaerchITsupport|hozzárendelve|assigned
+FaerchITsupport|nincs hozzárendelve|not assigned
+FaerchITsupport|függőben lévő hozzárendelés|pending assignment
+FaerchITsupport|hardverazonosító|hardware hash
+FaerchITsupport|hibrid csatlakozás|hybrid join
+FaerchITsupport|helyi Active Directory|on-premises Active Directory
+FaerchITsupport|biztonságos csatorna|secure channel
+FaerchITsupport|megfelelőségi állapot|compliance status
+FaerchITsupport|védelmi szabályzat|security policy
+FaerchITsupport|adatvédelem|data protection
+FaerchITsupport|biztonsági mentés|backup
+FaerchITsupport|helyreállítás|recovery
+FaerchITsupport|karbantartás|maintenance
+FaerchITsupport|szolgáltatáskiesés|service outage
+FaerchITsupport|ideiglenes megoldás|workaround
+FaerchITsupport|végleges megoldás|permanent solution
+FaerchITsupport|szabványosítás|standardization
+FaerchMeeting|megbeszélés|meeting
+FaerchMeeting|napirend|agenda
+FaerchMeeting|meghívó|invitation
+FaerchMeeting|résztvevő|participant
+FaerchMeeting|szervező|organizer
+FaerchMeeting|időpont|time
+FaerchMeeting|időtartam|duration
+FaerchMeeting|helyszín|location
+FaerchMeeting|tárgyaló|meeting room
+FaerchMeeting|online megbeszélés|online meeting
+FaerchMeeting|csatlakozni|join
+FaerchMeeting|meghívni|invite
+FaerchMeeting|elfogadni|accept
+FaerchMeeting|elutasítani|decline
+FaerchMeeting|áthelyezni|reschedule
+FaerchMeeting|lemondani|cancel
+FaerchMeeting|elkezdeni|start
+FaerchMeeting|folytatni|continue
+FaerchMeeting|befejezni|finish
+FaerchMeeting|megbeszélni|discuss
+FaerchMeeting|elmagyarázni|explain
+FaerchMeeting|bemutatni|present
+FaerchMeeting|javasolni|suggest
+FaerchMeeting|egyetérteni|agree
+FaerchMeeting|nem egyetérteni|disagree
+FaerchMeeting|eldönteni|decide
+FaerchMeeting|tisztázni|clarify
+FaerchMeeting|ellenőrizni|check
+FaerchMeeting|megerősíteni|confirm
+FaerchMeeting|összefoglalni|summarize
+FaerchMeeting|kérdés|question
+FaerchMeeting|válasz|answer
+FaerchMeeting|vélemény|opinion
+FaerchMeeting|ötlet|idea
+FaerchMeeting|javaslat|suggestion
+FaerchMeeting|döntés|decision
+FaerchMeeting|megoldás|solution
+FaerchMeeting|probléma|problem
+FaerchMeeting|lehetőség|opportunity
+FaerchMeeting|eredmény|result
+FaerchMeeting|cél|goal
+FaerchMeeting|következő lépés|next step
+FaerchMeeting|feladat|action item
+FaerchMeeting|felelős személy|responsible person
+FaerchMeeting|határidő|deadline
+FaerchMeeting|fontos pont|key point
+FaerchMeeting|fő téma|main topic
+FaerchMeeting|rövid összefoglaló|brief summary
+FaerchMeeting|van egy kérdésem|I have a question
+FaerchMeeting|kérdezhetek valamit?|Can I ask something?
+FaerchMeeting|nem értem|I don't understand
+FaerchMeeting|nem teljesen értem|I don't fully understand
+FaerchMeeting|meg tudnád ismételni?|Could you repeat that?
+FaerchMeeting|el tudnád magyarázni?|Could you explain that?
+FaerchMeeting|beszélnél egy kicsit lassabban?|Could you speak a little slower?
+FaerchMeeting|jól értem, hogy…?|Do I understand correctly that...?
+FaerchMeeting|úgy érted, hogy…?|Do you mean that...?
+FaerchMeeting|ha jól értem…|If I understand correctly...
+FaerchMeeting|szerintem|I think
+FaerchMeeting|véleményem szerint|In my opinion
+FaerchMeeting|egyetértek|I agree
+FaerchMeeting|teljesen egyetértek|I completely agree
+FaerchMeeting|nem vagyok benne biztos|I'm not sure
+FaerchMeeting|ez jó ötlet|That's a good idea
+FaerchMeeting|ez jól hangzik|That sounds good
+FaerchMeeting|ez működhet|This could work
+FaerchMeeting|ez lehetséges|This is possible
+FaerchMeeting|ez nem lehetséges|This is not possible
+FaerchMeeting|meg kell vizsgálnunk|We need to check
+FaerchMeeting|utána kell néznem|I need to check
+FaerchMeeting|ellenőrizni fogom|I will check
+FaerchMeeting|utánanézek|I'll look into it
+FaerchMeeting|visszajelzek|I'll get back to you
+FaerchMeeting|megpróbálom|I'll try
+FaerchMeeting|meg tudjuk oldani|We can solve it
+FaerchMeeting|találnunk kell egy megoldást|We need to find a solution
+FaerchMeeting|mi a következő lépés?|What is the next step?
+FaerchMeeting|mi a határidő?|What is the deadline?
+FaerchMeeting|ki a felelős ezért?|Who is responsible for this?
+FaerchMeeting|ki fogja ezt elvégezni?|Who will do this?
+FaerchMeeting|mikorra van erre szükség?|When do we need this?
+FaerchMeeting|mikor tudjuk elkezdeni?|When can we start?
+FaerchMeeting|van valami frissítés?|Is there any update?
+FaerchMeeting|van valami kérdés?|Are there any questions?
+FaerchMeeting|van valakinek ötlete?|Does anyone have an idea?
+FaerchMeeting|térjünk vissza erre|Let's come back to this
+FaerchMeeting|lépjünk tovább|Let's move on
+FaerchMeeting|nézzük meg|Let's take a look
+FaerchMeeting|beszéljük meg|Let's discuss it
+FaerchMeeting|ellenőrizzük|Let's check
+FaerchMeeting|foglaljuk össze|Let's summarize
+FaerchMeeting|egyelőre|for now
+FaerchMeeting|jelenleg|currently
+FaerchMeeting|amint lehetséges|as soon as possible
+FaerchMeeting|a következő megbeszélésen|in the next meeting
+FaerchMeeting|a megbeszélés után|after the meeting
+FaerchMeeting|a megbeszélés előtt|before the meeting
+FaerchMeeting|még egy dolog|one more thing
+FaerchMeeting|részemről ennyi|that's all from me
+FaerchMeeting|köszönöm mindenkinek|thank you everyone
