@@ -2286,3 +2286,103 @@ FaerchValuesMeeting|röviden|in short
 FaerchValuesMeeting|ha jól értem|if I understand correctly
 FaerchValuesMeeting|némítva vagy|you're muted
 FaerchValuesMeeting|hallotok engem?|can you hear me?
+FaerchDigitalTeam|dokumentáció|documentation
+FaerchDigitalTeam|folyamat|process
+FaerchDigitalTeam|folyamatokat automatizálni|automate processes
+FaerchDigitalTeam|folyamatokat optimalizálni|optimize processes
+FaerchDigitalTeam|dokumentációt készíteni|create documentation
+FaerchDigitalTeam|dokumentációt frissíteni|update the documentation
+FaerchDigitalTeam|útmutatás|guidance
+FaerchDigitalTeam|hol keressük|where to look
+FaerchDigitalTeam|mit keressünk|what to look for
+FaerchDigitalTeam|felelősség|responsibility
+FaerchDigitalTeam|felelősséget vállalni|take responsibility
+FaerchDigitalTeam|elsődleges technikus|primary technician
+FaerchDigitalTeam|hatékonyabbnak lenni|be more efficient
+FaerchDigitalTeam|feladatokat kezelni|handle tasks
+FaerchDigitalTeam|erőforrásokat felszabadítani|free up resources
+FaerchDigitalTeam|lépésről lépésre|step by step
+FaerchDigitalTeam|bevezetni|roll out
+FaerchDigitalTeam|bevezetés|rollout
+FaerchDigitalTeam|szabványosítani|standardize
+FaerchDigitalTeam|szabványosítás|standardization
+FaerchDigitalTeam|együtt támogatni egymást|support each other
+FaerchDigitalTeam|segíteni egymásnak|help each other
+FaerchDigitalTeam|együtt megcsinálni|do it together
+FaerchDigitalTeam|szívesen fogadom a javaslatokat|I'm open to suggestions
+FaerchDigitalTeam|jobb módszert találni|find a better way
+FaerchDigitalTeam|változtatásokat végrehajtani|make changes
+FaerchDigitalTeam|manuális telepítés|manual installation
+FaerchDigitalTeam|automatikus telepítés|automatic installation
+FaerchDigitalTeam|szoftvert telepíteni|install software
+FaerchDigitalTeam|szoftvert automatikusan telepíteni|automatically deploy software
+FaerchDigitalTeam|új laptopot telepíteni|deploy a new laptop
+FaerchDigitalTeam|időt megtakarítani|save time
+FaerchDigitalTeam|nagy időmegtakarítás|huge time saver
+FaerchDigitalTeam|ServiceDesk jegyet létrehozni|create a ServiceDesk ticket
+FaerchDigitalTeam|keress meg minket|reach out to us
+FaerchDigitalTeam|nyugodtan kérdezz|feel free to ask
+FaerchDigitalTeam|nyugodtan keress meg|feel free to reach out
+FaerchDigitalTeam|ha bármilyen kérdésed van|if you have any questions
+FaerchDigitalTeam|ha bizonytalan vagy|if you're uncertain
+FaerchDigitalTeam|megbeszélni valamit|discuss something
+FaerchDigitalTeam|ugyanazon az úton járunk|we are on the same journey
+FaerchDigitalTeam|az egész vállalat|the whole business
+FaerchDigitalTeam|minden telephely|all sites
+FaerchDigitalTeam|üzemi telephely|production site
+FaerchDigitalTeam|helyspecifikus|site-specific
+FaerchDigitalTeam|infrastruktúra|infrastructure
+FaerchDigitalTeam|biztonsági szempontból|from a security point of view
+FaerchDigitalTeam|IT szempontból|from an IT perspective
+FaerchDigitalTeam|üzleti szempontból|from a business perspective
+FaerchDigitalTeam|jobb támogatás|better support
+FaerchDigitalTeam|jó döntést hozni|make a good decision
+FaerchDigitalTeam|áttekintést készíteni|create an overview
+FaerchDigitalTeam|követelmény|requirement
+FaerchDigitalTeam|megoldást találni|find a solution
+FaerchDigitalTeam|meglévő szabvány|existing standard
+FaerchDigitalTeam|kiválasztott alkalmazások|selected applications
+FaerchDigitalTeam|mi már használjuk|we already use
+FaerchDigitalTeam|teljesen egyetértek|I fully agree
+FaerchDigitalTeam|szeretnék hozzátenni valamit|I wanted to add something
+FaerchDigitalTeam|szeretném megosztani a képernyőmet|I would like to share my screen
+FaerchDigitalTeam|megosztom a képernyőmet|I'll share my screen
+FaerchDigitalTeam|megmutatom, hogyan néz ki|I'll show you how it looks
+FaerchDigitalTeam|ki szeretné próbálni?|who wants to try it?
+FaerchDigitalTeam|kipróbálni|try it out
+FaerchDigitalTeam|tesztelni|test
+FaerchDigitalTeam|próbaidőszak|trial period
+FaerchDigitalTeam|távoli támogatás|remote support
+FaerchDigitalTeam|távoli asztal|remote desktop
+FaerchDigitalTeam|közvetlenül csatlakozni|connect directly
+FaerchDigitalTeam|hozzáférés|access
+FaerchDigitalTeam|felhasználónév|username
+FaerchDigitalTeam|rendszergazdai jelszó|admin password
+FaerchDigitalTeam|végpont|endpoint
+FaerchDigitalTeam|frissíteni|refresh
+FaerchDigitalTeam|biztonsági csapat|security team
+FaerchDigitalTeam|adathalász szimuláció|phishing simulation
+FaerchDigitalTeam|adathalász e-mail|phishing email
+FaerchDigitalTeam|jelenteni az adathalász e-mailt|report the phishing email
+FaerchDigitalTeam|egyre jobb|getting better and better
+FaerchDigitalTeam|az előző alkalomhoz képest|compared to last time
+FaerchDigitalTeam|ígéretesnek tűnik|it seems promising
+FaerchDigitalTeam|a legfontosabb tanulság|the main takeaway
+FaerchDigitalTeam|biztonsági audit|cybersecurity audit
+FaerchDigitalTeam|auditjelentés|audit report
+FaerchDigitalTeam|kiváltó ok|root cause
+FaerchDigitalTeam|munkafolyamat|work stream
+FaerchDigitalTeam|legmagasabb prioritás|highest priority
+FaerchDigitalTeam|sürgősségi változtatás|emergency change
+FaerchDigitalTeam|normál változtatás|normal change
+FaerchDigitalTeam|hatáselemzés|impact analysis
+FaerchDigitalTeam|kockázat alapján|based on the risk
+FaerchDigitalTeam|megvalósítva|implemented
+FaerchDigitalTeam|tervezési fázisban|in the planning phase
+FaerchDigitalTeam|még nem kezdődött el|not started yet
+FaerchDigitalTeam|régi rendszerek|legacy systems
+FaerchDigitalTeam|kapacitáskorlát|capacity constraint
+FaerchDigitalTeam|ütemezett leállás|scheduled downtime
+FaerchDigitalTeam|hálózatfejlesztés|network upgrade
+FaerchDigitalTeam|átállás|migration
+FaerchDigitalTeam|virtuális gép|virtual machine
