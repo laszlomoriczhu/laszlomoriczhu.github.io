@@ -55,6 +55,40 @@ settings.count = Math.max(1,Math.min(1988,parseInt(settings.count,10)||10));
 settings.delay = Math.max(1,Math.min(60,parseInt(settings.delay,10)||5));
 let dictionary=[],words=[],index=0,completed=0,correct=0,incorrect=0,running=false,paused=false,revealed=false,timer=null,version=0,currentScreen='home',voices=[];
 const synth = window.speechSynthesis;
+// Keep the screen awake only while an active lesson is visible.
+let screenLock = null;
+let screenLockPending = false;
+let screenLockRevision = 0;
+function needsScreenLock(){
+    return running && !paused && !document.hidden;
+}
+function releaseScreenLock(){
+    screenLockRevision++;
+    const lock = screenLock;
+    screenLock = null;
+    if(lock) lock.release().catch(() => {});
+}
+async function requestScreenLock(){
+    if(!('wakeLock' in navigator) || !needsScreenLock() || screenLock || screenLockPending) return;
+    const revision = screenLockRevision;
+    screenLockPending = true;
+    try{
+        const lock = await navigator.wakeLock.request('screen');
+        if(revision !== screenLockRevision || !needsScreenLock()){
+            await lock.release();
+            return;
+        }
+        screenLock = lock;
+        lock.addEventListener('release', () => {
+            if(screenLock === lock) screenLock = null;
+        });
+    }catch{
+        // Unsupported or denied requests must not interrupt learning.
+    }finally{
+        screenLockPending = false;
+        if(revision !== screenLockRevision && needsScreenLock()) requestScreenLock();
+    }
+}
 function store(key,value){try{localStorage.setItem(key,value)}catch{}}
 function refreshVoices(){voices=synth?synth.getVoices():[]}
 if(synth){refreshVoices();synth.addEventListener('voiceschanged',refreshVoices)}
@@ -73,21 +107,21 @@ function cancel(){version++;clearTimeout(timer);timer=null;if(synth)synth.cancel
 function speak(text,lang,done=()=>{}){const token=version;if(!synth){done();return}const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang==='hu'?'hu-HU':'en-US';utterance.rate=.9;utterance.voice=voices.find(v=>v.lang.toLowerCase()===utterance.lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(lang))||null;let ended=false;const finish=()=>{if(ended)return;ended=true;if(token===version)done()};utterance.onend=finish;utterance.onerror=finish;synth.speak(utterance)}
 function later(action){const token=version;timer=setTimeout(()=>{timer=null;if(token===version&&running&&!paused)action()},settings.delay*1000)}
 function language(lang){return lang==='hu'?'Magyarul':'Angolul'}
-function start(){if(!dictionary.length)return;cancel();words=dictionary.filter(w=>settings.topic==='all'||w.topic===settings.topic);for(let i=words.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]]}words=words.slice(0,settings.count);if(!words.length)return;index=completed=correct=incorrect=0;running=true;paused=false;showScreen('session');renderWord()}
+function start(){if(!dictionary.length)return;cancel();words=dictionary.filter(w=>settings.topic==='all'||w.topic===settings.topic);for(let i=words.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]]}words=words.slice(0,settings.count);if(!words.length)return;index=completed=correct=incorrect=0;running=true;paused=false;showScreen('session');requestScreenLock();renderWord()}
 function renderWord(){cancel();revealed=false;const quiz=settings.mode==='quiz';const qlang=quiz?settings.direction:'hu';const alang=qlang==='hu'?'en':'hu';$('question').textContent=words[index][qlang];$('question').lang=qlang;$('question-language').textContent=language(qlang);$('answer').textContent=words[index][alang];$('answer').lang=alang;$('answer-language').textContent=language(alang);$('answer-area').hidden=true;$('feedback').hidden=true;$('reveal').hidden=!quiz;$('pause').hidden=quiz;$('pause').textContent='Szünet';$('counter').textContent=`${index+1} / ${words.length}`+(settings.repeat&&!quiz?' · ↻':'');$('progress').max=words.length;$('progress').value=index;$('session-hint').textContent=quiz?'Mondd ki a választ, majd érintsd meg a gombot.':'Hallgasd meg a szót. A válasz hamarosan megjelenik.';speak(words[index][qlang],qlang,()=>{if(!quiz)later(revealPractice)})}
 function revealPractice(){revealed=true;$('answer-area').hidden=false;$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}
 function advance(){completed++;index++;if(index>=words.length){if(settings.mode==='practice'&&settings.repeat)index=0;else{finish();return}}renderWord()}
-function finish(stopped=false){cancel();running=false;paused=false;$('result-title').textContent=stopped?'Tanulás befejezve':'Kész vagy!';$('result-score').textContent=settings.mode==='quiz'?`${correct} / ${correct+incorrect}`:String(completed);$('result-description').textContent=settings.mode==='quiz'?`Tudtam: ${correct} · Nem tudtam: ${incorrect}`:`Ennyi szót gyakoroltál.${!stopped?' Jöhet egy újabb kör?':''}`;showScreen('result')}
+function finish(stopped=false){cancel();running=false;paused=false;releaseScreenLock();$('result-title').textContent=stopped?'Tanulás befejezve':'Kész vagy!';$('result-score').textContent=settings.mode==='quiz'?`${correct} / ${correct+incorrect}`:String(completed);$('result-description').textContent=settings.mode==='quiz'?`Tudtam: ${correct} · Nem tudtam: ${incorrect}`:`Ennyi szót gyakoroltál.${!stopped?' Jöhet egy újabb kör?':''}`;showScreen('result')}
 $('start').onclick=start;$('again').onclick=start;$('home-button').onclick=()=>showScreen('home');$('back').onclick=()=>finish(true);
 $('reveal').onclick=()=>{if(!running||revealed)return;cancel();revealed=true;$('answer-area').hidden=false;$('reveal').hidden=true;$('feedback').hidden=false;$('session-hint').textContent='Sikerült felidézni?';const lang=settings.direction==='hu'?'en':'hu';speak(words[index][lang],lang);$('correct').focus({preventScroll:true})};
 function feedback(known){if(!running||!revealed)return;known?correct++:incorrect++;advance()}
 $('correct').onclick=()=>feedback(true);$('incorrect').onclick=()=>feedback(false);
-function pause(){if(!running||settings.mode!=='practice')return;cancel();paused=true;$('pause').textContent='Folytatás';$('session-hint').textContent='Szünet. A folytatáshoz érintsd meg a gombot.'}
-function resume(){paused=false;$('pause').textContent='Szünet';if(revealed){$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}else{renderWord()}}
+function pause(){if(!running||settings.mode!=='practice')return;cancel();paused=true;releaseScreenLock();$('pause').textContent='Folytatás';$('session-hint').textContent='Szünet. A folytatáshoz érintsd meg a gombot.'}
+function resume(){paused=false;requestScreenLock();$('pause').textContent='Szünet';if(revealed){$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}else{renderWord()}}
 $('pause').onclick=()=>paused?resume():pause();
 $('replay').onclick=()=>{if(!running)return;cancel();const quiz=settings.mode==='quiz';const qlang=quiz?settings.direction:'hu';const playAnswer=()=>{if(revealed){const lang=qlang==='hu'?'en':'hu';speak(words[index][lang],lang,()=>{if(!quiz&&!paused)later(advance)})}else if(!quiz&&!paused)later(revealPractice)};speak(words[index][qlang],qlang,playAnswer)};
-document.addEventListener('visibilitychange',()=>{if(document.hidden&&running){if(settings.mode==='practice')pause();else cancel()}});
-window.addEventListener('pagehide',cancel);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseScreenLock();if(running){if(settings.mode==='practice')pause();else cancel()}}else{requestScreenLock()}});
+window.addEventListener('pagehide',()=>{releaseScreenLock();cancel()});
 // Fit longer dictionary phrases within the available card height.
 const card = document.querySelector('.card');
 function fitWords(){
