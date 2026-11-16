@@ -8,8 +8,8 @@
 <style>
 :root{color-scheme:light;--bg:#f5f7fb;--surface:#fff;--text:#18243b;--muted:#586780;--line:#d8dfeb;--primary:#205bd7;--soft:#eaf0ff;--green:#167544;--red:#b32d40}
 :root[data-theme=dark]{color-scheme:dark;--bg:#111925;--surface:#1b2738;--text:#f1f5fc;--muted:#bac7dc;--line:#3c4b62;--primary:#91b7ff;--soft:#293d5f;--green:#73e3a4;--red:#ff9bab}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif}button,input,select{font:inherit}button{min-height:48px;border:1px solid var(--line);border-radius:16px;padding:12px 16px;background:var(--surface);color:var(--text);font-weight:650;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--primary);outline-offset:3px}button:active:not(:disabled){transform:scale(.98)}[hidden]{display:none!important}.app{max-width:540px;margin:auto;height:100vh;height:100dvh;padding: max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));display:flex;flex-direction:column;gap:14px}header{display:flex;justify-content:space-between;align-items:center;gap:8px}header strong{font-size:20px}.icon{font-size:20px;padding:8px 14px}.screen{min-height:0;flex:1;display:flex;flex-direction:column;gap:16px}h1{font-size:clamp(26px,6vw,34px);line-height:1.15;margin:0}p{margin:0;line-height:1.5}.muted{color:var(--muted)}.intro{padding-top:12px}.modes{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);padding:5px;border-radius:20px;gap:5px}.modes button{border-color:transparent;background:transparent}.modes button[aria-pressed=true]{background:var(--surface);box-shadow:0 2px 8px #0001;color:var(--primary)}.summary{padding:20px;border-radius:24px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px}.summary strong{font-size:20px;overflow-wrap:anywhere}.primary{background:var(--primary);border-color:var(--primary);color:white;font-size:20px;min-height:60px}:root[data-theme=dark] .primary{color:#10213f}.bottom{margin-top:auto;display:grid;gap:10px}.status{font-size:14px;color:var(--muted)}.settings{overflow:auto;padding:2px 4px 12px;gap:18px}.field{display:grid;gap:8px}.field label,legend{font-weight:650}input[type=number],select{width:100%;min-height:50px;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface);color:var(--text);font-size:16px}fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}legend{margin-bottom:10px}.choice{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px}.choice input{width:20px;height:20px;accent-color:var(--primary)}.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.counter{font-weight:650;color:var(--muted)}progress{width:100%;height:6px;accent-color:var(--primary)}.card{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;border:1px solid var(--line);background:var(--surface);border-radius:28px;padding:20px;overflow:auto}.language{text-transform:uppercase;letter-spacing:2px;font-size:12px;font-weight:700;color:var(--muted)}.word{font-size:clamp(23px,6vw,38px);font-weight:750;line-height:1.2;overflow-wrap:anywhere;max-width:100%}.answer{color:var(--primary)}.divider{height:1px;width:48px;background:var(--line)}.controls{display:grid;gap:10px}.feedback{display:grid;grid-template-columns:1fr 1fr;gap:10px}.yes{color:var(--green);border-color:var(--green)}.no{color:var(--red);border-color:var(--red)}.hint{font-size:14px;color:var(--muted);text-align:center}.result{text-align:center;align-items:center;justify-content:center}.result .score{font-size:54px;font-weight:800;color:var(--primary)}.error{color:var(--red)}
-@media(max-height:680px){.app{gap:8px}.screen{gap:10px}.intro{padding-top:0}.summary{padding:14px;gap:8px}.card{padding:14px;gap:10px}.primary{min-height:52px}.hint{font-size:12px}header strong{font-size:18px}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif}button,input,select{font:inherit}button{min-height:48px;border:1px solid var(--line);border-radius:16px;padding:12px 16px;background:var(--surface);color:var(--text);font-weight:650;cursor:pointer;touch-action:manipulation}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--primary);outline-offset:3px}button:active:not(:disabled){transform:scale(.98)}[hidden]{display:none!important}.app{max-width:540px;margin:auto;height:100vh;height:100dvh;padding: max(12px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));display:flex;flex-direction:column;gap:14px}header{display:flex;justify-content:space-between;align-items:center;gap:8px}header strong{font-size:20px}.icon{font-size:20px;padding:8px 14px}.screen{min-height:0;flex:1;display:flex;flex-direction:column;gap:16px}h1{font-size:clamp(26px,6vw,34px);line-height:1.15;margin:0}p{margin:0;line-height:1.5}.muted{color:var(--muted)}.intro{padding-top:12px}.modes{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);padding:5px;border-radius:20px;gap:5px}.modes button{border-color:transparent;background:transparent}#mastery-mode{grid-column:1 / -1}.mastery-progress{font-size:14px;font-weight:650;color:var(--muted);text-align:center}.modes button[aria-pressed=true]{background:var(--surface);box-shadow:0 2px 8px #0001;color:var(--primary)}.summary{padding:20px;border-radius:24px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px}.summary strong{font-size:20px;overflow-wrap:anywhere}.primary{background:var(--primary);border-color:var(--primary);color:white;font-size:20px;min-height:60px}:root[data-theme=dark] .primary{color:#10213f}.bottom{margin-top:auto;display:grid;gap:10px}.status{font-size:14px;color:var(--muted)}.settings{overflow:auto;padding:2px 4px 12px;gap:18px}.field{display:grid;gap:8px}.field label,legend{font-weight:650}input[type=number],select{width:100%;min-height:50px;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface);color:var(--text);font-size:16px}fieldset{border:0;margin:0;padding:0;display:grid;gap:8px}legend{margin-bottom:10px}.choice{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px}.choice input{width:20px;height:20px;accent-color:var(--primary)}.topline{display:flex;align-items:center;justify-content:space-between;gap:10px}.counter{font-weight:650;color:var(--muted)}progress{width:100%;height:6px;accent-color:var(--primary)}.card{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:16px;border:1px solid var(--line);background:var(--surface);border-radius:28px;padding:20px;overflow:auto}.language{text-transform:uppercase;letter-spacing:2px;font-size:12px;font-weight:700;color:var(--muted)}.word{font-size:clamp(23px,6vw,38px);font-weight:750;line-height:1.2;overflow-wrap:anywhere;max-width:100%}.answer{color:var(--primary)}.divider{height:1px;width:48px;background:var(--line)}.controls{display:grid;gap:10px}.feedback{display:grid;grid-template-columns:1fr 1fr;gap:10px}.yes{color:var(--green);border-color:var(--green)}.no{color:var(--red);border-color:var(--red)}.hint{font-size:14px;color:var(--muted);text-align:center}.result{text-align:center;align-items:center;justify-content:center}.result .score{font-size:54px;font-weight:800;color:var(--primary)}.error{color:var(--red)}
+@media(max-height:680px){.intro>p{display:none}#mode-description{font-size:14px;line-height:1.35}.modes button{padding:10px 8px}.app{gap:8px}.screen{gap:10px}.intro{padding-top:0}.summary{padding:14px;gap:8px}.card{padding:14px;gap:10px}.primary{min-height:52px}.hint{font-size:12px}header strong{font-size:18px}}
 @media(prefers-reduced-motion:reduce){button:active:not(:disabled){transform:none}}
 </style>
 </head>
@@ -18,7 +18,7 @@
 <header><strong>Angol szótanuló</strong><button id="theme" class="icon" aria-label="Sötét mód bekapcsolása" title="Megjelenés váltása">☾</button></header>
 <section id="home" class="screen">
 <div class="intro"><h1>Tanuljunk angolul!</h1><p class="muted">Hallgasd meg, mondd ki, jegyezd meg.</p></div>
-<div class="modes" aria-label="Tanulási mód"><button id="practice-mode" aria-pressed="true">Gyakorlás</button><button id="quiz-mode" aria-pressed="false">Kikérdezés</button></div>
+<div class="modes" aria-label="Tanulási mód"><button id="practice-mode" aria-pressed="true">Gyakorlás</button><button id="quiz-mode" aria-pressed="false">Kikérdezés</button><button id="mastery-mode" aria-pressed="false">Biztosra megyek</button></div>
 <p id="mode-description" class="muted">Hallgasd meg a magyar szót, majd az angol párját. A szavak maguktól követik egymást.</p>
 <div class="summary"><span class="muted">A következő tanulás</span><strong id="summary-topic">Minden témakör</strong><p id="summary-details"></p><button id="settings-open">Beállítások módosítása</button></div>
 <div class="bottom"><p id="load-status" class="status" role="status">Szavak betöltése…</p><button id="retry" hidden>Betöltés újra</button><button id="start" class="primary" disabled>Tanulás indítása</button></div>
@@ -36,6 +36,7 @@
 </section>
 <section id="session" class="screen" hidden aria-label="Tanulás">
 <div class="topline"><button id="back">‹ Befejezés</button><span id="counter" class="counter"></span></div>
+<p id="mastery-progress" class="mastery-progress" role="status" hidden></p>
 <progress id="progress" value="0" max="10" aria-label="Haladás"></progress>
 <div class="card"><span id="question-language" class="language">Magyarul</span><div id="question" class="word" lang="hu"></div><div id="answer-area" hidden><div class="divider" style="margin:0 auto 16px"></div><p id="answer-language" class="language"></p><div id="answer" class="word answer"></div></div></div>
 <p id="session-hint" class="hint" role="status"></p>
@@ -49,11 +50,12 @@ const $ = id => document.getElementById(id);
 const defaults = {mode:'practice',topic:'all',count:10,delay:5,repeat:true,direction:'hu'};
 function readSaved(){try{return JSON.parse(localStorage.getItem('english-settings'))||{}}catch{return {}}}
 let settings = {...defaults,...readSaved()};
-settings.mode = settings.mode === 'quiz' ? 'quiz' : 'practice';
+settings.mode = ['practice','quiz','mastery'].includes(settings.mode) ? settings.mode : 'practice';
 settings.direction = settings.direction === 'en' ? 'en' : 'hu';
 settings.count = Math.max(1,Math.min(1988,parseInt(settings.count,10)||10));
 settings.delay = Math.max(1,Math.min(60,parseInt(settings.delay,10)||5));
 let dictionary=[],words=[],index=0,completed=0,correct=0,incorrect=0,running=false,paused=false,revealed=false,timer=null,version=0,currentScreen='home',voices=[];
+let remainingWords = [];
 const synth = window.speechSynthesis;
 // Keep the screen awake only while an active lesson is visible.
 let screenLock = null;
@@ -96,9 +98,27 @@ let theme='light';try{theme=localStorage.getItem('theme')==='dark'?'dark':'light
 function applyTheme(){document.documentElement.dataset.theme=theme;$('theme').textContent=theme==='dark'?'☀':'☾';$('theme').setAttribute('aria-label',theme==='dark'?'Világos mód bekapcsolása':'Sötét mód bekapcsolása');document.querySelector('meta[name="theme-color"]').content=theme==='dark'?'#111925':'#f5f7fb'}
 applyTheme();$('theme').onclick=()=>{theme=theme==='dark'?'light':'dark';store('theme',theme);applyTheme()};
 function showScreen(name){currentScreen=name;for(const id of ['home','settings','session','result'])$(id).hidden=id!==name;const target=$(name).querySelector('h1,button');if(target){if(target.tagName==='H1')target.tabIndex=-1;target.focus({preventScroll:true})}}
-function summary(){const quiz=settings.mode==='quiz';$('practice-mode').setAttribute('aria-pressed',String(!quiz));$('quiz-mode').setAttribute('aria-pressed',String(quiz));$('mode-description').textContent=quiz?'Gondold ki a választ, majd nézd meg, és jelöld, hogy tudtad-e.':'Hallgasd meg a magyar szót, majd az angol párját. A szavak maguktól követik egymást.';$('summary-topic').textContent=settings.topic==='all'?'Minden témakör':settings.topic;$('summary-details').textContent=`${settings.count} szó · `+(quiz?(settings.direction==='hu'?'Magyarról angolra':'Angolról magyarra'):(settings.repeat?'Folyamatos ismétlés':'Egyszeri gyakorlás'));store('english-settings',JSON.stringify(settings))}
-for(const mode of ['practice','quiz'])$(mode+'-mode').onclick=()=>{settings.mode=mode;summary()};
-$('settings-open').onclick=()=>{$('topic').value=settings.topic;$('count').value=settings.count;$('delay').value=settings.delay;$('repeat').checked=settings.repeat;document.querySelector(`input[name=direction][value=${settings.direction}]`).checked=true;$('practice-options').hidden=settings.mode!=='practice';$('delay').disabled=settings.mode!=='practice';$('quiz-options').hidden=settings.mode!=='quiz';showScreen('settings')};
+function summary(){
+    const quiz = settings.mode !== 'practice';
+    for(const mode of ['practice','quiz','mastery']){
+        $(mode+'-mode').setAttribute('aria-pressed',String(settings.mode === mode));
+    }
+    const descriptions = {
+        practice:'Hallgasd meg a magyar szót, majd az angol párját. A szavak maguktól követik egymást.',
+        quiz:'Gondold ki a választ, majd nézd meg, és jelöld, hogy tudtad-e.',
+        mastery:'Amit nem tudsz, később újra kérdezzük. Addig tanulunk, amíg minden szó sikerül.'
+    };
+    $('mode-description').textContent = descriptions[settings.mode];
+    $('summary-topic').textContent = settings.topic === 'all' ? 'Minden témakör' : settings.topic;
+    $('summary-details').textContent = settings.count + ' szó · ' + (quiz
+        ? (settings.direction === 'hu' ? 'Magyarról angolra' : 'Angolról magyarra')
+        : (settings.repeat ? 'Folyamatos ismétlés' : 'Egyszeri gyakorlás'));
+    store('english-settings',JSON.stringify(settings));
+}
+for(const mode of ['practice','quiz','mastery']){
+    $(mode+'-mode').onclick=()=>{settings.mode=mode;summary()};
+}
+$('settings-open').onclick=()=>{$('topic').value=settings.topic;$('count').value=settings.count;$('delay').value=settings.delay;$('repeat').checked=settings.repeat;document.querySelector(`input[name=direction][value=${settings.direction}]`).checked=true;$('practice-options').hidden=settings.mode!=='practice';$('delay').disabled=settings.mode!=='practice';$('quiz-options').hidden=settings.mode==='practice';showScreen('settings')};
 $('settings-form').onsubmit=event=>{event.preventDefault();if(!$('settings-form').reportValidity())return;settings={...settings,topic:$('topic').value,count:Number($('count').value),delay:Number($('delay').value),repeat:$('repeat').checked,direction:document.querySelector('input[name=direction]:checked').value};summary();showScreen('home')};
 async function load(){ $('start').disabled=true;$('retry').hidden=true;$('load-status').classList.remove('error');$('load-status').textContent='Szavak betöltése…';try{const response=await fetch('English.csv?fresh=' + Date.now(), {cache:'no-store'});if(!response.ok)throw Error('load');dictionary=(await response.text()).split(/\r?\n/).map(line=>line.split('|').map(part=>part.trim())).filter(parts=>parts.length===3&&parts.every(Boolean)).map(([topic,hu,en])=>({topic,hu,en}));if(!dictionary.length)throw Error('empty');const topics=new Map();for(const word of dictionary)topics.set(word.topic,(topics.get(word.topic)||0)+1);$('topic').replaceChildren(new Option('Minden témakör','all'));for(const [topic,count] of [...topics].sort((a,b)=>a[0].localeCompare(b[0],'hu')))$('topic').add(new Option(`${topic} (${count})`,topic));if(settings.topic!=='all'&&!topics.has(settings.topic))settings.topic='all';$('count').max=dictionary.length;settings.count=Math.min(settings.count,dictionary.length);$('load-status').textContent=`${dictionary.length} szó · ${topics.size} témakör`+(!synth?' · Ezen a böngészőn nincs felolvasás.':'');$('start').disabled=false;summary()}catch{$('load-status').textContent='Nem sikerült betölteni a szavakat. Ellenőrizd az internetkapcsolatot, majd próbáld újra.';$('load-status').classList.add('error');$('retry').hidden=false}}
 $('retry').onclick=load;
@@ -107,19 +127,50 @@ function cancel(){version++;clearTimeout(timer);timer=null;if(synth)synth.cancel
 function speak(text,lang,done=()=>{}){const token=version;if(!synth){done();return}const utterance=new SpeechSynthesisUtterance(text);utterance.lang=lang==='hu'?'hu-HU':'en-US';utterance.rate=.9;utterance.voice=voices.find(v=>v.lang.toLowerCase()===utterance.lang.toLowerCase())||voices.find(v=>v.lang.toLowerCase().startsWith(lang))||null;let ended=false;const finish=()=>{if(ended)return;ended=true;if(token===version)done()};utterance.onend=finish;utterance.onerror=finish;synth.speak(utterance)}
 function later(action){const token=version;timer=setTimeout(()=>{timer=null;if(token===version&&running&&!paused)action()},settings.delay*1000)}
 function language(lang){return lang==='hu'?'Magyarul':'Angolul'}
-function start(){if(!dictionary.length)return;cancel();words=dictionary.filter(w=>settings.topic==='all'||w.topic===settings.topic);for(let i=words.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]]}words=words.slice(0,settings.count);if(!words.length)return;index=completed=correct=incorrect=0;running=true;paused=false;showScreen('session');requestScreenLock();renderWord()}
-function renderWord(){cancel();revealed=false;const quiz=settings.mode==='quiz';const qlang=quiz?settings.direction:'hu';const alang=qlang==='hu'?'en':'hu';$('question').textContent=words[index][qlang];$('question').lang=qlang;$('question-language').textContent=language(qlang);$('answer').textContent=words[index][alang];$('answer').lang=alang;$('answer-language').textContent=language(alang);$('answer-area').hidden=true;$('feedback').hidden=true;$('reveal').hidden=!quiz;$('pause').hidden=quiz;$('pause').textContent='Szünet';$('counter').textContent=`${index+1} / ${words.length}`+(settings.repeat&&!quiz?' · ↻':'');$('progress').max=words.length;$('progress').value=index;$('session-hint').textContent=quiz?'Mondd ki a választ, majd érintsd meg a gombot.':'Hallgasd meg a szót. A válasz hamarosan megjelenik.';speak(words[index][qlang],qlang,()=>{if(!quiz)later(revealPractice)})}
+function start(){if(!dictionary.length)return;cancel();words=dictionary.filter(w=>settings.topic==='all'||w.topic===settings.topic);for(let i=words.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]]}words=words.slice(0,settings.count);if(!words.length)return;index=completed=correct=incorrect=0;remainingWords=words.map((_,i)=>i);running=true;paused=false;showScreen('session');requestScreenLock();renderWord()}
+function renderWord(){cancel();revealed=false;const quiz=settings.mode!=='practice';const qlang=quiz?settings.direction:'hu';const alang=qlang==='hu'?'en':'hu';$('question').textContent=words[index][qlang];$('question').lang=qlang;$('question-language').textContent=language(qlang);$('answer').textContent=words[index][alang];$('answer').lang=alang;$('answer-language').textContent=language(alang);$('answer-area').hidden=true;$('feedback').hidden=true;$('reveal').hidden=!quiz;$('pause').hidden=quiz;$('pause').textContent='Szünet';$('counter').textContent=`${index+1} / ${words.length}`+(settings.repeat&&!quiz?' · ↻':'');$('progress').max=words.length;$('progress').value=settings.mode==='mastery'?correct:index;$('mastery-progress').hidden=settings.mode!=='mastery';$('mastery-progress').textContent=`Már tudod: ${correct} / ${words.length} · Hátravan: ${remainingWords.length}`;if(settings.mode==='mastery')$('counter').textContent='Biztosra megyek';$('session-hint').textContent=quiz?'Mondd ki a választ, majd érintsd meg a gombot.':'Hallgasd meg a szót. A válasz hamarosan megjelenik.';speak(words[index][qlang],qlang,()=>{if(!quiz)later(revealPractice)})}
 function revealPractice(){revealed=true;$('answer-area').hidden=false;$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}
 function advance(){completed++;index++;if(index>=words.length){if(settings.mode==='practice'&&settings.repeat)index=0;else{finish();return}}renderWord()}
-function finish(stopped=false){cancel();running=false;paused=false;releaseScreenLock();$('result-title').textContent=stopped?'Tanulás befejezve':'Kész vagy!';$('result-score').textContent=settings.mode==='quiz'?`${correct} / ${correct+incorrect}`:String(completed);$('result-description').textContent=settings.mode==='quiz'?`Tudtam: ${correct} · Nem tudtam: ${incorrect}`:`Ennyi szót gyakoroltál.${!stopped?' Jöhet egy újabb kör?':''}`;showScreen('result')}
+function finish(stopped=false){
+    cancel();running=false;paused=false;releaseScreenLock();
+    if(settings.mode === 'mastery'){
+        $('result-title').textContent = stopped ? 'Tanulás befejezve' : 'Mindet tudod!';
+        $('result-score').textContent = stopped ? correct + ' / ' + words.length : '100%';
+        $('result-description').textContent = stopped
+            ? 'Már tudod: ' + correct + ' · Hátravan: ' + remainingWords.length
+            : 'Sikerült felidézned az összes kiválasztott szót!';
+    }else{
+        $('result-title').textContent=stopped?'Tanulás befejezve':'Kész vagy!';
+        $('result-score').textContent=settings.mode==='quiz'?correct+' / '+(correct+incorrect):String(completed);
+        $('result-description').textContent=settings.mode==='quiz'
+            ? 'Tudtam: '+correct+' · Nem tudtam: '+incorrect
+            : 'Ennyi szót gyakoroltál.'+(!stopped?' Jöhet egy újabb kör?':'');
+    }
+    showScreen('result');
+}
 $('start').onclick=start;$('again').onclick=start;$('home-button').onclick=()=>showScreen('home');$('back').onclick=()=>finish(true);
 $('reveal').onclick=()=>{if(!running||revealed)return;cancel();revealed=true;$('answer-area').hidden=false;$('reveal').hidden=true;$('feedback').hidden=false;$('session-hint').textContent='Sikerült felidézni?';const lang=settings.direction==='hu'?'en':'hu';speak(words[index][lang],lang);$('correct').focus({preventScroll:true})};
-function feedback(known){if(!running||!revealed)return;known?correct++:incorrect++;advance()}
+function feedback(known){
+    if(!running || !revealed) return;
+    if(settings.mode !== 'mastery'){
+        known ? correct++ : incorrect++;
+        advance();
+        return;
+    }
+    // Remove a mastered word; place a missed word after the other pending words.
+    const current = remainingWords.shift();
+    if(known) correct++;
+    else {incorrect++;remainingWords.push(current)}
+    if(!remainingWords.length){finish();return}
+    index = remainingWords[0];
+    renderWord();
+    $('reveal').focus({preventScroll:true});
+}
 $('correct').onclick=()=>feedback(true);$('incorrect').onclick=()=>feedback(false);
 function pause(){if(!running||settings.mode!=='practice')return;cancel();paused=true;releaseScreenLock();$('pause').textContent='Folytatás';$('session-hint').textContent='Szünet. A folytatáshoz érintsd meg a gombot.'}
 function resume(){paused=false;requestScreenLock();$('pause').textContent='Szünet';if(revealed){$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}else{renderWord()}}
 $('pause').onclick=()=>paused?resume():pause();
-$('replay').onclick=()=>{if(!running)return;cancel();const quiz=settings.mode==='quiz';const qlang=quiz?settings.direction:'hu';const playAnswer=()=>{if(revealed){const lang=qlang==='hu'?'en':'hu';speak(words[index][lang],lang,()=>{if(!quiz&&!paused)later(advance)})}else if(!quiz&&!paused)later(revealPractice)};speak(words[index][qlang],qlang,playAnswer)};
+$('replay').onclick=()=>{if(!running)return;cancel();const quiz=settings.mode!=='practice';const qlang=quiz?settings.direction:'hu';const playAnswer=()=>{if(revealed){const lang=qlang==='hu'?'en':'hu';speak(words[index][lang],lang,()=>{if(!quiz&&!paused)later(advance)})}else if(!quiz&&!paused)later(revealPractice)};speak(words[index][qlang],qlang,playAnswer)};
 document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseScreenLock();if(running){if(settings.mode==='practice')pause();else cancel()}}else{requestScreenLock()}});
 window.addEventListener('pagehide',()=>{releaseScreenLock();cancel()});
 // Fit longer dictionary phrases within the available card height.
