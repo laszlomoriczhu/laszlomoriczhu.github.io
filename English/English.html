@@ -32,7 +32,6 @@
 <p class="status">Bekapcsolva a kiválasztott témakör összes dátumozott változatából tanulhatsz.</p>
 <div class="field"><label for="count">Hány szót tanuljunk?</label><input id="count" type="number" min="1" max="1988" required inputmode="numeric" value="10"></div>
 <div id="practice-options" class="field"><div class="field"><label for="delay">Várakozás a válasz előtt (másodperc)</label><input id="delay" type="number" min="1" max="60" required inputmode="numeric" value="5"></div><label class="choice"><input id="repeat" type="checkbox" checked> A szavak folyamatos ismétlése</label></div>
-<fieldset id="quiz-options" hidden><legend>Melyik nyelvről kérdezzünk?</legend><label class="choice"><input type="radio" name="direction" value="hu" checked> Magyarról angolra</label><label class="choice"><input type="radio" name="direction" value="en"> Angolról magyarra</label></fieldset>
 </div><button class="primary" type="submit">Kész, vissza</button>
 </form>
 </section>
@@ -42,18 +41,18 @@
 <progress id="progress" value="0" max="10" aria-label="Haladás"></progress>
 <div class="card"><span id="question-language" class="language">Magyarul</span><div id="question" class="word" lang="hu"></div><div id="answer-area" hidden><div class="divider" style="margin:0 auto 16px"></div><p id="answer-language" class="language"></p><div id="answer" class="word answer"></div></div></div>
 <p id="session-hint" class="hint" role="status"></p>
-<div class="controls"><button id="replay">↻ Újra meghallgatom</button><button id="pause">Szünet</button><button id="reveal" class="primary" hidden>Mutasd a választ</button><div id="feedback" class="feedback" hidden><button id="incorrect" class="no">✕ Nem tudtam</button><button id="correct" class="yes">✓ Tudtam</button></div></div>
+<div class="controls"><button id="replay" hidden>↻ Újra meghallgatom</button><button id="pause">Szünet</button><button id="reveal" class="primary" hidden>Mutasd a választ</button><div id="feedback" class="feedback" hidden><button id="incorrect" class="no">✕ Nem tudtam</button><button id="correct" class="yes">✓ Tudtam</button></div></div>
 </section>
 <section id="result" class="screen" hidden><div class="screen result"><p class="language">Szép munka!</p><h1 id="result-title">Tanulás befejezve</h1><div id="result-score" class="score"></div><p id="result-description" class="muted"></p></div><div class="bottom"><button id="again" class="primary">Tanulás újra</button><button id="home-button">Vissza a kezdőlapra</button></div></section>
 </main>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
-const defaults = {mode:'practice',topic:'all',mergeTopics:false,count:10,delay:5,repeat:true,direction:'hu'};
+const defaults = {mode:'practice',topic:'all',mergeTopics:false,count:10,delay:5,repeat:true};
 function readSaved(){try{return JSON.parse(localStorage.getItem('english-settings'))||{}}catch{return {}}}
 let settings = {...defaults,...readSaved()};
 settings.mode = ['practice','quiz','mastery'].includes(settings.mode) ? settings.mode : 'practice';
-settings.direction = settings.direction === 'en' ? 'en' : 'hu';
+delete settings.direction;
 settings.count = Math.max(1,Math.min(1988,parseInt(settings.count,10)||10));
 settings.delay = Math.max(1,Math.min(60,parseInt(settings.delay,10)||5));
 let dictionary=[],words=[],index=0,completed=0,correct=0,incorrect=0,running=false,paused=false,revealed=false,timer=null,version=0,currentScreen='home',voices=[];
@@ -115,15 +114,15 @@ function summary(){
     $('mode-description').textContent = descriptions[settings.mode];
     $('summary-topic').textContent = settings.topic === 'all' ? 'Minden témakör' : settings.mergeTopics ? topicBase(settings.topic) + ' (összes változat)' : settings.topic;
     $('summary-details').textContent = settings.count + ' szó · ' + (quiz
-        ? (settings.direction === 'hu' ? 'Magyarról angolra' : 'Angolról magyarra')
+        ? 'Magyarról angolra'
         : (settings.repeat ? 'Folyamatos ismétlés' : 'Egyszeri gyakorlás'));
     store('english-settings',JSON.stringify(settings));
 }
 for(const mode of ['practice','quiz','mastery']){
     $(mode+'-mode').onclick=()=>{settings.mode=mode;summary()};
 }
-$('settings-open').onclick=()=>{$('topic').value=settings.topic;$('merge-topics').checked=settings.mergeTopics;$('count').value=settings.count;$('delay').value=settings.delay;$('repeat').checked=settings.repeat;document.querySelector(`input[name=direction][value=${settings.direction}]`).checked=true;$('practice-options').hidden=settings.mode!=='practice';$('delay').disabled=settings.mode!=='practice';$('quiz-options').hidden=settings.mode==='practice';showScreen('settings')};
-$('settings-form').onsubmit=event=>{event.preventDefault();if(!$('settings-form').reportValidity())return;settings={...settings,topic:$('topic').value,mergeTopics:$('merge-topics').checked,count:Number($('count').value),delay:Number($('delay').value),repeat:$('repeat').checked,direction:document.querySelector('input[name=direction]:checked').value};summary();showScreen('home')};
+$('settings-open').onclick=()=>{$('topic').value=settings.topic;$('merge-topics').checked=settings.mergeTopics;$('count').value=settings.count;$('delay').value=settings.delay;$('repeat').checked=settings.repeat;$('practice-options').hidden=settings.mode!=='practice';$('delay').disabled=settings.mode!=='practice';showScreen('settings')};
+$('settings-form').onsubmit=event=>{event.preventDefault();if(!$('settings-form').reportValidity())return;settings={...settings,topic:$('topic').value,mergeTopics:$('merge-topics').checked,count:Number($('count').value),delay:Number($('delay').value),repeat:$('repeat').checked};summary();showScreen('home')};
 async function load(){ $('start').disabled=true;$('retry').hidden=true;$('load-status').classList.remove('error');$('load-status').textContent='Szavak betöltése…';try{const response=await fetch('English.csv?fresh=' + Date.now(), {cache:'no-store'});if(!response.ok)throw Error('load');dictionary=(await response.text()).split(/\r?\n/).map(line=>line.split('|').map(part=>part.trim())).filter(parts=>parts.length===3&&parts.every(Boolean)).map(([topic,hu,en])=>({topic,hu,en}));if(!dictionary.length)throw Error('empty');const topics=new Map();for(const word of dictionary)topics.set(word.topic,(topics.get(word.topic)||0)+1);$('topic').replaceChildren(new Option('Minden témakör','all'));for(const [topic,count] of [...topics].sort((a,b)=>a[0].localeCompare(b[0],'hu')))$('topic').add(new Option(`${topic} (${count})`,topic));if(settings.topic!=='all'&&!topics.has(settings.topic))settings.topic='all';$('count').max=dictionary.length;settings.count=Math.min(settings.count,dictionary.length);$('load-status').textContent=`${dictionary.length} szó · ${topics.size} témakör`+(!synth?' · Ezen a böngészőn nincs felolvasás.':'');$('start').disabled=false;summary()}catch{$('load-status').textContent='Nem sikerült betölteni a szavakat. Ellenőrizd az internetkapcsolatot, majd próbáld újra.';$('load-status').classList.add('error');$('retry').hidden=false}}
 $('retry').onclick=load;
 // Every stop invalidates pending speech callbacks as well as the next-word timer.
@@ -132,8 +131,8 @@ function speak(text,lang,done=()=>{}){const token=version;if(!synth){done();retu
 function later(action){const token=version;timer=setTimeout(()=>{timer=null;if(token===version&&running&&!paused)action()},settings.delay*1000)}
 function language(lang){return lang==='hu'?'Magyarul':'Angolul'}
 function start(){if(!dictionary.length)return;cancel();words=dictionary.filter(matchesTopic);for(let i=words.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]]}words=words.slice(0,settings.count);if(!words.length)return;index=completed=correct=incorrect=0;remainingWords=words.map((_,i)=>i);running=true;paused=false;showScreen('session');requestScreenLock();renderWord()}
-function renderWord(){cancel();revealed=false;const quiz=settings.mode!=='practice';const qlang=quiz?settings.direction:'hu';const alang=qlang==='hu'?'en':'hu';$('question').textContent=words[index][qlang];$('question').lang=qlang;$('question-language').textContent=language(qlang);$('answer').textContent=words[index][alang];$('answer').lang=alang;$('answer-language').textContent=language(alang);$('answer-area').hidden=true;$('feedback').hidden=true;$('reveal').hidden=!quiz;$('pause').hidden=quiz;$('pause').textContent='Szünet';$('counter').textContent=`${index+1} / ${words.length}`+(settings.repeat&&!quiz?' · ↻':'');$('progress').max=words.length;$('progress').value=settings.mode==='mastery'?correct:index;$('mastery-progress').hidden=settings.mode!=='mastery';$('mastery-progress').textContent=`Már tudod: ${correct} / ${words.length} · Hátravan: ${remainingWords.length}`;if(settings.mode==='mastery')$('counter').textContent='Biztosra megyek';$('session-hint').textContent=quiz?'Mondd ki a választ, majd érintsd meg a gombot.':'Hallgasd meg a szót. A válasz hamarosan megjelenik.';speak(words[index][qlang],qlang,()=>{if(!quiz)later(revealPractice)})}
-function revealPractice(){revealed=true;$('answer-area').hidden=false;$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}
+function renderWord(){cancel();revealed=false;$('replay').hidden=true;const quiz=settings.mode!=='practice';const qlang='hu';const alang='en';$('question').textContent=words[index][qlang];$('question').lang=qlang;$('question-language').textContent=language(qlang);$('answer').textContent=words[index][alang];$('answer').lang=alang;$('answer-language').textContent=language(alang);$('answer-area').hidden=true;$('feedback').hidden=true;$('reveal').hidden=!quiz;$('pause').hidden=quiz;$('pause').textContent='Szünet';$('counter').textContent=`${index+1} / ${words.length}`+(settings.repeat&&!quiz?' · ↻':'');$('progress').max=words.length;$('progress').value=settings.mode==='mastery'?correct:index;$('mastery-progress').hidden=settings.mode!=='mastery';$('mastery-progress').textContent=`Már tudod: ${correct} / ${words.length} · Hátravan: ${remainingWords.length}`;if(settings.mode==='mastery')$('counter').textContent='Biztosra megyek';$('session-hint').textContent=quiz?'Mondd ki a választ, majd érintsd meg a gombot.':'Hallgasd meg a szót. A válasz hamarosan megjelenik.';speak(words[index][qlang],qlang,()=>{if(!quiz)later(revealPractice)})}
+function revealPractice(){revealed=true;$('answer-area').hidden=false;$('replay').hidden=false;$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}
 function advance(){completed++;index++;if(index>=words.length){if(settings.mode==='practice'&&settings.repeat)index=0;else{finish();return}}renderWord()}
 function finish(stopped=false){
     cancel();running=false;paused=false;releaseScreenLock();
@@ -153,7 +152,7 @@ function finish(stopped=false){
     showScreen('result');
 }
 $('start').onclick=start;$('again').onclick=start;$('home-button').onclick=()=>showScreen('home');$('back').onclick=()=>finish(true);
-$('reveal').onclick=()=>{if(!running||revealed)return;cancel();revealed=true;$('answer-area').hidden=false;$('reveal').hidden=true;$('feedback').hidden=false;$('session-hint').textContent='Sikerült felidézni?';const lang=settings.direction==='hu'?'en':'hu';speak(words[index][lang],lang);$('correct').focus({preventScroll:true})};
+$('reveal').onclick=()=>{if(!running||revealed)return;cancel();revealed=true;$('answer-area').hidden=false;$('replay').hidden=false;$('reveal').hidden=true;$('feedback').hidden=false;$('session-hint').textContent='Sikerült felidézni?';speak(words[index].en,'en');$('correct').focus({preventScroll:true})};
 function feedback(known){
     if(!running || !revealed) return;
     if(settings.mode !== 'mastery'){
@@ -174,7 +173,7 @@ $('correct').onclick=()=>feedback(true);$('incorrect').onclick=()=>feedback(fals
 function pause(){if(!running||settings.mode!=='practice')return;cancel();paused=true;releaseScreenLock();$('pause').textContent='Folytatás';$('session-hint').textContent='Szünet. A folytatáshoz érintsd meg a gombot.'}
 function resume(){paused=false;requestScreenLock();$('pause').textContent='Szünet';if(revealed){$('session-hint').textContent='Hallgasd meg az angol szót, és ismételd el.';speak(words[index].en,'en',()=>later(advance))}else{renderWord()}}
 $('pause').onclick=()=>paused?resume():pause();
-$('replay').onclick=()=>{if(!running)return;cancel();const quiz=settings.mode!=='practice';const qlang=quiz?settings.direction:'hu';const playAnswer=()=>{if(revealed){const lang=qlang==='hu'?'en':'hu';speak(words[index][lang],lang,()=>{if(!quiz&&!paused)later(advance)})}else if(!quiz&&!paused)later(revealPractice)};speak(words[index][qlang],qlang,playAnswer)};
+$('replay').onclick=()=>{if(!running||!revealed)return;cancel();speak(words[index].en,'en',()=>{if(settings.mode==='practice'&&!paused)later(advance)})};
 document.addEventListener('visibilitychange',()=>{if(document.hidden){releaseScreenLock();if(running){if(settings.mode==='practice')pause();else cancel()}}else{requestScreenLock()}});
 window.addEventListener('pagehide',()=>{releaseScreenLock();cancel()});
 // Fit longer dictionary phrases within the available card height.
