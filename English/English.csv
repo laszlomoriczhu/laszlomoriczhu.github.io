@@ -2186,203 +2186,233 @@ FaerchMeeting|a megbeszélés előtt|before the meeting
 FaerchMeeting|még egy dolog|one more thing
 FaerchMeeting|részemről ennyi|that's all from me
 FaerchMeeting|köszönöm mindenkinek|thank you everyone
-FaerchValuesMeeting|értékek|values
-FaerchValuesMeeting|négy pillér|four pillars
-FaerchValuesMeeting|az ügyfelet tartjuk a középpontban|we have the customer at heart
-FaerchValuesMeeting|azt tesszük, ami helyes|we do what's right
-FaerchValuesMeeting|együttműködéssel teremtünk sikert|we create success through collaboration
-FaerchValuesMeeting|ha látjuk, felelősséget vállalunk érte|we see it, we own it
-FaerchValuesMeeting|felelősséget vállalni|take responsibility
-FaerchValuesMeeting|cselekedni|take action
-FaerchValuesMeeting|vezető szerepet vállalni|be in the driver's seat
-FaerchValuesMeeting|háttérbe húzódni|sit back
-FaerchValuesMeeting|kifogás|excuse
-FaerchValuesMeeting|hibáztatni|blame
-FaerchValuesMeeting|figyelmen kívül hagyni|ignore
-FaerchValuesMeeting|vállalati szempontból|from a company perspective
-FaerchValuesMeeting|megbeszélni|discuss
-FaerchValuesMeeting|példát mondani|give an example
-FaerchValuesMeeting|ügyfél|customer
-FaerchValuesMeeting|ügyféligény|customer need
-FaerchValuesMeeting|megérteni az ügyfél igényeit|understand our customer needs
-FaerchValuesMeeting|kolléga|colleague
-FaerchValuesMeeting|részleg|department
-FaerchValuesMeeting|támogatni|support
-FaerchValuesMeeting|segíteni|help out
-FaerchValuesMeeting|segítő kezet nyújtani|give a helping hand
-FaerchValuesMeeting|problémát megoldani|solve a problem
-FaerchValuesMeeting|jobb megoldást találni|find a better solution
-FaerchValuesMeeting|jó megoldást találni|find a good solution
-FaerchValuesMeeting|közös megoldást találni|find a common solution
-FaerchValuesMeeting|hosszú távú megoldás|long-term solution
-FaerchValuesMeeting|gyors megoldás|quick solution
-FaerchValuesMeeting|végső cél|end goal
-FaerchValuesMeeting|fő cél|main goal
-FaerchValuesMeeting|előrelépést elérni|make progress
-FaerchValuesMeeting|együttműködés|collaboration
-FaerchValuesMeeting|együttműködni|collaborate
-FaerchValuesMeeting|együtt dolgozni|work together
-FaerchValuesMeeting|csapatmunka|teamwork
-FaerchValuesMeeting|csapattag|team member
-FaerchValuesMeeting|csapatkészségek|team skills
-FaerchValuesMeeting|kulcsszereplők|key players
-FaerchValuesMeeting|bevonni valakit|bring someone in
-FaerchValuesMeeting|részt venni egy projektben|participate in a project
-FaerchValuesMeeting|projektgazda|project owner
-FaerchValuesMeeting|üzleti felelős|business owner
-FaerchValuesMeeting|közös projekt|common project
-FaerchValuesMeeting|közös cél|common goal
-FaerchValuesMeeting|közös szemlélet|common ground
-FaerchValuesMeeting|közös megértés|common understanding
-FaerchValuesMeeting|közös nyelv|common language
-FaerchValuesMeeting|közös folyamatok|common processes
-FaerchValuesMeeting|szabványosítás|standardization
-FaerchValuesMeeting|szabványosítani|standardize
-FaerchValuesMeeting|azonos szabványok|same standards
-FaerchValuesMeeting|átmeneti időszak|transition period
-FaerchValuesMeeting|változó környezet|changing landscape
-FaerchValuesMeeting|technikai változás|technical change
-FaerchValuesMeeting|új technológiák|new technologies
-FaerchValuesMeeting|hatékonynak lenni|be efficient
-FaerchValuesMeeting|automatizálni|automate
-FaerchValuesMeeting|dokumentáció|documentation
-FaerchValuesMeeting|dokumentálni|document
-FaerchValuesMeeting|elavult dokumentáció|outdated documentation
-FaerchValuesMeeting|érvényes dokumentáció|valid documentation
-FaerchValuesMeeting|frissíteni a dokumentációt|update the documentation
-FaerchValuesMeeting|folyamatban lévő munka|work in progress
-FaerchValuesMeeting|kommunikáció|communication
-FaerchValuesMeeting|félreértés|miscommunication
-FaerchValuesMeeting|egyértelmű kommunikáció|clear communication
-FaerchValuesMeeting|tudásmegosztás|knowledge sharing
-FaerchValuesMeeting|tudást megosztani|share knowledge
-FaerchValuesMeeting|hozzászólni|contribute
-FaerchValuesMeeting|van valami hozzáfűznivalóm|I have something to add
-FaerchValuesMeeting|teljesen egyetértek|I fully agree
-FaerchValuesMeeting|ez egy jó példa|this is a good example
-FaerchValuesMeeting|ez egy nagyon jó pont|this is a very good point
-FaerchValuesMeeting|ez nagyon fontos|this is very important
-FaerchValuesMeeting|ez jól hangzik|sounds good
-FaerchValuesMeeting|szívesen hallom|I'm happy to hear that
-FaerchValuesMeeting|véleményem szerint|from my perspective
-FaerchValuesMeeting|az én részemről|from my side
-FaerchValuesMeeting|napi szinten|on a daily basis
-FaerchValuesMeeting|jelenleg|currently
-FaerchValuesMeeting|időről időre|from time to time
-FaerchValuesMeeting|priorizálni|prioritize
-FaerchValuesMeeting|sürgős probléma|urgent issue
-FaerchValuesMeeting|eszkalálni|escalate
-FaerchValuesMeeting|jelezni egy problémát|raise an issue
-FaerchValuesMeeting|utánajárni|look into it
-FaerchValuesMeeting|rájönni a megoldásra|figure it out
-FaerchValuesMeeting|nem feladni|not give up
-FaerchValuesMeeting|meg kell oldanunk|we need to solve it
-FaerchValuesMeeting|tennünk kell valamit|we have to do something about it
-FaerchValuesMeeting|meg tudjuk csinálni együtt|we can do this together
-FaerchValuesMeeting|visszatérünk rá|we can get back to it
-FaerchValuesMeeting|beszéljük meg később|we can discuss it later
-FaerchValuesMeeting|van egy jó példám|I have a good example
-FaerchValuesMeeting|röviden|in short
-FaerchValuesMeeting|ha jól értem|if I understand correctly
-FaerchValuesMeeting|némítva vagy|you're muted
-FaerchValuesMeeting|hallotok engem?|can you hear me?
-FaerchDigitalTeam|dokumentáció|documentation
-FaerchDigitalTeam|folyamat|process
-FaerchDigitalTeam|folyamatokat automatizálni|automate processes
-FaerchDigitalTeam|folyamatokat optimalizálni|optimize processes
-FaerchDigitalTeam|dokumentációt készíteni|create documentation
-FaerchDigitalTeam|dokumentációt frissíteni|update the documentation
-FaerchDigitalTeam|útmutatás|guidance
-FaerchDigitalTeam|hol keressük|where to look
-FaerchDigitalTeam|mit keressünk|what to look for
-FaerchDigitalTeam|felelősség|responsibility
-FaerchDigitalTeam|felelősséget vállalni|take responsibility
-FaerchDigitalTeam|elsődleges technikus|primary technician
-FaerchDigitalTeam|hatékonyabbnak lenni|be more efficient
-FaerchDigitalTeam|feladatokat kezelni|handle tasks
-FaerchDigitalTeam|erőforrásokat felszabadítani|free up resources
-FaerchDigitalTeam|lépésről lépésre|step by step
-FaerchDigitalTeam|bevezetni|roll out
-FaerchDigitalTeam|bevezetés|rollout
-FaerchDigitalTeam|szabványosítani|standardize
-FaerchDigitalTeam|szabványosítás|standardization
-FaerchDigitalTeam|együtt támogatni egymást|support each other
-FaerchDigitalTeam|segíteni egymásnak|help each other
-FaerchDigitalTeam|együtt megcsinálni|do it together
-FaerchDigitalTeam|szívesen fogadom a javaslatokat|I'm open to suggestions
-FaerchDigitalTeam|jobb módszert találni|find a better way
-FaerchDigitalTeam|változtatásokat végrehajtani|make changes
-FaerchDigitalTeam|manuális telepítés|manual installation
-FaerchDigitalTeam|automatikus telepítés|automatic installation
-FaerchDigitalTeam|szoftvert telepíteni|install software
-FaerchDigitalTeam|szoftvert automatikusan telepíteni|automatically deploy software
-FaerchDigitalTeam|új laptopot telepíteni|deploy a new laptop
-FaerchDigitalTeam|időt megtakarítani|save time
-FaerchDigitalTeam|nagy időmegtakarítás|huge time saver
-FaerchDigitalTeam|ServiceDesk jegyet létrehozni|create a ServiceDesk ticket
-FaerchDigitalTeam|keress meg minket|reach out to us
-FaerchDigitalTeam|nyugodtan kérdezz|feel free to ask
-FaerchDigitalTeam|nyugodtan keress meg|feel free to reach out
-FaerchDigitalTeam|ha bármilyen kérdésed van|if you have any questions
-FaerchDigitalTeam|ha bizonytalan vagy|if you're uncertain
-FaerchDigitalTeam|megbeszélni valamit|discuss something
-FaerchDigitalTeam|ugyanazon az úton járunk|we are on the same journey
-FaerchDigitalTeam|az egész vállalat|the whole business
-FaerchDigitalTeam|minden telephely|all sites
-FaerchDigitalTeam|üzemi telephely|production site
-FaerchDigitalTeam|helyspecifikus|site-specific
-FaerchDigitalTeam|infrastruktúra|infrastructure
-FaerchDigitalTeam|biztonsági szempontból|from a security point of view
-FaerchDigitalTeam|IT szempontból|from an IT perspective
-FaerchDigitalTeam|üzleti szempontból|from a business perspective
-FaerchDigitalTeam|jobb támogatás|better support
-FaerchDigitalTeam|jó döntést hozni|make a good decision
-FaerchDigitalTeam|áttekintést készíteni|create an overview
-FaerchDigitalTeam|követelmény|requirement
-FaerchDigitalTeam|megoldást találni|find a solution
-FaerchDigitalTeam|meglévő szabvány|existing standard
-FaerchDigitalTeam|kiválasztott alkalmazások|selected applications
-FaerchDigitalTeam|mi már használjuk|we already use
-FaerchDigitalTeam|teljesen egyetértek|I fully agree
-FaerchDigitalTeam|szeretnék hozzátenni valamit|I wanted to add something
-FaerchDigitalTeam|szeretném megosztani a képernyőmet|I would like to share my screen
-FaerchDigitalTeam|megosztom a képernyőmet|I'll share my screen
-FaerchDigitalTeam|megmutatom, hogyan néz ki|I'll show you how it looks
-FaerchDigitalTeam|ki szeretné próbálni?|who wants to try it?
-FaerchDigitalTeam|kipróbálni|try it out
-FaerchDigitalTeam|tesztelni|test
-FaerchDigitalTeam|próbaidőszak|trial period
-FaerchDigitalTeam|távoli támogatás|remote support
-FaerchDigitalTeam|távoli asztal|remote desktop
-FaerchDigitalTeam|közvetlenül csatlakozni|connect directly
-FaerchDigitalTeam|hozzáférés|access
-FaerchDigitalTeam|felhasználónév|username
-FaerchDigitalTeam|rendszergazdai jelszó|admin password
-FaerchDigitalTeam|végpont|endpoint
-FaerchDigitalTeam|frissíteni|refresh
-FaerchDigitalTeam|biztonsági csapat|security team
-FaerchDigitalTeam|adathalász szimuláció|phishing simulation
-FaerchDigitalTeam|adathalász e-mail|phishing email
-FaerchDigitalTeam|jelenteni az adathalász e-mailt|report the phishing email
-FaerchDigitalTeam|egyre jobb|getting better and better
-FaerchDigitalTeam|az előző alkalomhoz képest|compared to last time
-FaerchDigitalTeam|ígéretesnek tűnik|it seems promising
-FaerchDigitalTeam|a legfontosabb tanulság|the main takeaway
-FaerchDigitalTeam|biztonsági audit|cybersecurity audit
-FaerchDigitalTeam|auditjelentés|audit report
-FaerchDigitalTeam|kiváltó ok|root cause
-FaerchDigitalTeam|munkafolyamat|work stream
-FaerchDigitalTeam|legmagasabb prioritás|highest priority
-FaerchDigitalTeam|sürgősségi változtatás|emergency change
-FaerchDigitalTeam|normál változtatás|normal change
-FaerchDigitalTeam|hatáselemzés|impact analysis
-FaerchDigitalTeam|kockázat alapján|based on the risk
-FaerchDigitalTeam|megvalósítva|implemented
-FaerchDigitalTeam|tervezési fázisban|in the planning phase
-FaerchDigitalTeam|még nem kezdődött el|not started yet
-FaerchDigitalTeam|régi rendszerek|legacy systems
-FaerchDigitalTeam|kapacitáskorlát|capacity constraint
-FaerchDigitalTeam|ütemezett leállás|scheduled downtime
-FaerchDigitalTeam|hálózatfejlesztés|network upgrade
-FaerchDigitalTeam|átállás|migration
-FaerchDigitalTeam|virtuális gép|virtual machine
+FaerchValuesMeeting20261112|értékek|values
+FaerchValuesMeeting20261112|négy pillér|four pillars
+FaerchValuesMeeting20261112|az ügyfelet tartjuk a középpontban|we have the customer at heart
+FaerchValuesMeeting20261112|azt tesszük, ami helyes|we do what's right
+FaerchValuesMeeting20261112|együttműködéssel teremtünk sikert|we create success through collaboration
+FaerchValuesMeeting20261112|ha látjuk, felelősséget vállalunk érte|we see it, we own it
+FaerchValuesMeeting20261112|felelősséget vállalni|take responsibility
+FaerchValuesMeeting20261112|cselekedni|take action
+FaerchValuesMeeting20261112|vezető szerepet vállalni|be in the driver's seat
+FaerchValuesMeeting20261112|háttérbe húzódni|sit back
+FaerchValuesMeeting20261112|kifogás|excuse
+FaerchValuesMeeting20261112|hibáztatni|blame
+FaerchValuesMeeting20261112|figyelmen kívül hagyni|ignore
+FaerchValuesMeeting20261112|vállalati szempontból|from a company perspective
+FaerchValuesMeeting20261112|megbeszélni|discuss
+FaerchValuesMeeting20261112|példát mondani|give an example
+FaerchValuesMeeting20261112|ügyfél|customer
+FaerchValuesMeeting20261112|ügyféligény|customer need
+FaerchValuesMeeting20261112|megérteni az ügyfél igényeit|understand our customer needs
+FaerchValuesMeeting20261112|kolléga|colleague
+FaerchValuesMeeting20261112|részleg|department
+FaerchValuesMeeting20261112|támogatni|support
+FaerchValuesMeeting20261112|segíteni|help out
+FaerchValuesMeeting20261112|segítő kezet nyújtani|give a helping hand
+FaerchValuesMeeting20261112|problémát megoldani|solve a problem
+FaerchValuesMeeting20261112|jobb megoldást találni|find a better solution
+FaerchValuesMeeting20261112|jó megoldást találni|find a good solution
+FaerchValuesMeeting20261112|közös megoldást találni|find a common solution
+FaerchValuesMeeting20261112|hosszú távú megoldás|long-term solution
+FaerchValuesMeeting20261112|gyors megoldás|quick solution
+FaerchValuesMeeting20261112|végső cél|end goal
+FaerchValuesMeeting20261112|fő cél|main goal
+FaerchValuesMeeting20261112|előrelépést elérni|make progress
+FaerchValuesMeeting20261112|együttműködés|collaboration
+FaerchValuesMeeting20261112|együttműködni|collaborate
+FaerchValuesMeeting20261112|együtt dolgozni|work together
+FaerchValuesMeeting20261112|csapatmunka|teamwork
+FaerchValuesMeeting20261112|csapattag|team member
+FaerchValuesMeeting20261112|csapatkészségek|team skills
+FaerchValuesMeeting20261112|kulcsszereplők|key players
+FaerchValuesMeeting20261112|bevonni valakit|bring someone in
+FaerchValuesMeeting20261112|részt venni egy projektben|participate in a project
+FaerchValuesMeeting20261112|projektgazda|project owner
+FaerchValuesMeeting20261112|üzleti felelős|business owner
+FaerchValuesMeeting20261112|közös projekt|common project
+FaerchValuesMeeting20261112|közös cél|common goal
+FaerchValuesMeeting20261112|közös szemlélet|common ground
+FaerchValuesMeeting20261112|közös megértés|common understanding
+FaerchValuesMeeting20261112|közös nyelv|common language
+FaerchValuesMeeting20261112|közös folyamatok|common processes
+FaerchValuesMeeting20261112|szabványosítás|standardization
+FaerchValuesMeeting20261112|szabványosítani|standardize
+FaerchValuesMeeting20261112|azonos szabványok|same standards
+FaerchValuesMeeting20261112|átmeneti időszak|transition period
+FaerchValuesMeeting20261112|változó környezet|changing landscape
+FaerchValuesMeeting20261112|technikai változás|technical change
+FaerchValuesMeeting20261112|új technológiák|new technologies
+FaerchValuesMeeting20261112|hatékonynak lenni|be efficient
+FaerchValuesMeeting20261112|automatizálni|automate
+FaerchValuesMeeting20261112|dokumentáció|documentation
+FaerchValuesMeeting20261112|dokumentálni|document
+FaerchValuesMeeting20261112|elavult dokumentáció|outdated documentation
+FaerchValuesMeeting20261112|érvényes dokumentáció|valid documentation
+FaerchValuesMeeting20261112|frissíteni a dokumentációt|update the documentation
+FaerchValuesMeeting20261112|folyamatban lévő munka|work in progress
+FaerchValuesMeeting20261112|kommunikáció|communication
+FaerchValuesMeeting20261112|félreértés|miscommunication
+FaerchValuesMeeting20261112|egyértelmű kommunikáció|clear communication
+FaerchValuesMeeting20261112|tudásmegosztás|knowledge sharing
+FaerchValuesMeeting20261112|tudást megosztani|share knowledge
+FaerchValuesMeeting20261112|hozzászólni|contribute
+FaerchValuesMeeting20261112|van valami hozzáfűznivalóm|I have something to add
+FaerchValuesMeeting20261112|teljesen egyetértek|I fully agree
+FaerchValuesMeeting20261112|ez egy jó példa|this is a good example
+FaerchValuesMeeting20261112|ez egy nagyon jó pont|this is a very good point
+FaerchValuesMeeting20261112|ez nagyon fontos|this is very important
+FaerchValuesMeeting20261112|ez jól hangzik|sounds good
+FaerchValuesMeeting20261112|szívesen hallom|I'm happy to hear that
+FaerchValuesMeeting20261112|véleményem szerint|from my perspective
+FaerchValuesMeeting20261112|az én részemről|from my side
+FaerchValuesMeeting20261112|napi szinten|on a daily basis
+FaerchValuesMeeting20261112|jelenleg|currently
+FaerchValuesMeeting20261112|időről időre|from time to time
+FaerchValuesMeeting20261112|priorizálni|prioritize
+FaerchValuesMeeting20261112|sürgős probléma|urgent issue
+FaerchValuesMeeting20261112|eszkalálni|escalate
+FaerchValuesMeeting20261112|jelezni egy problémát|raise an issue
+FaerchValuesMeeting20261112|utánajárni|look into it
+FaerchValuesMeeting20261112|rájönni a megoldásra|figure it out
+FaerchValuesMeeting20261112|nem feladni|not give up
+FaerchValuesMeeting20261112|meg kell oldanunk|we need to solve it
+FaerchValuesMeeting20261112|tennünk kell valamit|we have to do something about it
+FaerchValuesMeeting20261112|meg tudjuk csinálni együtt|we can do this together
+FaerchValuesMeeting20261112|visszatérünk rá|we can get back to it
+FaerchValuesMeeting20261112|beszéljük meg később|we can discuss it later
+FaerchValuesMeeting20261112|van egy jó példám|I have a good example
+FaerchValuesMeeting20261112|röviden|in short
+FaerchValuesMeeting20261112|ha jól értem|if I understand correctly
+FaerchValuesMeeting20261112|fel vagy némítva|you're muted
+FaerchValuesMeeting20261112|hallotok engem?|can you hear me?
+FaerchDigitalTeam20261103|dokumentáció|documentation
+FaerchDigitalTeam20261103|folyamat|process
+FaerchDigitalTeam20261103|folyamatokat automatizálni|automate processes
+FaerchDigitalTeam20261103|folyamatokat optimalizálni|optimize processes
+FaerchDigitalTeam20261103|dokumentációt készíteni|create documentation
+FaerchDigitalTeam20261103|dokumentációt frissíteni|update the documentation
+FaerchDigitalTeam20261103|útmutatás|guidance
+FaerchDigitalTeam20261103|hol keressük|where to look
+FaerchDigitalTeam20261103|mit keressünk|what to look for
+FaerchDigitalTeam20261103|felelősség|responsibility
+FaerchDigitalTeam20261103|felelősséget vállalni|take responsibility
+FaerchDigitalTeam20261103|elsődleges technikus|primary technician
+FaerchDigitalTeam20261103|hatékonyabbnak lenni|be more efficient
+FaerchDigitalTeam20261103|feladatokat kezelni|handle tasks
+FaerchDigitalTeam20261103|erőforrásokat felszabadítani|free up resources
+FaerchDigitalTeam20261103|lépésről lépésre|step by step
+FaerchDigitalTeam20261103|bevezetni|roll out
+FaerchDigitalTeam20261103|bevezetés|rollout
+FaerchDigitalTeam20261103|szabványosítani|standardize
+FaerchDigitalTeam20261103|szabványosítás|standardization
+FaerchDigitalTeam20261103|együtt támogatni egymást|support each other
+FaerchDigitalTeam20261103|segíteni egymásnak|help each other
+FaerchDigitalTeam20261103|együtt megcsinálni|do it together
+FaerchDigitalTeam20261103|szívesen fogadom a javaslatokat|I'm open to suggestions
+FaerchDigitalTeam20261103|jobb módszert találni|find a better way
+FaerchDigitalTeam20261103|változtatásokat végrehajtani|make changes
+FaerchDigitalTeam20261103|manuális telepítés|manual installation
+FaerchDigitalTeam20261103|automatikus telepítés|automatic installation
+FaerchDigitalTeam20261103|szoftvert telepíteni|install software
+FaerchDigitalTeam20261103|szoftvert automatikusan telepíteni|automatically deploy software
+FaerchDigitalTeam20261103|új laptopot telepíteni|deploy a new laptop
+FaerchDigitalTeam20261103|időt megtakarítani|save time
+FaerchDigitalTeam20261103|nagy időmegtakarítás|huge time saver
+FaerchDigitalTeam20261103|ServiceDesk jegyet létrehozni|create a ServiceDesk ticket
+FaerchDigitalTeam20261103|keress meg minket|reach out to us
+FaerchDigitalTeam20261103|nyugodtan kérdezz|feel free to ask
+FaerchDigitalTeam20261103|nyugodtan keress meg|feel free to reach out
+FaerchDigitalTeam20261103|ha bármilyen kérdésed van|if you have any questions
+FaerchDigitalTeam20261103|ha bizonytalan vagy|if you're uncertain
+FaerchDigitalTeam20261103|megbeszélni valamit|discuss something
+FaerchDigitalTeam20261103|ugyanazon az úton járunk|we are on the same journey
+FaerchDigitalTeam20261103|az egész vállalat|the whole business
+FaerchDigitalTeam20261103|minden telephely|all sites
+FaerchDigitalTeam20261103|üzemi telephely|production site
+FaerchDigitalTeam20261103|helyspecifikus|site-specific
+FaerchDigitalTeam20261103|infrastruktúra|infrastructure
+FaerchDigitalTeam20261103|biztonsági szempontból|from a security point of view
+FaerchDigitalTeam20261103|IT szempontból|from an IT perspective
+FaerchDigitalTeam20261103|üzleti szempontból|from a business perspective
+FaerchDigitalTeam20261103|jobb támogatás|better support
+FaerchDigitalTeam20261103|jó döntést hozni|make a good decision
+FaerchDigitalTeam20261103|áttekintést készíteni|create an overview
+FaerchDigitalTeam20261103|követelmény|requirement
+FaerchDigitalTeam20261103|megoldást találni|find a solution
+FaerchDigitalTeam20261103|meglévő szabvány|existing standard
+FaerchDigitalTeam20261103|kiválasztott alkalmazások|selected applications
+FaerchDigitalTeam20261103|mi már használjuk|we already use
+FaerchDigitalTeam20261103|teljesen egyetértek|I fully agree
+FaerchDigitalTeam20261103|szeretnék hozzátenni valamit|I wanted to add something
+FaerchDigitalTeam20261103|szeretném megosztani a képernyőmet|I would like to share my screen
+FaerchDigitalTeam20261103|megosztom a képernyőmet|I'll share my screen
+FaerchDigitalTeam20261103|megmutatom, hogyan néz ki|I'll show you how it looks
+FaerchDigitalTeam20261103|ki szeretné próbálni?|who wants to try it?
+FaerchDigitalTeam20261103|kipróbálni|try it out
+FaerchDigitalTeam20261103|tesztelni|test
+FaerchDigitalTeam20261103|próbaidőszak|trial period
+FaerchDigitalTeam20261103|távoli támogatás|remote support
+FaerchDigitalTeam20261103|távoli asztal|remote desktop
+FaerchDigitalTeam20261103|közvetlenül csatlakozni|connect directly
+FaerchDigitalTeam20261103|hozzáférés|access
+FaerchDigitalTeam20261103|felhasználónév|username
+FaerchDigitalTeam20261103|rendszergazdai jelszó|admin password
+FaerchDigitalTeam20261103|végpont|endpoint
+FaerchDigitalTeam20261103|frissíteni|refresh
+FaerchDigitalTeam20261103|biztonsági csapat|security team
+FaerchDigitalTeam20261103|adathalász szimuláció|phishing simulation
+FaerchDigitalTeam20261103|adathalász e-mail|phishing email
+FaerchDigitalTeam20261103|jelenteni az adathalász e-mailt|report the phishing email
+FaerchDigitalTeam20261103|egyre jobb|getting better and better
+FaerchDigitalTeam20261103|az előző alkalomhoz képest|compared to last time
+FaerchDigitalTeam20261103|ígéretesnek tűnik|it seems promising
+FaerchDigitalTeam20261103|a legfontosabb tanulság|the main takeaway
+FaerchDigitalTeam20261103|biztonsági audit|cybersecurity audit
+FaerchDigitalTeam20261103|auditjelentés|audit report
+FaerchDigitalTeam20261103|kiváltó ok|root cause
+FaerchDigitalTeam20261103|munkafolyamat|work stream
+FaerchDigitalTeam20261103|legmagasabb prioritás|highest priority
+FaerchDigitalTeam20261103|sürgősségi változtatás|emergency change
+FaerchDigitalTeam20261103|normál változtatás|normal change
+FaerchDigitalTeam20261103|hatáselemzés|impact analysis
+FaerchDigitalTeam20261103|kockázat alapján|based on the risk
+FaerchDigitalTeam20261103|megvalósítva|implemented
+FaerchDigitalTeam20261103|tervezési fázisban|in the planning phase
+FaerchDigitalTeam20261103|még nem kezdődött el|not started yet
+FaerchDigitalTeam20261103|régi rendszerek|legacy systems
+FaerchDigitalTeam20261103|kapacitáskorlát|capacity constraint
+FaerchDigitalTeam20261103|ütemezett leállás|scheduled downtime
+FaerchDigitalTeam20261103|hálózatfejlesztés|network upgrade
+FaerchDigitalTeam20261103|átállás|migration
+FaerchDigitalTeam20261103|virtuális gép|virtual machine
+FaerchDigitalTeam20261117|átvenni valaki feladatait|take over
+FaerchDigitalTeam20261117|néhány szót mondani magáról|say a few words about yourself
+FaerchDigitalTeam20261117|bemutatkozni néhány mondatban|present yourself in a few sentences
+FaerchDigitalTeam20261117|szakmai háttér|professional background
+FaerchDigitalTeam20261117|örülök, hogy csatlakoztam a csapathoz|I'm glad that I joined the team
+FaerchDigitalTeam20261117|munkafolyamatot automatizálni|automate the workflow
+FaerchDigitalTeam20261117|elfogadni vagy elutasítani|accept or reject
+FaerchDigitalTeam20261117|ugyanazt az eljárást követni|follow the same procedure
+FaerchDigitalTeam20261117|alapszabályként|as a general rule
+FaerchDigitalTeam20261117|otthoni irodai felszerelés|home office equipment
+FaerchDigitalTeam20261117|kézi folyamatot megszüntetni|stop the manual process
+FaerchDigitalTeam20261117|biztonsági értékelés|security assessment
+FaerchDigitalTeam20261117|kritikus megállapítás|critical finding
+FaerchDigitalTeam20261117|magas kockázatú megállapítás|high finding
+FaerchDigitalTeam20261117|javító intézkedés|remediation
+FaerchDigitalTeam20261117|sebezhetőség|vulnerability
+FaerchDigitalTeam20261117|eszközgazda|asset owner
+FaerchDigitalTeam20261117|elavult szolgáltatás|outdated service
+FaerchDigitalTeam20261117|szolgáltatási fiók|service account
+FaerchDigitalTeam20261117|kiemelt jogosultságú felhasználói fiók|privileged user account
+FaerchDigitalTeam20261117|zökkenőmentesen végrehajtani|deliver seamlessly
+FaerchDigitalTeam20261117|megkaptuk a jóváhagyást|we got the approval
+FaerchDigitalTeam20261117|hálózati szegmentálás|network segmentation
+FaerchDigitalTeam20261117|csoportszintű szabvány|group standard
+FaerchDigitalTeam20261117|tervezési workshop|design workshop
+FaerchDigitalTeam20261117|tervrajzot készíteni|create a blueprint
+FaerchDigitalTeam20261117|kellő gondossági átvilágítás|due diligence
+FaerchDigitalTeam20261117|teljes körű áttekintés|full-scope overview
+FaerchDigitalTeam20261117|minimálisra csökkenteni|bring down to a minimum
+FaerchDigitalTeam20261117|mélyebben megvizsgálni|take a deeper look
